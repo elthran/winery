@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>CellarHand</title>
+<style type=text/css>
+body
+{
+height: 125vh;
+margin-top: 80px;
+padding: 30px;
+background-size: cover;
+font-family: sans-serif;
+}
+header {
+background-color: black;
+position: fixed;
+left: 0;
+right: 0;
+top: 0px;
+height: 100px;
+display: flex;
+align-items: center;
+}
+header * {
+display: inline;
+}
+header li {
+margin: 20px;
+}
+header li a {
+color:white;
+text-decoration: none;
+}
+</style>
+
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  background-color: #FFFFFF;
+  padding: 10px;
+  column-gap: 10px;
+}
+.grid-item {
+  background-color: rgba(255, 255, 255, 255);
+  border: 0px solid rgba(0, 0, 0, 0.8);
+  padding: 30px;
+  font-size: 16px;
+  text-align: left;
+  margin-bottom: 100px;
+}
+</style>
+
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li>
+					<h1 style="color: white;"> CellarHand </h1>
+				</li>
+				<li>
+					<a href="0DataEntry.html"> Data Entry </a>
+				</li>
+				<li>
+					<a href="{% url 'fruit-intake' %}"> Fruit Intake</a>
+				</li>
+				<li>
+					<a href="{% url 'crush-order' %}"> Crush Order </a>
+				</li>
+				<li>
+					<a href="3Fermentation.html"> Fermentation </a>
+				</li>
+				<li>
+					<a href="4Additives.html"> Additives </a>
+				</li>
+				<li>
+					<a href="5Racking.html"> Racking </a>
+				</li>
+				<li>
+					<a href="6Vessels.html"> Vessels </a>
+				</li>
+				<li>
+					<a href="7Bottling.html"> Bottling </a>
+				</li>
+				<li>
+                    <a href="{% url 'reports' %}"> <strong> Reports </strong> </a>
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+<h1>Dockets</h1>
+<ul>
+    {% for docket in data %}
+        <li>docket_number: {{ docket.docket_number }}</li>
+        <li>year: {{ docket.year }}</li>
+        <li>varietal: {{ docket.varietal }}</li>
+        <li>vineyard: {{ docket.vineyard }}</li>
+        <li>block: {{ docket.block }}</li>
+    <br><br>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
+
+</body>
+
+</html>

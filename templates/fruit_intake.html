@@ -86,7 +86,7 @@ text-decoration: none;
 					<a href="7Bottling.html"> Bottling </a>  
 				</li>  
 				<li>  
-					<a href="8Reports.html"> Reports </a>  
+					<a href="{% url 'reports' %}"> Reports </a>
 				</li>  
 			</ul>  
 		</nav>  
@@ -98,70 +98,20 @@ text-decoration: none;
 <br>
 <p> Please Enter the following data to create a Docket Number </p>
 
+<form action="{% url 'fruit-intake' %}" method="post">
 
-<div class="grid-container">
-   <div class="grid-item"><form action="/action_page_bottlesku.php">
-		  <label for="fname">Vintage Year</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		</form> </div>
-  <div class="grid-item">		
-  	<form action="/action_page_varietals.php">
-		  <label for="fname">Varietal</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		  <label for="fname">Vineyard</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		  <label for="fname">Block</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		</form> </div>
-  <div class="grid-item"><form action="/action_page_growers.php">
-		  <label for="fname">Grower</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		</form> </div>
-		 <div class="grid-item"></div>
-</div>
+	<label for="varietal">varietal: </label>
+    <input id="varietal" type="text" name="varietal" value="">
 
+	<label for="vineyard">vineyard: </label>
+    <input id="vineyard" type="text" name="vineyard" value="">
 
-<p> Please Enter the following data to Evaluate Weight of Fruit </p>
+	<label for="block">block: </label>
+    <input id="block" type="text" name="block" value="">
 
-
-<div class="grid-container">
-   <div class="grid-item"><form action="/action_page_bottlesku.php">
-		  <label for="fname">Date</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		</form> </div>
-  <div class="grid-item">		
-  	<form action="/action_page_varietals.php">
-		  <label for="fname">Number of Bins</label><br>
-		  <input type="Number" id="fname" name="fname"><br><br>
-		</form> </div>
-  <div class="grid-item"><form action="/action_page_growers.php">
-		  <label for="fname">Total Weight</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		  <label for="unit">Unit</label><br>
-		  <select name="unit" id="unit">
-		  <option value="kg">kg</option>
-		  <option value="g">g</option>
-		  </select>
-		</form> </div>
-  <div class="grid-item"><form action="/action_page_growers.php">
-		  <label for="fname">Tare Weight</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		  <label for="unit">Unit</label><br>
-		  <select name="unit" id="unit">
-		  <option value="kg">kg</option>
-		  <option value="g">g</option>
-		  </select>
-		</form> </div>
-  <div class="grid-item"></div>
-</div>
-
-
-<div class="grid-container">
-   <div class="grid-item"><input type="Submit" value="Submit"><br><br>
-		</form></div>
-   <div class="grid-item"><form action="2CrushOrder.html">
-    <input type="submit" value="Go to Crush Order" />
+    <input type="submit" value="OK" />
 </form></div>
+	</form>
 
 
 	<!-- If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php". -->

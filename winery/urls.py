@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from dockets.views import CrushOrderViewSet, FruitIntakeViewSet
+from dockets.views import CrushOrderViewSet, FruitIntakeViewSet, ReportsViewSet
 
 urlpatterns = [
     path('dockets/fruit-intake/', FruitIntakeViewSet.as_view(), name='fruit-intake'),
     path('dockets/crush-order/', CrushOrderViewSet.as_view(), name='crush-order'),
+    path('dockets/reports/', ReportsViewSet.as_view(), name='reports'),
 ]
