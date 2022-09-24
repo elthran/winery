@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>CellarHand</title>
+<style type=text/css>   
+body   
+{  
+height: 125vh;  
+margin-top: 80px;  
+padding: 30px;  
+background-size: cover;  
+font-family: sans-serif;  
+}  
+header {  
+background-color: black;  
+position: fixed;  
+left: 0;  
+right: 0;  
+top: 0px;  
+height: 100px;  
+display: flex;  
+align-items: center;  
+}  
+header * {  
+display: inline;  
+}  
+header li {  
+margin: 20px;  
+}  
+header li a {  
+color:white;  
+text-decoration: none;  
+}  
+</style> 
+
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  background-color: #FFFFFF;
+  padding: 10px;
+  column-gap: 10px;
+}
+.grid-item {
+  background-color: rgba(255, 255, 255, 255);
+  border: 0px solid rgba(0, 0, 0, 0.8);
+  padding: 30px;
+  font-size: 16px;
+  text-align: left;
+  margin-bottom: 100px;
+}
+</style>
+
+</head>
+
+<body>
+	<header>
+		<nav>  
+			<ul>  
+				<li>  
+					<h1 style="color: white;"> CellarHand </h1>  
+				</li>  
+				<li>  
+					<a href="0DataEntry.html"> Data Entry </a>  
+				</li>  
+				<li>  
+					<a href="{% url 'fruit-intake' %}"> <strong> Fruit Intake </strong> </a>
+				</li>  
+				<li>  
+					<a href="{% url 'crush-order' %}"> Crush Order </a>
+				</li>  
+				<li>  
+					<a href="3Fermentation.html"> Fermentation </a>  
+				</li>  
+				<li> 
+					<a href="4Additives.html"> Additives </a>  
+				</li>  
+				<li>  
+					<a href="5Racking.html"> Racking </a>  
+				</li>  
+				<li>  
+					<a href="6Vessels.html"> Vessels </a>  
+				</li>  
+				<li>  
+					<a href="7Bottling.html"> Bottling </a>  
+				</li>  
+				<li>  
+					<a href="8Reports.html"> Reports </a>  
+				</li>  
+			</ul>  
+		</nav>  
+	</header>
+
+	<h1> Step 1: Fruit Intake </h1>
+<br>
+<br>
+<br>
+<p> Please Enter the following data to create a Docket Number </p>
+
+
+<div class="grid-container">
+   <div class="grid-item"><form action="/action_page_bottlesku.php">
+		  <label for="fname">Vintage Year</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		</form> </div>
+  <div class="grid-item">		
+  	<form action="/action_page_varietals.php">
+		  <label for="fname">Varietal</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  <label for="fname">Vineyard</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  <label for="fname">Block</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		</form> </div>
+  <div class="grid-item"><form action="/action_page_growers.php">
+		  <label for="fname">Grower</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		</form> </div>
+		 <div class="grid-item"></div>
+</div>
+
+
+<p> Please Enter the following data to Evaluate Weight of Fruit </p>
+
+
+<div class="grid-container">
+   <div class="grid-item"><form action="/action_page_bottlesku.php">
+		  <label for="fname">Date</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		</form> </div>
+  <div class="grid-item">		
+  	<form action="/action_page_varietals.php">
+		  <label for="fname">Number of Bins</label><br>
+		  <input type="Number" id="fname" name="fname"><br><br>
+		</form> </div>
+  <div class="grid-item"><form action="/action_page_growers.php">
+		  <label for="fname">Total Weight</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  <label for="unit">Unit</label><br>
+		  <select name="unit" id="unit">
+		  <option value="kg">kg</option>
+		  <option value="g">g</option>
+		  </select>
+		</form> </div>
+  <div class="grid-item"><form action="/action_page_growers.php">
+		  <label for="fname">Tare Weight</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  <label for="unit">Unit</label><br>
+		  <select name="unit" id="unit">
+		  <option value="kg">kg</option>
+		  <option value="g">g</option>
+		  </select>
+		</form> </div>
+  <div class="grid-item"></div>
+</div>
+
+
+<div class="grid-container">
+   <div class="grid-item"><input type="Submit" value="Submit"><br><br>
+		</form></div>
+   <div class="grid-item"><form action="2CrushOrder.html">
+    <input type="submit" value="Go to Crush Order" />
+</form></div>
+
+
+	<!-- If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php". -->
+
+	<!-- Notice that the value of the "First name" field will not be submitted, because the input element does not have a name attribute. -->
+
+</body>
+</html>
+
+</body>
+
+</html>
