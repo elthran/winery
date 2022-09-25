@@ -12,7 +12,7 @@ class FruitIntakeForm(forms.Form):
     vineyard = forms.ChoiceField(label='vineyard', choices=winery.constants.VINEYARD_CHOICES)
     block = forms.IntegerField(label='block', initial=1)
     grower = forms.CharField(label='grower', max_length=100, initial="unknown")
-    date = forms.DateTimeField(label='date', initial=datetime.now())
+    date = forms.DateTimeField(label='date', initial=datetime.now(), localize=True)
     # number_of_bins = forms.CharField(label='number_of_bins', max_length=100)
     # total_weight_kg = forms.CharField(label='total_weight_kg', max_length=100)
     # total_weight_display_unit = forms.CharField(label='total_weight_display_unit', max_length=100)
