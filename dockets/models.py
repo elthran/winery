@@ -3,7 +3,8 @@ from django.db import models
 
 # Create your models here.
 class Docket(models.Model):
-    docket_number = models.TextField(primary_key=True, null=False)
+    # id = models.IntegerField(primary_key=True)
+    docket_number = models.TextField(unique=True, null=False)
     year = models.IntegerField(null=True)
     varietal = models.TextField(null=False)
     vineyard = models.TextField(null=False)

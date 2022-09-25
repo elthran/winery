@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>CellarHand</title>
+<style type=text/css>   
+body   
+{  
+height: 125vh;  
+margin-top: 80px;  
+padding: 30px;  
+background-size: cover;  
+font-family: sans-serif;  
+}  
+header {  
+background-color: black;  
+position: fixed;  
+left: 0;  
+right: 0;  
+top: 0px;  
+height: 100px;  
+display: flex;  
+align-items: center;  
+}  
+header * {  
+display: inline;  
+}  
+header li {  
+margin: 20px;  
+}  
+header li a {  
+color:white;  
+text-decoration: none;  
+}  
+</style> 
+
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  background-color: #FFFFFF;
+  padding: 10px;
+  column-gap: 10px;
+}
+.grid-item {
+  background-color: rgba(255, 255, 255, 255);
+  border: 0px solid rgba(0, 0, 0, 0.8);
+  padding: 30px;
+  font-size: 16px;
+  text-align: left;
+  margin-bottom: 100px;
+}
+</style>
+
+</head>
+
+<body>
+	<header>
+		<nav>  
+			<ul>  
+				<li>  
+					<h1 style="color: white;"> CellarHand </h1>  
+				</li>  
+				<li>  
+					<a href="0DataEntry.html"> Data Entry </a>  
+				</li>  
+				<li>  
+					<a href="1FruitIntake.html"> Fruit Intake </a>  
+				</li>  
+				<li>  
+					<a href="2CrushOrder.html"> Crush Order </a>  
+				</li>  
+				<li>  
+					<a href="3Fermentation.html"> <strong> Fermentation </strong>  </a>  
+				</li>  
+				<li> 
+					<a href="4Additives.html"> Additives </a>  
+				</li>  
+				<li>  
+					<a href="5Racking.html"> Racking </a>  
+				</li>  
+				<li>  
+					<a href="6Vessels.html"> Vessels </a>  
+				</li>  
+				<li>  
+					<a href="7Bottling.html"> Bottling </a>  
+				</li>  
+				<li>  
+					<a href="8Reports.html"> Reports </a>  
+				</li>  
+			</ul>  
+		</nav>  
+	</header>
+
+	<h1> Step 3: Fermentation </h1>
+<br>
+<br>
+<br>
+<p> Please Select a Vessel to input Fermentation Data </p>
+
+
+<div class="grid-container">
+   <div class="grid-item"><form action="/action_page_bottlesku.php">
+		  <label for="fname">Vessel Type</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  <label for="fname">Vessel ID</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		</form> </div>
+</div>
+
+<p>Enter Daily data to keep track of Brix vs. Temperature</p>
+
+<div class="grid-container">
+   <div class="grid-item"><form action="/action_page_bottlesku.php">
+		  <label for="fname">Date</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		</form> </div>
+  <div class="grid-item">		
+  	<form action="/action_page_varietals.php">
+		  <label for="fname">Brix (Sugar Content)</label><br>
+		  <input type="Number" id="fname" name="fname"><br><br>
+		</form> </div>
+  <div class="grid-item"><form action="/action_page_growers.php">
+		  <label for="fname">Temperature</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  <label for="unit">Unit</label><br>
+		  <select name="unit" id="unit">
+		  <option value="°C">°C</option>
+		  <option value="F">F</option>
+		  </select>
+		</form> </div>
+  <div class="grid-item"></div>
+     <div class="grid-item"><form action="/action_page_bottlesku.php">
+		  <label for="fname">pH</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		</form> </div>
+  <div class="grid-item"><form action="/action_page_growers.php">
+		  <label for="fname">Tartaric Acid</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  <label for="unit">Unit</label><br>
+		  <select name="unit" id="unit">
+		  <option value="L">L</option>
+		  <option value="ml">ml</option>
+		  </select>
+		</form> </div>
+  <div class="grid-item"><form action="/action_page_growers.php">
+		  <label for="fname">Yeast Assimissable Nitrogen</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  <label for="unit">Unit</label><br>
+		  <select name="unit" id="unit">
+		  <option value="L">L</option>
+		  <option value="ml">ml</option>
+		  </select>
+		</form> </div>
+  <div class="grid-item"><form action="/action_page_growers.php">
+		  <label for="fname">Diammonium Phosphate</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  <label for="unit">Unit</label><br>
+		  <select name="unit" id="unit">
+		  <option value="L">L</option>
+		  <option value="ml">ml</option>
+		  </select>
+		</form> </div>
+   <div class="grid-item"><form action="/html/tags/html_form_tag_action.cfm" method="post">
+<div>
+<textarea name="comments" id="comments" style="font-family:sans-serif;font-size:1.2em;">
+Please add comments
+</textarea>
+</div>
+</form></div>
+</div>
+
+
+<div class="grid-container">
+	   <div class="grid-item"><form action="2CrushOrder.html">
+    <input type="submit" value="Return to Crush Order" />
+</form></div>
+   <div class="grid-item"><input type="Submit" value="Submit"><br><br>
+		</form></div>
+   <div class="grid-item"><form action="4Additives.html">
+    <input type="submit" value="Go to Additives" />
+</form></div>
+
+	<!-- If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php". -->
+
+	<!-- Notice that the value of the "First name" field will not be submitted, because the input element does not have a name attribute. -->
+
+</body>
+</html>
+
+</body>
+
+</html>

@@ -128,3 +128,6 @@ dmypy.json
 .pyre/
 
 .idea/
+
+db.sqlite3
+*/migrations/*.py
