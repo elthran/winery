@@ -1,17 +1,22 @@
+from datetime import datetime
+
 from django.db import models
 
 
 # Create your models here.
 class Docket(models.Model):
-    # id = models.IntegerField(primary_key=True)
     docket_number = models.TextField(unique=True, null=False)
-    year = models.IntegerField(null=True)
+    vintage = models.IntegerField(null=True)
     varietal = models.TextField(null=False)
     vineyard = models.TextField(null=False)
     block = models.TextField(null=False)
+    grower = models.TextField(null=False)
+    date = models.DateTimeField(default=datetime.now(), blank=True)
     number_of_bins = models.IntegerField(null=True)
     total_weight_kg = models.IntegerField(null=True)
+    total_weight_display_unit = models.IntegerField(null=True)
     tare_weight_kg = models.IntegerField(null=True)
+    tare_weight_display_unit = models.IntegerField(null=True)
     actual_volume = models.IntegerField(null=True)
     order_id = models.TextField(null=True)
 

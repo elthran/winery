@@ -101,19 +101,28 @@ text-decoration: none;
 
 <form action="{% url 'crush-order' %}" method="post">
 
-	<label for="vintage">vintage: </label>
-    <input id="vintage" type="text" name="vintage" value="1">
+	<label id="vintage">vintage: </label>{{ form.vintage }}
 
-	<label for="docket_number">docket_number: </label>
-    <input id="docket_number" type="text" name="docket_number" value="{{ docket_number }}">
+	<label id="docket_number">docket_number: </label>{{ form.docket_number }}
 
-    <input type="submit" value="OK" />
+    <input type="submit" value="Submit" />
 </form></div>
-	</form>
+
+
+
 
 	<!-- If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php". -->
 
 	<!-- Notice that the value of the "First name" field will not be submitted, because the input element does not have a name attribute. -->
+
+
+{% if form.errors %}
+   {% for field in form %}
+      {% for error in field.errors %}
+	<p style="color:red">{{ error|escape }}</p>
+      {% endfor %}
+   {% endfor %}
+{% endif %}
 
 </body>
 </html>

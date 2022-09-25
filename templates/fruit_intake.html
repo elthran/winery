@@ -100,18 +100,25 @@ text-decoration: none;
 
 <form action="{% url 'fruit-intake' %}" method="post">
 
-	<label for="varietal">varietal: </label>
-    <input id="varietal" type="text" name="varietal" value="1">
-
-	<label for="vineyard">vineyard: </label>
-    <input id="vineyard" type="text" name="vineyard" value="2">
-
-	<label for="block">block: </label>
-    <input id="block" type="text" name="block" value="3">
+	<label id="vintage">vintage: </label>{{ form.vintage }}
+	<label id="varietal">varietal: </label>{{ form.varietal }}
+	<label id="vineyard">vineyard: </label>{{ form.vineyard }}
+	<label id="block">block: </label>{{ form.block }}
+	<label id="grower">grower: </label>{{ form.grower }}
+	<label id="date">date: </label>{{ form.date }}
 
     <input type="submit" value="OK" />
 </form></div>
 	</form>
+
+
+{% if form.errors %}
+   {% for field in form %}
+      {% for error in field.errors %}
+	<p style="color:red">{{ error|escape }}</p>
+      {% endfor %}
+   {% endfor %}
+{% endif %}
 
 
 	<!-- If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php". -->
