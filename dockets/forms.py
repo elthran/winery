@@ -2,22 +2,32 @@ from datetime import datetime
 
 from django import forms
 
-from dockets.models import Docket, VintageChoices, VarietalChoices, VineyardChoices, Constants
+from dockets.models.models import Docket
+from dockets.models.choices import VintageChoices, VarietalChoices, VineyardChoices, UnitChoices, BlockChoices, \
+    GrowerChoices
 import winery.constants
 
 
-class FruitIntakeForm(forms.Form):
-    vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all())
-    varietal = forms.ModelChoiceField(label='varietal', queryset=VarietalChoices.objects.all())
-    vineyard = forms.ModelChoiceField(label='vineyard', queryset=VineyardChoices.objects.all())
-    block = forms.IntegerField(label='block', initial=1)
-    grower = forms.CharField(label='grower', max_length=100, initial="unknown")
+class FruitIntakeInitialForm(forms.Form):
+    vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all(), required=False)
+    varietal = forms.ModelChoiceField(label='varietal', queryset=VarietalChoices.objects.all(), required=False)
+    vineyard = forms.ModelChoiceField(label='vineyard', queryset=VineyardChoices.objects.all(), required=False)
+    block = forms.ModelChoiceField(label='block', queryset=BlockChoices.objects.all(), required=False)
+    grower = forms.ModelChoiceField(label='grower', queryset=GrowerChoices.objects.all(), required=False)
+
+
+class FruitIntakeSubsequentForm(forms.Form):
+    vintage = forms.CharField(disabled = True)
+    varietal = forms.CharField(disabled = True)
+    vineyard = forms.CharField(disabled = True)
+    block = forms.CharField(disabled = True)
+    grower = forms.CharField(disabled = True)
+    docket_number = forms.CharField(disabled = True)
     date = forms.DateTimeField(label='date', initial=datetime.now(), localize=True)
-    # number_of_bins = forms.CharField(label='number_of_bins', max_length=100)
-    # total_weight_kg = forms.CharField(label='total_weight_kg', max_length=100)
-    # total_weight_display_unit = forms.CharField(label='total_weight_display_unit', max_length=100)
-    # tare_weight_kg = forms.CharField(label='tare_weight_kg', max_length=100)
-    # tare_weight_display_unit = forms.CharField(label='tare_weight_display_unit', max_length=100)
+    number_of_bins = forms.IntegerField(label='number_of_bins')
+    total_weight = forms.IntegerField(label='total_weight')
+    tare_weight = forms.IntegerField(label='tare_weight')
+    units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all())
 
 
 class CrushOrderForm(forms.Form):

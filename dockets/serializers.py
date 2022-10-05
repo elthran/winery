@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from dockets.models import Docket, Order, Vessel
+from dockets.models.models import Docket, Order, Vessel, FruitIntake
 
 
 class DocketSerializer(serializers.ModelSerializer):
@@ -8,6 +8,11 @@ class DocketSerializer(serializers.ModelSerializer):
         model = Docket
         fields = '__all__'  # ["docket_number", 'varietal', 'vineyard', 'block']
 
+
+class FruitIntakeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FruitIntake
+        fields = '__all__'
 
 # {"varietal": "grapey", "vineyard": "mine", "block": "7"}
 

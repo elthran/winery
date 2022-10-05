@@ -1,18 +1,17 @@
-import json
-from datetime import datetime
 from random import randint
 
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.renderers import TemplateHTMLRenderer
 
-from dockets.forms import FruitIntakeForm, CrushOrderForm, VarietalEntryForm, VineyardEntryForm, \
-    VintageEntryForm
-from dockets.models import Docket, VarietalChoices, VintageChoices, Constants, VineyardChoices
-from dockets.serializers import DocketSerializer
+from dockets.forms import FruitIntakeInitialForm, FruitIntakeSubsequentForm, CrushOrderForm, VarietalEntryForm, \
+    VineyardEntryForm, VintageEntryForm
+from dockets.models.models import Docket, FruitIntake
+from dockets.models.choices import VintageChoices, VarietalChoices, VineyardChoices, UnitChoices, Constants, \
+    GrowerChoices, BlockChoices
+from dockets.serializers import DocketSerializer, FruitIntakeSerializer
 
 
 class FruitIntakeViewSet(APIView):
@@ -22,69 +21,102 @@ class FruitIntakeViewSet(APIView):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.template_name = 'fruit_intake.html'
 
-    def get_object(self, id):
+    def get_fruit_intake_object(self, id):
         '''
         Helper method to get the object with given todo_id, and user_id
         '''
         try:
-            return Docket.objects.get(id=id)
-        except Docket.DoesNotExist:
+            return FruitIntake.objects.get(id=id)
+        except FruitIntake.DoesNotExist:
             return None
+
+    def get_all_fruit_intakes(self):
+        all_fruit_intakes = FruitIntake.objects.order_by('date').reverse().all()
+        return all_fruit_intakes
 
     def get(self, request, id=None, *args, **kwargs):
         renderer_classes = [TemplateHTMLRenderer]
-        template_name = 'fruit_intake.html'
 
-
-        try:
-            p = Constants(choice="vintage", data_type="int")
-            p.save()
-        except:
-            pass
         try:
             p = VintageChoices(choice=2012)
             p.save()
-        except:
-            pass
-        try:
             p = VarietalChoices(choice="Pinot Noir")
             p.save()
+            p = VineyardChoices(choice="Blue Grouse")
+            p.save()
+            p = GrowerChoices(choice="Jacob")
+            p.save()
+            p = BlockChoices(choice=13)
+            p.save()
+            p = UnitChoices(choice="kg")
+            p.save()
         except:
+            print("you failed")
             pass
 
-        form = FruitIntakeForm()
-        if id:
-            docket = self.get_object(id)
-            serializer = DocketSerializer(docket)
+        if not id:
+            form = FruitIntakeInitialForm()
         else:
-            dockets = Docket.objects.all()
-            serializer = DocketSerializer(dockets, many=True)
-        return render(request, template_name, {'form': form, 'reports': serializer.data})
+            existing_fruit_intake = self.get_fruit_intake_object(id)
+            form = FruitIntakeSubsequentForm()
+            serializer = FruitIntakeSerializer(existing_fruit_intake)
+            form.fields["vintage"].initial = serializer.data["vintage"]
+            form.fields["grower"].initial = serializer.data["grower"]
+            form.fields["varietal"].initial = serializer.data["varietal"]
+            form.fields["vineyard"].initial = serializer.data["vineyard"]
+            form.fields["block"].initial = serializer.data["block"]
+            form.fields["docket_number"].initial = serializer.data["docket_number"]
+
+        return render(request, self.template_name, {'form': form, 'data': self.get_all_fruit_intakes()})
 
     def post(self, request, id=None, *args, **kwargs):
-        form = FruitIntakeForm(request.POST, initial={"block": 3})
+
+        if id:
+            existing_fruit_intake = self.get_fruit_intake_object(id)
+            print("Resuming intake..", existing_fruit_intake)
+            form = FruitIntakeSubsequentForm(request.POST)
+            serializer = FruitIntakeSerializer(existing_fruit_intake)
+            form.fields["vintage"].initial = serializer.data["vintage"]
+            form.fields["grower"].initial = serializer.data["grower"]
+            form.fields["varietal"].initial = serializer.data["varietal"]
+            form.fields["vineyard"].initial = serializer.data["vineyard"]
+            form.fields["block"].initial = serializer.data["block"]
+        else:
+            existing_fruit_intake = None
+            form = FruitIntakeInitialForm(request.POST)
+
+        print("checking validation of", form.data)
         if form.is_valid():
-            data = {
-                'varietal': form.cleaned_data['varietal'],
-                'vineyard': form.cleaned_data['vineyard'],
-                'vintage': form.cleaned_data['vintage'],
-                'block': form.cleaned_data['block'],
-                'grower': form.cleaned_data['grower'],
-                'date': form.cleaned_data['date'],
-            }
-            data['docket_number'] = str(data['varietal']) + str(data['vineyard']) + str(data['block']) + str(randint(1, 100))
-            serializer = DocketSerializer(data=data)
+            if existing_fruit_intake:
+                data = {
+                    'date': form.cleaned_data['date'],
+                    'number_of_bins': form.cleaned_data['number_of_bins'],
+                    'total_weight': form.cleaned_data['total_weight'],
+                    'tare_weight': form.cleaned_data['tare_weight'],
+                    'units': form.cleaned_data['units'],
+                }
+                serializer = FruitIntakeSerializer(existing_fruit_intake, data=data)
+            else:
+                data = {
+                    'vintage': int(form.cleaned_data['vintage'].choice),
+                    'grower': form.cleaned_data['grower'].choice,
+                    'varietal': form.cleaned_data['varietal'].choice,
+                    'vineyard': form.cleaned_data['vineyard'].choice,
+                    'block': int(form.cleaned_data['block'].choice),
+                }
+                data['docket_number'] = str(data['varietal']) + str(data['vineyard']) + str(data['block']) + str(randint(1, 100))
+                serializer = FruitIntakeSerializer(data=data)
             if serializer.is_valid():
                 test = serializer.save()
             else:
                 print("Serializer error", serializer.errors)
                 return Response(None, status=status.HTTP_400_BAD_REQUEST)
-            return redirect('crush-order-id', id=test.id)
-            # return render(request, 'crush_order.html', {'docket_number': {test.docket_number}})
+            return redirect('fruit-intake', id=test.id)
         else:
             print("invalid form")
-            return render(request, 'fruit_intake.html', {'form': form})
+            return render(request, self.template_name, {'form': form, 'data': self.get_all_fruit_intakes()})
 
     @staticmethod
     def put(request, id, *args, **kwargs):
@@ -244,6 +276,7 @@ class DataEntryViewSet(APIView):
             form = VintageEntryForm(request.POST)
         else:
             return Response(None, status=status.HTTP_501_NOT_IMPLEMENTED)
+        print("checking validation of", form.data)
         if form.is_valid():
             new_data = {
                 'existing_field': form.cleaned_data['existing_field'],

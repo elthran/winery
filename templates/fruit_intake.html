@@ -98,16 +98,25 @@ text-decoration: none;
 <br>
 <p> Please Enter the following data to create a Docket Number </p>
 
-<form action="{% url 'fruit-intake' %}" method="post">
+<form action="." method="post">
 
-	<label id="vintage">vintage: </label>{{ form.vintage }}
-	<label id="varietal">varietal: </label>{{ form.varietal }}
-	<label id="vineyard">vineyard: </label>{{ form.vineyard }}
-	<label id="block">block: </label>{{ form.block }}
-	<label id="grower">grower: </label>{{ form.grower }}
-	<label id="date">date: </label>{{ form.date }}
+	<label id="vintage">vintage: </label>{{ form.vintage }}<br><br>
+	<label id="grower">grower: </label>{{ form.grower }}<br><br>
+	<label id="varietal">varietal: </label>{{ form.varietal }}<br><br>
+	<label id="vineyard">vineyard: </label>{{ form.vineyard }}<br><br>
+	<label id="block">block: </label>{{ form.block }}<br><br>
+	<label id="docket_number">Docket #: </label>{{ form.docket_number }}<br><br>
+
+    <input type="submit" value="OK" /><br><br>
+
+	<label id="date">date: </label>{{ form.date }}<br><br>
+	<label id="number_of_bins"># of bins: </label>{{ form.number_of_bins }}<br><br>
+	<label id="total_weight">Total Weight: </label>{{ form.total_weight }}<br><br>
+	<label id="tare_weight">Tare Weight: </label>{{ form.tare_weight }}<br><br>
+	<label id="units">Unit: </label>{{ form.units }}<br><br>
 
     <input type="submit" value="OK" />
+
 </form></div>
 
 	<h1>Fruit Intake Reports</h1>
@@ -134,6 +143,38 @@ text-decoration: none;
    {% endfor %}
 {% endif %}
 
+	<table>
+<tr>
+   <th>Date</th>
+   <th>vintage</th>
+   <th>grower</th>
+   <th>varietal</th>
+   <th>vineyard</th>
+   <th>block</th>
+   <th>date</th>
+   <th>number_of_bins</th>
+   <th>total_weight</th>
+   <th>total_weight</th>
+   <th>tare_weight</th>
+   <th>units</th>
+</tr>
+{% for intake in data %}
+		<tr>
+	<td>{{ intake.docket_number }}</td>
+	<td>{{ intake.vintage }}</td>
+	<td>{{ intake.grower }}</td>
+	<td>{{ intake.varietal }}</td>
+	<td>{{ intake.vineyard }}</td>
+	<td>{{ intake.block }}</td>
+	<td>{{ intake.date }}</td>
+	<td>{{ intake.number_of_bins }}</td>
+	<td>{{ intake.total_weight }}</td>
+	<td>{{ intake.tare_weight }}</td>
+	<td>{{ intake.units }}</td>
+		{% endfor %}
+		</tr>
+
+		</table>
 
 	<!-- If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php". -->
 
