@@ -3,6 +3,40 @@ from datetime import datetime
 from django.db import models
 
 
+class Constants(models.Model):
+    choice = models.TextField(unique=True, null=False)
+    data_type = models.TextField(null=False)
+
+
+class VintageChoices(models.Model):
+    choice = models.IntegerField(unique=True, null=False)
+    is_default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return u'{0}'.format(self.choice)
+
+
+class VarietalChoices(models.Model):
+    choice = models.TextField(unique=True, null=False)
+    is_default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return u'{0}'.format(self.choice)
+
+    def save(self, *args, **kwargs):
+        if self.is_default:
+            VarietalChoices.objects.filter(is_default=True).update(is_default=False)
+        return super().save(*args, **kwargs)
+
+
+class VineyardChoices(models.Model):
+    choice = models.TextField(unique=True, null=False)
+    is_default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return u'{0}'.format(self.choice)
+
+
 # Create your models here.
 class Docket(models.Model):
     docket_number = models.TextField(unique=True, null=False)
@@ -22,7 +56,6 @@ class Docket(models.Model):
 
 
 class Vessel(models.Model):
-    id = models.IntegerField(primary_key=True)
     dockets = models.ManyToManyField(Docket)
     bricks = models.IntegerField()
     ph = models.IntegerField()
@@ -34,6 +67,5 @@ class Vessel(models.Model):
 
 
 class Order(models.Model):
-    id = models.IntegerField(primary_key=True)
     dockets = models.ManyToManyField(Docket)
     vessel_id = models.IntegerField()

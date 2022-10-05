@@ -14,15 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-from dockets.views import CrushOrderViewSet, FruitIntakeViewSet, ReportsViewSet
+from dockets.views import CrushOrderViewSet, FruitIntakeViewSet, ReportsViewSet, DataEntryViewSet
+
+app = "winery"
 
 urlpatterns = [
-    path('dockets/fruit-intake/', FruitIntakeViewSet.as_view(), name='fruit-intake'),
-    path('dockets/fruit-intake/<int:id>/', FruitIntakeViewSet.as_view(), name='fruit-intake-id'),
-    path('dockets/crush-order/', CrushOrderViewSet.as_view(), name='crush-order'),
-    path('dockets/crush-order/<int:id>/', CrushOrderViewSet.as_view(), name='crush-order-id'),
-    path('dockets/reports/', ReportsViewSet.as_view(), name='reports'),
-    path('dockets/reports/<int:id>/', ReportsViewSet.as_view(), name='reports-id'),
+    path('data-entry/', DataEntryViewSet.as_view(), name='data-entry'),
+    path('data-entry/<str:data_type>/', DataEntryViewSet.as_view(), name='data-entry-type'),
+    path('fruit-intake/', FruitIntakeViewSet.as_view(), name='fruit-intake'),
+    path('fruit-intake/<int:id>/', FruitIntakeViewSet.as_view(), name='fruit-intake-id'),
+    path('crush-order/', CrushOrderViewSet.as_view(), name='crush-order'),
+    path('crush-order/<int:id>/', CrushOrderViewSet.as_view(), name='crush-order-id'),
+    path('reports/', ReportsViewSet.as_view(), name='reports'),
+    path('reports/<int:id>/', ReportsViewSet.as_view(), name='reports-id'),
 ]
