@@ -34,6 +34,19 @@ class FruitIntake(models.Model):
     tare_weight = models.IntegerField(null=True)
     units = models.TextField(null=True)
 
+    @property
+    def fruit_weight(self):
+        if self.total_weight and self.tare_weight:
+            return self.total_weight - self.tare_weight
+        else:
+            return None
+
+    @property
+    def clean_date(self):
+        if not self.date:
+            return None
+        return self.date.date()
+
 
 class Vessel(models.Model):
     dockets = models.ManyToManyField(Docket)

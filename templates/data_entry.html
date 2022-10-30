@@ -120,6 +120,12 @@ text-decoration: none;
 	<label id="existing_field">Edit field </label>{{ form.existing_field }} with a new value of <label id="edit_value"></label>{{ form.edit_value }}
 
     <input type="submit" value="OK" />
+
+	<h1>Merge Existing Entry</h1>
+
+	<label id="merging_field">Merge value </label>{{ form.merging_field }} into <label id="merge_value"></label>{{ form.existing_field }}
+
+    <input type="submit" value="OK" />
 </form>
 
 {% if form.errors %}
