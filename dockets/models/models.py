@@ -24,6 +24,12 @@ class Docket(models.Model):
         return u'{0}'.format(self.docket_number)
 
 
+class CrushOrder(models.Model):
+    vintage = models.IntegerField(null=True)
+    dockets = models.TextField(null=True)
+    quantity = models.IntegerField(null=True)
+
+
 class FruitIntake(models.Model):
     docket_number = models.TextField(null=True)
     vintage = models.IntegerField(null=True)
@@ -36,6 +42,7 @@ class FruitIntake(models.Model):
     total_weight = models.IntegerField(null=True)
     tare_weight = models.IntegerField(null=True)
     units = models.TextField(null=True)
+    crush_order = models.ForeignKey(CrushOrder, on_delete=models.CASCADE, null=True)
 
     @property
     def fruit_weight(self):
@@ -53,9 +60,3 @@ class FruitIntake(models.Model):
     def __str__(self):
         return u'{0}'.format(self.docket_number)
 
-
-class CrushOrder(models.Model):
-    vintage = models.IntegerField(null=True)
-    docket_number = models.TextField(null=True)
-    quantity = models.IntegerField(null=True)
-    units = models.TextField(null=True)

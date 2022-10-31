@@ -134,7 +134,7 @@ class CrushOrderViewSet(APIView):
             form = CrushOrderSubsequentForm()
             serializer = CrushOrderSerializer(existing_crush_order)
             order = serializer.data
-        form.fields['docket_number'].initial = FruitIntake.objects.last()
+        form.fields['docket_1'].initial = FruitIntake.objects.last()
 
         return render(request, self.template_name, {"form": form,
                                                     "data": self.get_all_crush_orders(),
@@ -155,13 +155,20 @@ class CrushOrderViewSet(APIView):
                 data = {}
                 serializer = CrushOrderSerializer(existing_crush_order, data=data)
             else:
-                data = {
+                crush_order_data = {
                     "vintage": int(form.cleaned_data["vintage"].choice),
-                    "docket_number": form.cleaned_data["docket_number"].docket_number,
                     "quantity": form.cleaned_data["quantity"],
                     "units": form.cleaned_data["units"].choice,
                 }
-                serializer = CrushOrderSerializer(data=data)
+                fruit_intake_data = {
+                    "docket_1": form.cleaned_data["docket_1"].docket_number,
+                    "docket_2": form.cleaned_data["docket_2"].docket_number,
+                }
+                serializer = CrushOrderSerializer(data=crush_order_data)
+                for index, docket_number in fruit_intake_data.items():
+                    if docket_number:
+                        FruitIntake.objects.get(docket_number=docket_number)
+                        print(FruitIntake)
             if serializer.is_valid():
                 test = serializer.save()
                 print("Saving with id:", test.id)

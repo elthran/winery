@@ -26,13 +26,35 @@ class FruitIntakeSubsequentForm(forms.Form):
 
 class CrushOrderInitialForm(forms.Form):
     vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all(), required=False)
-    docket_number = forms.ModelChoiceField(label='docket_number', queryset=FruitIntake.objects.all(), required=False)
+    docket_1 = forms.ModelChoiceField(label='docket_1', queryset=FruitIntake.objects.all(), required=False)
+    docket_2 = forms.ModelChoiceField(label='docket_2', queryset=FruitIntake.objects.all(), required=False)
     quantity = forms.IntegerField(label='quantity')
     units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all())
 
+    def clean(self):
+        """
+        Ensure that either they are entering a new valid integer or are updating a valid integer with a valid integer.
+        """
+        docket_1 = self.cleaned_data.get("docket_1")
+        docket_2 = self.cleaned_data.get("docket_2")
+        if docket_1 == docket_2:
+            print("The dockets must be different")
+            raise forms.ValidationError("The dockets must be different")
+
 class CrushOrderSubsequentForm(forms.Form):
     date = forms.DateTimeField(label='date', initial=datetime.now(), localize=True)
-    docket_number = forms.ModelChoiceField(label='docket_number', queryset=FruitIntake.objects.all(), required=False)
+    docket_1 = forms.ModelChoiceField(label='docket_1', queryset=FruitIntake.objects.all(), required=False)
+    docket_2 = forms.ModelChoiceField(label='docket_2', queryset=FruitIntake.objects.all(), required=False)
+
+    def clean(self):
+        """
+        Ensure that either they are entering a new valid integer or are updating a valid integer with a valid integer.
+        """
+        docket_1 = self.cleaned_data.get("docket_1")
+        docket_2 = self.cleaned_data.get("docket_2")
+        if docket_1 == docket_2:
+            print("The dockets must be different")
+            raise forms.ValidationError("The dockets must be different")
 
 
 class VarietalEntryForm(forms.Form):
@@ -45,7 +67,6 @@ class VarietalEntryForm(forms.Form):
         """
         Ensure that either they are entering a new valid integer or are updating a valid integer with a valid integer.
         """
-        cleaned_data = super().clean()
         new_value = self.cleaned_data.get("new_value")
         edit_value = self.cleaned_data.get("edit_value")
         existing_field = self.cleaned_data.get("existing_field")
@@ -63,7 +84,6 @@ class VintageEntryForm(forms.Form):
         """
         Ensure that either they are entering a new valid integer or are updating a valid integer with a valid integer.
         """
-        cleaned_data = super().clean()
         new_value = self.cleaned_data.get("new_value")
         edit_value = self.cleaned_data.get("edit_value")
         existing_field = self.cleaned_data.get("existing_field")
