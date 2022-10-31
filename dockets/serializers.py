@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from dockets.models.models import Docket, Order, Vessel, FruitIntake
+from dockets.models.models import Docket, CrushOrder, FruitIntake
 
 
 class DocketSerializer(serializers.ModelSerializer):
@@ -14,15 +14,8 @@ class FruitIntakeSerializer(serializers.ModelSerializer):
         model = FruitIntake
         fields = '__all__'
 
-# {"varietal": "grapey", "vineyard": "mine", "block": "7"}
 
-class VesselSerializer(serializers.ModelSerializer):
+class CrushOrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Vessel
-        fields = ["id", "dockets"]
-
-
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
+        model = CrushOrder
         fields = ["id", "dockets"]

@@ -48,17 +48,6 @@ class FruitIntake(models.Model):
         return self.date.date()
 
 
-class Vessel(models.Model):
-    dockets = models.ManyToManyField(Docket)
-    bricks = models.IntegerField()
-    ph = models.IntegerField()
-    tartaric_acid = models.IntegerField()
-    yan = models.IntegerField()
-    dap_needs = models.IntegerField()
-    comments = models.TextField(null=False)
-    temperature = models.IntegerField()
-
-
-class Order(models.Model):
+class CrushOrder(models.Model):
     dockets = models.ManyToManyField(Docket)
     vessel_id = models.IntegerField()

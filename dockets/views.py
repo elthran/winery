@@ -6,12 +6,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.renderers import TemplateHTMLRenderer
 
-from dockets.forms import FruitIntakeInitialForm, FruitIntakeSubsequentForm, CrushOrderForm, VarietalEntryForm, \
-    VineyardEntryForm, VintageEntryForm
-from dockets.models.models import Docket, FruitIntake
-from dockets.models.choices import VintageChoices, VarietalChoices, VineyardChoices, UnitChoices, Constants, \
-    GrowerChoices, BlockChoices
-from dockets.serializers import DocketSerializer, FruitIntakeSerializer
+from dockets.forms import FruitIntakeInitialForm, FruitIntakeSubsequentForm, CrushOrderInitialForm, VarietalEntryForm, \
+    VineyardEntryForm, VintageEntryForm, CrushOrderSubsequentForm
+from dockets.models.models import Docket, FruitIntake, CrushOrder
+from dockets.models.choices import VintageChoices, VarietalChoices, VineyardChoices
+from dockets.serializers import DocketSerializer, FruitIntakeSerializer, CrushOrderSerializer
 
 
 class FruitIntakeViewSet(APIView):
@@ -39,22 +38,6 @@ class FruitIntakeViewSet(APIView):
     def get(self, request, id=None, *args, **kwargs):
         renderer_classes = [TemplateHTMLRenderer]
 
-        try:
-            p = VintageChoices(choice=2012)
-            p.save()
-            p = VarietalChoices(choice="Pinot Noir")
-            p.save()
-            p = VineyardChoices(choice="Blue Grouse")
-            p.save()
-            p = GrowerChoices(choice="Jacob")
-            p.save()
-            p = BlockChoices(choice=13)
-            p.save()
-            p = UnitChoices(choice="kg")
-            p.save()
-        except:
-            pass
-
         if not id:
             intake = None
             form = FruitIntakeInitialForm()
@@ -72,20 +55,14 @@ class FruitIntakeViewSet(APIView):
 
         if id:
             existing_fruit_intake = self.get_fruit_intake_object(id)
-            print("Resuming intake..", existing_fruit_intake)
-            print("docket_number:", existing_fruit_intake.docket_number)
-            print("Units:", existing_fruit_intake.units)
             form = FruitIntakeSubsequentForm(request.POST)
             serializer = FruitIntakeSerializer(existing_fruit_intake)
         else:
             existing_fruit_intake = None
             form = FruitIntakeInitialForm(request.POST)
 
-        print("checking validation of", form.data)
-        print("Units:", UnitChoices.objects.all())
         if form.is_valid():
             if existing_fruit_intake:
-                print("Updating existing fruit intake")
                 data = {
                     "date": form.cleaned_data["date"],
                     "number_of_bins": form.cleaned_data["number_of_bins"],
@@ -93,10 +70,8 @@ class FruitIntakeViewSet(APIView):
                     "tare_weight": form.cleaned_data["tare_weight"],
                     "units": form.cleaned_data["units"].choice,
                 }
-                print("serializing:", data)
                 serializer = FruitIntakeSerializer(existing_fruit_intake, data=data)
             else:
-                print("Creating new fruit intake")
                 data = {
                     "vintage": int(form.cleaned_data["vintage"].choice),
                     "grower": form.cleaned_data["grower"].choice,
@@ -135,51 +110,75 @@ class CrushOrderViewSet(APIView):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.template_name = "crush_order.html"
 
-    def get_object(self, id):
+    def get_crush_order_object(self, id):
         """
         Helper method to get the object with given todo_id, and user_id
         """
         try:
-            return Docket.objects.get(id=id)
-        except Docket.DoesNotExist:
+            return CrushOrder.objects.get(id=id)
+        except CrushOrder.DoesNotExist:
             return None
 
-    def get(self, request, id=None, *args, **kwargs):
-        """
-        Retrieve the prepared dataset.
+    def get_all_crush_orders(self):
+        all_crush_orders = CrushOrder.objects.reverse().all()
+        return all_crush_orders
 
-        :return: (JSON) The incident reports and a 200 status on success
-        """
-        renderer_classes = [TemplateHTMLRenderer]
-        template_name = "crush_order.html"
-        form = CrushOrderForm()
-        if id:  # Prefill the form
-            docket = self.get_object(id)
-            serializer = DocketSerializer(docket)
-            form.fields["docket_number"].initial = serializer.data["docket_number"]
-            form.fields["vintage"].initial = serializer.data["vintage"]
-        return render(request, template_name, {"form": form})
+    def get(self, request, id=None, *args, **kwargs):
+        if not id:
+            order = None
+            form = CrushOrderInitialForm()
+        else:
+            existing_crush_order = self.get_crush_order_object(id)
+            form = CrushOrderSubsequentForm()
+            serializer = CrushOrderSerializer(existing_crush_order)
+            order = serializer.data
+
+        return render(request, self.template_name, {"form": form,
+                                                    "data": self.get_all_crush_orders(),
+                                                    "order": order})
 
     def post(self, request, id=None, *args, **kwargs):
-        form = CrushOrderForm(request.POST)
+
+        if id:
+            existing_crush_order = self.get_crush_order_object(id)
+            form = CrushOrderSubsequentForm(request.POST)
+            serializer = CrushOrderSerializer(existing_crush_order)
+        else:
+            existing_crush_order = None
+            form = CrushOrderInitialForm(request.POST)
+
         if form.is_valid():
-            new_data = {
-                "vintage": form.cleaned_data["vintage"],
-                "docket_number": form.cleaned_data["docket_number"],
-            }
-            docket = Docket.objects.get(docket_number=new_data["docket_number"])
-            data = {"year": new_data["vintage"]}
-            print("data type of", data["year"], "is", type(data["year"]))
-            serializer = DocketSerializer(docket, data=data, partial=True)
+            if existing_crush_order:
+                data = {
+                    "date": form.cleaned_data["date"],
+                    "number_of_bins": form.cleaned_data["number_of_bins"],
+                    "total_weight": form.cleaned_data["total_weight"],
+                    "tare_weight": form.cleaned_data["tare_weight"],
+                    "units": form.cleaned_data["units"].choice,
+                }
+                serializer = CrushOrderSerializer(existing_crush_order, data=data)
+            else:
+                data = {
+                    "vintage": int(form.cleaned_data["vintage"].choice),
+                    "grower": form.cleaned_data["grower"].choice,
+                    "varietal": form.cleaned_data["varietal"].choice,
+                    "vineyard": form.cleaned_data["vineyard"].choice,
+                    "block": int(form.cleaned_data["block"].choice),
+                }
+                serializer = CrushOrderSerializer(data=data)
             if serializer.is_valid():
                 test = serializer.save()
             else:
-                print("Serializer error:", serializer.errors)
+                print("Serializer error", serializer.errors)
                 return Response(None, status=status.HTTP_400_BAD_REQUEST)
-            return redirect("reports-id", id=test.id)
+            return redirect("crush-order", id=test.id)
         else:
-            return render(request, "crush_order.html", {"form": form, "docket_number": ""})
+            print("invalid form")
+            return render(request, self.template_name, {"form": form,
+                                                        "data": self.get_all_crush_orders(),
+                                                        "order": existing_crush_order})
 
     @staticmethod
     def put(request, id, *args, **kwargs):

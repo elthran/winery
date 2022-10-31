@@ -24,16 +24,17 @@ class FruitIntakeSubsequentForm(forms.Form):
     units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all())
 
 
-class CrushOrderForm(forms.Form):
-    vintage = forms.ChoiceField(label='vintage', choices=winery.constants.YEAR_CHOICES)
-    docket_number = forms.CharField(label='docket_number', max_length=100)
+class CrushOrderInitialForm(forms.Form):
+    vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all(), required=False)
+    docket_number = forms.ModelChoiceField(label='docket_number', queryset=Docket.objects.all(), required=False)
+    quantity = forms.IntegerField(label='quantity')
+    units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all())
 
-    def clean_docket_number(self):
-        form_docket_number = self.cleaned_data.get("docket_number")
-        existing = Docket.objects.filter(docket_number=form_docket_number).exists()
-        if not existing:
-            raise forms.ValidationError("Docket Number does not exist in database")
-        return form_docket_number
+class CrushOrderSubsequentForm(forms.Form):
+    vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all(), required=False)
+    docket_number = forms.ModelChoiceField(label='docket_number', queryset=Docket.objects.all(), required=False)
+    quantity = forms.IntegerField(label='quantity')
+    units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all())
 
 
 class VarietalEntryForm(forms.Form):
