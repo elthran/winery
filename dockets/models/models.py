@@ -20,6 +20,9 @@ class Docket(models.Model):
     actual_volume = models.IntegerField(null=True)
     order_id = models.TextField(null=True)
 
+    def __str__(self):
+        return u'{0}'.format(self.docket_number)
+
 
 class FruitIntake(models.Model):
     docket_number = models.TextField(null=True)
@@ -47,7 +50,12 @@ class FruitIntake(models.Model):
             return None
         return self.date.date()
 
+    def __str__(self):
+        return u'{0}'.format(self.docket_number)
+
 
 class CrushOrder(models.Model):
-    dockets = models.ManyToManyField(Docket)
-    vessel_id = models.IntegerField()
+    vintage = models.IntegerField(null=True)
+    docket_number = models.TextField(null=True)
+    quantity = models.IntegerField(null=True)
+    units = models.TextField(null=True)

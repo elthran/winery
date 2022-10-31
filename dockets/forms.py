@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django import forms
 
-from dockets.models.models import Docket
+from dockets.models.models import Docket, FruitIntake
 from dockets.models.choices import VintageChoices, VarietalChoices, VineyardChoices, UnitChoices, BlockChoices, \
     GrowerChoices
 import winery.constants
@@ -26,15 +26,13 @@ class FruitIntakeSubsequentForm(forms.Form):
 
 class CrushOrderInitialForm(forms.Form):
     vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all(), required=False)
-    docket_number = forms.ModelChoiceField(label='docket_number', queryset=Docket.objects.all(), required=False)
+    docket_number = forms.ModelChoiceField(label='docket_number', queryset=FruitIntake.objects.all(), required=False)
     quantity = forms.IntegerField(label='quantity')
     units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all())
 
 class CrushOrderSubsequentForm(forms.Form):
-    vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all(), required=False)
-    docket_number = forms.ModelChoiceField(label='docket_number', queryset=Docket.objects.all(), required=False)
-    quantity = forms.IntegerField(label='quantity')
-    units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all())
+    date = forms.DateTimeField(label='date', initial=datetime.now(), localize=True)
+    docket_number = forms.ModelChoiceField(label='docket_number', queryset=FruitIntake.objects.all(), required=False)
 
 
 class VarietalEntryForm(forms.Form):

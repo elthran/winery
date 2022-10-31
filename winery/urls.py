@@ -26,7 +26,7 @@ urlpatterns = [
     path('fruit-intake/', FruitIntakeViewSet.as_view(), name='fruit-intake'),
     path('fruit-intake/<int:id>/', FruitIntakeViewSet.as_view(), name='fruit-intake'),
     path('crush-order/', CrushOrderViewSet.as_view(), name='crush-order'),
-    path('crush-order/<int:id>/', CrushOrderViewSet.as_view(), name='crush-order-id'),
+    path('crush-order/<int:id>/', CrushOrderViewSet.as_view(), name='crush-order'),
     path('reports/', ReportsViewSet.as_view(), name='reports'),
     path('reports/<int:id>/', ReportsViewSet.as_view(), name='reports-id'),
 ]

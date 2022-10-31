@@ -96,17 +96,28 @@ text-decoration: none;
 <br>
 <br>
 <br>
-<p> Please Enter the following data to create a Crush Order </p>
 
 
-<form action="{% url 'crush-order' %}" method="post">
+<form action="." method="post">
+{% if order %}Docket Number: {{ order.docket_number }}
+<br><br>
+    Vintage: {{ order.vintage }}<br><br>
+    Quantity: {{ order.quantity }}<br><br>
+    Units: {{ order.units }}<br><br>
 
-	<label id="vintage">vintage: </label>{{ form.vintage }}
+    <input type="submit" value="Update Existing Crush Order"/>
+{% else %} Please Enter the following data to create a Crush Order
+<br><br>
 
-	<label id="docket_number">docket_number: </label>{{ form.docket_number }}
+	<label id="vintage">vintage: </label>{{ form.vintage }}<br><br>
+	<label id="docket_number">docket_number: </label>{{ form.docket_number }}<br><br>
+	<label id="quantity">quantity: </label>{{ form.quantity }}<br><br>
+	<label id="units">units: </label>{{ form.units }}<br><br>
 
-    <input type="submit" value="Submit" />
-</form></div>
+    <input type="submit" value="Create New Crush Order"/><br><br>
+{% endif %}
+</form>
+
 
 
 
@@ -123,6 +134,23 @@ text-decoration: none;
       {% endfor %}
    {% endfor %}
 {% endif %}
+
+<table>
+    <tr>
+        <th>Docket</th>
+        <th>Vintage</th>
+        <th>Quantity</th>
+        <th>Units</th>
+    </tr>
+    {% for order in data %}
+    <tr>
+        <td><a href="{% url 'crush-order' id=order.id %}">{{ order.docket_number }}</a></td>
+        <td>{{ order.vintage }}</td>
+        <td>{{ order.quantity }}</td>
+        <td>{{ order.units }}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 </body>
 </html>

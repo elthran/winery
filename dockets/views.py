@@ -134,6 +134,7 @@ class CrushOrderViewSet(APIView):
             form = CrushOrderSubsequentForm()
             serializer = CrushOrderSerializer(existing_crush_order)
             order = serializer.data
+        form.fields['docket_number'].initial = FruitIntake.objects.last()
 
         return render(request, self.template_name, {"form": form,
                                                     "data": self.get_all_crush_orders(),
@@ -151,25 +152,19 @@ class CrushOrderViewSet(APIView):
 
         if form.is_valid():
             if existing_crush_order:
-                data = {
-                    "date": form.cleaned_data["date"],
-                    "number_of_bins": form.cleaned_data["number_of_bins"],
-                    "total_weight": form.cleaned_data["total_weight"],
-                    "tare_weight": form.cleaned_data["tare_weight"],
-                    "units": form.cleaned_data["units"].choice,
-                }
+                data = {}
                 serializer = CrushOrderSerializer(existing_crush_order, data=data)
             else:
                 data = {
                     "vintage": int(form.cleaned_data["vintage"].choice),
-                    "grower": form.cleaned_data["grower"].choice,
-                    "varietal": form.cleaned_data["varietal"].choice,
-                    "vineyard": form.cleaned_data["vineyard"].choice,
-                    "block": int(form.cleaned_data["block"].choice),
+                    "docket_number": form.cleaned_data["docket_number"].docket_number,
+                    "quantity": form.cleaned_data["quantity"],
+                    "units": form.cleaned_data["units"].choice,
                 }
                 serializer = CrushOrderSerializer(data=data)
             if serializer.is_valid():
                 test = serializer.save()
+                print("Saving with id:", test.id)
             else:
                 print("Serializer error", serializer.errors)
                 return Response(None, status=status.HTTP_400_BAD_REQUEST)

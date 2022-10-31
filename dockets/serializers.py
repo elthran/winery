@@ -18,4 +18,4 @@ class FruitIntakeSerializer(serializers.ModelSerializer):
 class CrushOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = CrushOrder
-        fields = ["id", "dockets"]
+        fields = '__all__'
