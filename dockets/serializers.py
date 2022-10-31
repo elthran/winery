@@ -14,6 +14,9 @@ class FruitIntakeSerializer(serializers.ModelSerializer):
         model = FruitIntake
         fields = '__all__'
 
+    def validate_docket(self):
+        print(self.block)
+
 
 class CrushOrderSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from annoying.functions import get_object_or_None
 from django import forms
 
 from dockets.models.models import Docket, FruitIntake
@@ -15,6 +16,17 @@ class FruitIntakeInitialForm(forms.Form):
     block = forms.ModelChoiceField(label='block', queryset=BlockChoices.objects.all(), required=False)
     grower = forms.ModelChoiceField(label='grower', queryset=GrowerChoices.objects.all(), required=False)
 
+    def clean(self):
+        """
+        Ensure that either they are entering a new valid integer or are updating a valid integer with a valid integer.
+        """
+        vintage = self.cleaned_data.get("vintage").choice
+        vineyard = self.cleaned_data.get("vineyard").choice
+        varietal = self.cleaned_data.get("varietal").choice
+        block = self.cleaned_data.get("block").choice
+        if get_object_or_None(FruitIntake, vintage=vintage, vineyard=vineyard, varietal=varietal, block=block):
+            raise forms.ValidationError("Docket already exists")
+
 
 class FruitIntakeSubsequentForm(forms.Form):
     date = forms.DateTimeField(label='date', initial=datetime.now(), localize=True)
@@ -22,6 +34,19 @@ class FruitIntakeSubsequentForm(forms.Form):
     total_weight = forms.IntegerField(label='total_weight')
     tare_weight = forms.IntegerField(label='tare_weight')
     units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all())
+
+    def clean(self):
+        """
+        Ensure that either they are entering a new valid integer or are updating a valid integer with a valid integer.
+        """
+        total_weight = self.cleaned_data.get("total_weight")
+        tare_weight = self.cleaned_data.get("tare_weight")
+        if total_weight < tare_weight:
+            raise forms.ValidationError("Total weight must be greater than tare weight")
+        if total_weight < 0:
+            raise forms.ValidationError("Total weight must be greater than 0")
+        if tare_weight < 0:
+            raise forms.ValidationError("Tare weight must be greater than 0")
 
 
 class CrushOrderInitialForm(forms.Form):

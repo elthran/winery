@@ -7,18 +7,10 @@ from django.db import models
 class Docket(models.Model):
     docket_number = models.TextField(unique=True, null=False)
     vintage = models.IntegerField(null=True)
-    varietal = models.TextField(null=False)
-    vineyard = models.TextField(null=False)
-    block = models.TextField(null=False)
-    grower = models.TextField(null=False)
-    date = models.DateTimeField(default=datetime.now(), blank=True)
-    number_of_bins = models.IntegerField(null=True)
-    total_weight_kg = models.IntegerField(null=True)
-    total_weight_display_unit = models.IntegerField(null=True)
-    tare_weight_kg = models.IntegerField(null=True)
-    tare_weight_display_unit = models.IntegerField(null=True)
-    actual_volume = models.IntegerField(null=True)
-    order_id = models.TextField(null=True)
+    varietal = models.TextField(null=True)
+    vineyard = models.TextField(null=True)
+    block = models.TextField(null=True)
+    grower = models.TextField(null=True)
 
     def __str__(self):
         return u'{0}'.format(self.docket_number)
@@ -31,18 +23,17 @@ class CrushOrder(models.Model):
 
 
 class FruitIntake(models.Model):
-    docket_number = models.TextField(null=True)
-    vintage = models.IntegerField(null=True)
-    varietal = models.TextField(null=True)
-    vineyard = models.TextField(null=True)
-    block = models.TextField(null=True)
-    grower = models.TextField(null=True)
     date = models.DateTimeField(default=datetime.now(), blank=True)
     number_of_bins = models.IntegerField(null=True)
     total_weight = models.IntegerField(null=True)
     tare_weight = models.IntegerField(null=True)
     units = models.TextField(null=True)
+    docket = models.ForeignKey(Docket, on_delete=models.CASCADE, null=True)
     crush_order = models.ForeignKey(CrushOrder, on_delete=models.CASCADE, null=True)
+
+    @property
+    def docket_number(self):
+        return f'{self.vintage}{self.vineyard}{self.varietal}{self.block}'.replace(" ", "")
 
     @property
     def fruit_weight(self):

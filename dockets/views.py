@@ -79,8 +79,6 @@ class FruitIntakeViewSet(APIView):
                     "vineyard": form.cleaned_data["vineyard"].choice,
                     "block": int(form.cleaned_data["block"].choice),
                 }
-                data["docket_number"] = f'{data["vintage"]}{data["vineyard"]}{data["varietal"]}{data["block"]}'.replace(
-                    " ", "")
                 serializer = FruitIntakeSerializer(data=data)
             if serializer.is_valid():
                 test = serializer.save()
@@ -160,15 +158,18 @@ class CrushOrderViewSet(APIView):
                     "quantity": form.cleaned_data["quantity"],
                     "units": form.cleaned_data["units"].choice,
                 }
-                fruit_intake_data = {
-                    "docket_1": form.cleaned_data["docket_1"].docket_number,
-                    "docket_2": form.cleaned_data["docket_2"].docket_number,
-                }
+
                 serializer = CrushOrderSerializer(data=crush_order_data)
-                for index, docket_number in fruit_intake_data.items():
-                    if docket_number:
-                        FruitIntake.objects.get(docket_number=docket_number)
-                        print(FruitIntake)
+
+
+                for index in range(1, 3):
+                    try:
+                        docket_number = form.cleaned_data[f"docket_{index}"].docket_number
+                        print("Trying to update", docket_number)
+                        fruit_intake = FruitIntake.objects.get(docket_number=docket_number)
+                    except AttributeError:
+                        pass
+
             if serializer.is_valid():
                 test = serializer.save()
                 print("Saving with id:", test.id)
