@@ -14,21 +14,9 @@ class FruitIntakeInitialForm(forms.Form):
     vineyard = forms.ModelChoiceField(label='vineyard', queryset=VineyardChoices.objects.all(), required=False)
     block = forms.ModelChoiceField(label='block', queryset=BlockChoices.objects.all(), required=False)
     grower = forms.ModelChoiceField(label='grower', queryset=GrowerChoices.objects.all(), required=False)
-    docket_number = forms.CharField(disabled=True)
-    date = forms.CharField(disabled=True)
-    number_of_bins = forms.CharField(disabled=True)
-    total_weight = forms.CharField(disabled=True)
-    tare_weight = forms.CharField(disabled=True)
-    units = forms.CharField(disabled=True)
 
 
 class FruitIntakeSubsequentForm(forms.Form):
-    vintage = forms.CharField(disabled=True)
-    varietal = forms.CharField(disabled=True)
-    vineyard = forms.CharField(disabled=True)
-    block = forms.CharField(disabled=True)
-    grower = forms.CharField(disabled=True)
-    docket_number = forms.CharField(disabled=True)
     date = forms.DateTimeField(label='date', initial=datetime.now(), localize=True)
     number_of_bins = forms.IntegerField(label='number_of_bins')
     total_weight = forms.IntegerField(label='total_weight')

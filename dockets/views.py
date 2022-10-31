@@ -56,22 +56,17 @@ class FruitIntakeViewSet(APIView):
             pass
 
         if not id:
-            existing_fruit_intake = None
+            intake = None
             form = FruitIntakeInitialForm()
         else:
             existing_fruit_intake = self.get_fruit_intake_object(id)
             form = FruitIntakeSubsequentForm()
             serializer = FruitIntakeSerializer(existing_fruit_intake)
-            form.fields["vintage"].initial = serializer.data["vintage"]
-            form.fields["grower"].initial = serializer.data["grower"]
-            form.fields["varietal"].initial = serializer.data["varietal"]
-            form.fields["vineyard"].initial = serializer.data["vineyard"]
-            form.fields["block"].initial = serializer.data["block"]
-            form.fields["docket_number"].initial = serializer.data["docket_number"]
+            intake = serializer.data
 
         return render(request, self.template_name, {"form": form,
                                                     "data": self.get_all_fruit_intakes(),
-                                                    "intake": existing_fruit_intake})
+                                                    "intake": intake})
 
     def post(self, request, id=None, *args, **kwargs):
 
@@ -82,12 +77,6 @@ class FruitIntakeViewSet(APIView):
             print("Units:", existing_fruit_intake.units)
             form = FruitIntakeSubsequentForm(request.POST)
             serializer = FruitIntakeSerializer(existing_fruit_intake)
-            form.fields["docket_number"].initial = serializer.data["docket_number"]
-            form.fields["vintage"].initial = serializer.data["vintage"]
-            form.fields["grower"].initial = serializer.data["grower"]
-            form.fields["varietal"].initial = serializer.data["varietal"]
-            form.fields["vineyard"].initial = serializer.data["vineyard"]
-            form.fields["block"].initial = serializer.data["block"]
         else:
             existing_fruit_intake = None
             form = FruitIntakeInitialForm(request.POST)
@@ -104,7 +93,7 @@ class FruitIntakeViewSet(APIView):
                     "tare_weight": form.cleaned_data["tare_weight"],
                     "units": form.cleaned_data["units"].choice,
                 }
-                print("serializing:",  data)
+                print("serializing:", data)
                 serializer = FruitIntakeSerializer(existing_fruit_intake, data=data)
             else:
                 print("Creating new fruit intake")
@@ -115,7 +104,8 @@ class FruitIntakeViewSet(APIView):
                     "vineyard": form.cleaned_data["vineyard"].choice,
                     "block": int(form.cleaned_data["block"].choice),
                 }
-                data["docket_number"] = f'{data["vintage"]}{data["vineyard"]}{data["varietal"]}{data["block"]}'.replace(" ", "")
+                data["docket_number"] = f'{data["vintage"]}{data["vineyard"]}{data["varietal"]}{data["block"]}'.replace(
+                    " ", "")
                 serializer = FruitIntakeSerializer(data=data)
             if serializer.is_valid():
                 test = serializer.save()
@@ -125,9 +115,9 @@ class FruitIntakeViewSet(APIView):
             return redirect("fruit-intake", id=test.id)
         else:
             print("invalid form")
-            return render(request, self.template_name,{"form": form,
-                                                    "data": self.get_all_fruit_intakes(),
-                                                    "intake": existing_fruit_intake})
+            return render(request, self.template_name, {"form": form,
+                                                        "data": self.get_all_fruit_intakes(),
+                                                        "intake": existing_fruit_intake})
 
     @staticmethod
     def put(request, id, *args, **kwargs):
