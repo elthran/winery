@@ -12,12 +12,24 @@ class Docket(models.Model):
     block = models.TextField(null=True)
     grower = models.TextField(null=True)
 
+    @property
+    def fruit_weight(self):
+        # is_null = [intake.fruit_weight or 0 for intake in self.fruit_intakes.all()]
+        return sum([intake.fruit_weight or 0 for intake in self.fruit_intakes.all()])
+    #
+    # @property
+    # def pre_crush_weight(self):
+    #     # is_null = [intake.fruit_weight or 0 for intake in self.fruit_intakes.all()]
+    #     return sum([intake.fruit_weight or 0 for intake in self.fruit_intakes.all()])
+
     def __str__(self):
         return u'{0}'.format(self.docket_number)
 
 
 class CrushOrder(models.Model):
     vintage = models.IntegerField(null=True)
+    crush_type = models.TextField(null=True)
+    date = models.DateTimeField(default=datetime.now(), blank=True)
 
     # crush_mappings = models.ManyToOneRel(CrushMapping)
 
@@ -25,10 +37,16 @@ class CrushOrder(models.Model):
     def total_weight(self):
         return sum([mapping.quantity for mapping in self.crush_mappings.all()])
 
+    @property
+    def predicted_volume(self):
+        if self.crush_type == "Whole Cluster Press":
+            return 650 / self.total_weight
+        return 600 / self.total_weight
+
 
 class CrushMapping(models.Model):
     crush_order = models.ForeignKey(CrushOrder, on_delete=models.CASCADE, null=True, related_name="crush_mappings")
-    docket = models.ForeignKey(Docket, on_delete=models.CASCADE, null=True)
+    docket = models.ForeignKey(Docket, on_delete=models.CASCADE, null=True, related_name="crush_mappings")
     quantity = models.IntegerField(null=True)
     units = models.TextField(null=True)
 
@@ -42,8 +60,8 @@ class FruitIntake(models.Model):
     total_weight = models.IntegerField(null=True)
     tare_weight = models.IntegerField(null=True)
     units = models.TextField(null=True)
-    docket = models.ForeignKey(Docket, on_delete=models.CASCADE, null=True)
-    crush_order = models.ForeignKey(CrushOrder, on_delete=models.CASCADE, null=True)
+    docket = models.ForeignKey(Docket, on_delete=models.CASCADE, null=True, related_name="fruit_intakes")
+    crush_order = models.ForeignKey(CrushOrder, on_delete=models.CASCADE, null=True, related_name="fruit_intakes")
 
     @property
     def fruit_weight(self):

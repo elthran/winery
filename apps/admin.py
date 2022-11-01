@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from apps.models.choices import VintageChoices, VarietalChoices, VineyardChoices, GrowerChoices, BlockChoices, \
-    UnitChoices
+    UnitChoices, VesselChoices, CrushOrderTypeChoices
 from apps.models.models import FruitIntake, Docket
 
 try:
@@ -18,6 +18,14 @@ try:
     p = BlockChoices(choice=13)
     p.save()
     p = UnitChoices(choice="kg")
+    p.save()
+    p = VesselChoices(choice="TANK 01")
+    p.save()
+    p = CrushOrderTypeChoices(choice="Crush & Press")
+    p.save()
+    p = CrushOrderTypeChoices(choice="Crush Only")
+    p.save()
+    p = CrushOrderTypeChoices(choice="Whole Cluster Press")
     p.save()
 
     docket = Docket(docket_number="2012BlueGrousePinotNoir13", vintage=2012, grower="Jacob", varietal="Pinot Noir", vineyard="Blue Grouse", block=13)

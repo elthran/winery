@@ -1,12 +1,10 @@
 from datetime import datetime
 
-from annoying.functions import get_object_or_None
 from django import forms
 
 from apps.models.models import Docket, FruitIntake
 from apps.models.choices import VintageChoices, VarietalChoices, VineyardChoices, UnitChoices, BlockChoices, \
-    GrowerChoices
-import winery.constants
+    GrowerChoices, CrushOrderTypeChoices
 
 
 class FruitIntakeInitialForm(forms.Form):
@@ -33,7 +31,7 @@ class FruitIntakeSubsequentForm(forms.Form):
     number_of_bins = forms.IntegerField(label='number_of_bins')
     total_weight = forms.IntegerField(label='total_weight')
     tare_weight = forms.IntegerField(label='tare_weight')
-    units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all())
+    units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all(), initial="kg")
 
     def clean(self):
         """
@@ -51,12 +49,14 @@ class FruitIntakeSubsequentForm(forms.Form):
 
 class CrushOrderInitialForm(forms.Form):
     vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all())
+    crush_type = forms.ModelChoiceField(label='docket_1', queryset=CrushOrderTypeChoices.objects.all())
     docket_1 = forms.ModelChoiceField(label='docket_1', queryset=Docket.objects.all())
     docket_1_quantity = forms.IntegerField(label='docket_1_quantity')
-    docket_1_units = forms.ModelChoiceField(label='docket_1_units', queryset=UnitChoices.objects.all())
+    docket_1_units = forms.ModelChoiceField(label='docket_1_units', queryset=UnitChoices.objects.all(), initial="kg")
     docket_2 = forms.ModelChoiceField(label='docket_2', queryset=Docket.objects.all(), required=False)
     docket_2_quantity = forms.IntegerField(label='docket_2_quantity', required=False)
-    docket_2_units = forms.ModelChoiceField(label='docket_2_units', queryset=UnitChoices.objects.all(), required=False)
+    docket_2_units = forms.ModelChoiceField(label='docket_2_units', queryset=UnitChoices.objects.all(), required=False,
+                                            initial="kg")
 
     def clean(self):
         """
@@ -67,21 +67,10 @@ class CrushOrderInitialForm(forms.Form):
         if docket_1 == docket_2:
             print("The dockets must be different")
             raise forms.ValidationError("The dockets must be different")
+
 
 class CrushOrderSubsequentForm(forms.Form):
     date = forms.DateTimeField(label='date', initial=datetime.now(), localize=True)
-    docket_1 = forms.ModelChoiceField(label='docket_1', queryset=FruitIntake.objects.all(), required=False)
-    docket_2 = forms.ModelChoiceField(label='docket_2', queryset=FruitIntake.objects.all(), required=False)
-
-    def clean(self):
-        """
-        Ensure that either they are entering a new valid integer or are updating a valid integer with a valid integer.
-        """
-        docket_1 = self.cleaned_data.get("docket_1")
-        docket_2 = self.cleaned_data.get("docket_2")
-        if docket_1 == docket_2:
-            print("The dockets must be different")
-            raise forms.ValidationError("The dockets must be different")
 
 
 class VarietalEntryForm(forms.Form):

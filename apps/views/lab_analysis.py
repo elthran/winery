@@ -11,14 +11,14 @@ from apps.models.models import CrushOrder, Docket
 from apps.views.base import BaseView
 
 
-class CrushOrderViewSet(BaseView):
+class LabAnalysisViewSet(BaseView):
     """
     API endpoint that allows users to be viewed or edited.
     """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.template_name = "crush_order.html"
+        self.template_name = "lab_analysis.html"
 
     def get_crush_order_object(self, id_):
         """
@@ -68,7 +68,6 @@ class CrushOrderViewSet(BaseView):
             else:
                 crush_order_data = {
                     "vintage": int(form.cleaned_data["vintage"].choice),
-                    "crush_type": form.cleaned_data["crush_type"].choice,
                 }
                 if form.cleaned_data["docket_1"] and form.cleaned_data["docket_1_quantity"] and form.cleaned_data["docket_1_units"]:
                     mapping_1_data = {

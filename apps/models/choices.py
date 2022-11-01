@@ -38,6 +38,13 @@ class UnitChoices(BaseChoiceModel):
     pass
 
 
+class VesselChoices(BaseChoiceModel):
+    pass
+
+
+class CrushOrderTypeChoices(BaseChoiceModel):
+    pass
+
 class Constants(models.Model):
     choice = models.TextField(unique=True, null=False)
     data_type = models.TextField(null=False)

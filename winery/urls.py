@@ -19,6 +19,7 @@ from django.urls import path, include
 from apps.views.crush_order import CrushOrderViewSet
 from apps.views.data_entry import DataEntryViewSet
 from apps.views.fruit_intake import FruitIntakeViewSet
+from apps.views.lab_analysis import LabAnalysisViewSet
 from apps.views.reports_view import ReportsViewSet
 
 app = "winery"
@@ -30,5 +31,6 @@ urlpatterns = [
     path('fruit-intake/<int:id_>/', FruitIntakeViewSet.as_view(), name='fruit-intake'),
     path('crush-order/', CrushOrderViewSet.as_view(), name='crush-order'),
     path('crush-order/<int:id_>/', CrushOrderViewSet.as_view(), name='crush-order'),
+    path('lab-analysis/', LabAnalysisViewSet.as_view(), name='lab-analysis'),
     path('reports/', ReportsViewSet.as_view(), name='reports'),
 ]

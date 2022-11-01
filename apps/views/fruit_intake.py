@@ -53,6 +53,11 @@ class FruitIntakeViewSet(BaseView):
             serializer = FruitIntakeSerializer(existing_fruit_intake)
             print(serializer)
             intake = serializer.data
+            form.fields['date'].initial = intake["date"]
+            form.fields['number_of_bins'].initial = intake["number_of_bins"]
+            form.fields['total_weight'].initial = intake["total_weight"]
+            form.fields['tare_weight'].initial = intake["tare_weight"]
+            form.fields['units'].initial = intake["units"]
 
         return render(request, self.template_name, {"form": form,
                                                     "data": self.get_fruit_intake_objects(),

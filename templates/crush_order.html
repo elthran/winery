@@ -75,7 +75,7 @@ table, th, td {
 					<a href="{% url 'crush-order' %}"> <strong> Crush Order </strong> </a>
 				</li>  
 				<li>  
-					<a href="3Fermentation.html"> Fermentation </a>  
+					<a href="{% url 'lab-analysis' %}"> Lab Analysis </a>
 				</li>  
 				<li> 
 					<a href="4Additives.html"> Additives </a>  
@@ -106,21 +106,21 @@ table, th, td {
 {% if order %}Docket Number: {{ order.docket_number }}
 <br><br>
     Vintage: {{ order.vintage }}<br><br>
-    Quantity: {{ order.quantity }}<br><br>
-    Units: {{ order.units }}<br><br>
+    <label id="date">Date: </label>{{ form.date }}<br><br>
 
     <input type="submit" value="Update Existing Crush Order"/>
 {% else %} Please Enter the following data to create a Crush Order
 <br><br>
 
 	<label id="vintage">Vintage: </label>{{ form.vintage }}<br><br><br>
+	<label id="docket_1">Crush Type: </label>{{ form.crush_type }}<br><br>
 
 	<label id="docket_1">Docket: </label>{{ form.docket_1 }}
-	<label id="docket_1_quantity">Quantity: </label>{{ form.docket_1_quantity }}
+	<label id="docket_1_quantity">Weight: </label>{{ form.docket_1_quantity }}
 	<label id="docket_1_units">Units: </label>{{ form.docket_1_units }}
 	<br><br>
 	<label id="docket_2">Docket: </label>{{ form.docket_2 }}
-	<label id="docket_2_quantity">Quantity: </label>{{ form.docket_2_quantity }}
+	<label id="docket_2_quantity">Weight: </label>{{ form.docket_2_quantity }}
 	<label id="docket_2_units">Units: </label>{{ form.docket_2_units }}
 	<br><br>
     <input type="submit" value="Create New Crush Order"/><br><br>
@@ -144,31 +144,28 @@ table, th, td {
    {% endfor %}
 {% endif %}
 
+<h1>All Crush Orders</h1>
 <table>
     <tr>
         <th>Vintage</th>
-        <th>Docket</th>
-        <th>Quantity</th>
-        <th>Percentage</th>
+        <th>Date</th>
         <th>Docket</th>
         <th>Quantity</th>
         <th>Percentage</th>
         <th>Total Weight</th>
+        <th>Crush Type</th>
+        <th>Predicted Volume</th>
     </tr>
     {% for order in data %}
     <tr>
-		<td>{{ order.vintage }}</td>
-		{% for mapping in order.crush_mappings.all %}
-        <td>{{ mapping.docket.docket_number }}</td>
-        <td>{% if mapping.quantity %}{{ mapping.quantity }} {{ mapping.units }}{% else %}-{% endif %}</td>
-        <td>{% if mapping.quantity %}{{ mapping.percentage }}%{% else %}-{% endif %}</td>
-		{% if order.crush_mappings.all|length == 1 %}
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		{% endif %}
-		{% endfor %}
+		<td><a href="{% url 'crush-order' id_=order.id %}">{{ order.vintage }}</a></td>
+		<td>{{ order.date }}</td>
+        <td>{% for mapping in order.crush_mappings.all %}{{ mapping.docket.docket_number }}<br>{% endfor %}</td>
+        <td>{% for mapping in order.crush_mappings.all %}{{ mapping.quantity }} {{ mapping.units }}<br>{% endfor %}</td>
+        <td>{% for mapping in order.crush_mappings.all %}{{ mapping.percentage }}%<br>{% endfor %}</td>
 		<td>{{ order.total_weight }} kg</td>
+		<td>{{ order.crush_type }}</td>
+		<td>{{ order.predicted_volume }}</td>
     </tr>
     {% endfor %}
 </table>

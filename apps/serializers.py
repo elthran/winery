@@ -6,7 +6,7 @@ from apps.models.models import Docket, CrushOrder, FruitIntake, CrushMapping
 class DocketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Docket
-        fields = '__all__'  # ["docket_number", 'varietal', 'vineyard', 'block']
+        fields = '__all__'
 
 
 class FruitIntakeSerializer(serializers.ModelSerializer):
