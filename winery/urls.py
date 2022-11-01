@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from dockets.views import CrushOrderViewSet, FruitIntakeViewSet, ReportsViewSet, DataEntryViewSet
+from apps.views.crush_order import CrushOrderViewSet
+from apps.views.data_entry import DataEntryViewSet
+from apps.views.fruit_intake import FruitIntakeViewSet
+from apps.views.reports_view import ReportsViewSet
 
 app = "winery"
 
@@ -24,9 +27,8 @@ urlpatterns = [
     path('data-entry/', DataEntryViewSet.as_view(), name='data-entry'),
     path('data-entry/<str:data_type>/', DataEntryViewSet.as_view(), name='data-entry-type'),
     path('fruit-intake/', FruitIntakeViewSet.as_view(), name='fruit-intake'),
-    path('fruit-intake/<int:id>/', FruitIntakeViewSet.as_view(), name='fruit-intake'),
+    path('fruit-intake/<int:id_>/', FruitIntakeViewSet.as_view(), name='fruit-intake'),
     path('crush-order/', CrushOrderViewSet.as_view(), name='crush-order'),
-    path('crush-order/<int:id>/', CrushOrderViewSet.as_view(), name='crush-order'),
+    path('crush-order/<int:id_>/', CrushOrderViewSet.as_view(), name='crush-order'),
     path('reports/', ReportsViewSet.as_view(), name='reports'),
-    path('reports/<int:id>/', ReportsViewSet.as_view(), name='reports-id'),
 ]

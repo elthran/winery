@@ -104,13 +104,13 @@ table, th, td {
 <br>
 
 <form action="." method="post">
-{% if intake %}Docket Number: {{ intake.docket_number }}
+{% if intake %}Docket Number: {{ intake.docket.docket_number }}
 <br><br>
-    Vintage: {{ intake.vintage }}<br><br>
-    Grower: {{ intake.grower }}<br><br>
-    Varietal: {{ intake.varietal }}<br><br>
-    Vineyard: {{ intake.vineyard }}<br><br>
-    Block: {{ intake.block }}<br><br>
+    Vintage: {{ intake.docket.vintage }}<br><br>
+    Grower: {{ intake.docket.grower }}<br><br>
+    Varietal: {{ intake.docket.varietal }}<br><br>
+    Vineyard: {{ intake.docket.vineyard }}<br><br>
+    Block: {{ intake.docket.block }}<br><br>
 
     <label id="date">date: </label>{{ form.date }}<br><br>
     <label id="number_of_bins"># of bins: </label>{{ form.number_of_bins }}<br><br>
@@ -163,13 +163,13 @@ table, th, td {
     </tr>
     {% for intake in data %}
     <tr>
-        <td><a href="{% url 'fruit-intake' id=intake.id %}">{{ intake.docket_number }}</a></td>
+        <td><a href="{% url 'fruit-intake' id_=intake.id %}">{{ intake.docket.docket_number }}</a></td>
         <td>{{ intake.clean_date }}</td>
-        <td>{{ intake.vintage }}</td>
-        <td>{{ intake.grower }}</td>
-        <td>{{ intake.varietal }}</td>
-        <td>{{ intake.vineyard }}</td>
-        <td>{{ intake.block }}</td>
+        <td>{{ intake.docket.vintage }}</td>
+        <td>{{ intake.docket.grower }}</td>
+        <td>{{ intake.docket.varietal }}</td>
+        <td>{{ intake.docket.vineyard }}</td>
+        <td>{{ intake.docket.block }}</td>
         <td>{{ intake.number_of_bins }}</td>
         <td>{{ intake.total_weight }}</td>
         <td>{{ intake.tare_weight }}</td>

@@ -113,16 +113,20 @@ table, th, td {
 {% else %} Please Enter the following data to create a Crush Order
 <br><br>
 
-	<label id="vintage">vintage: </label>{{ form.vintage }}<br><br>
-	<label id="docket_1">docket_number: </label>{{ form.docket_1 }}<br><br>
-	<label id="docket_2">docket_number: </label>{{ form.docket_2 }}<br><br>
-	<label id="quantity">quantity: </label>{{ form.quantity }}<br><br>
-	<label id="units">units: </label>{{ form.units }}<br><br>
+	<label id="vintage">Vintage: </label>{{ form.vintage }}<br><br><br>
 
+	<label id="docket_1">Docket: </label>{{ form.docket_1 }}
+	<label id="docket_1_quantity">Quantity: </label>{{ form.docket_1_quantity }}
+	<label id="docket_1_units">Units: </label>{{ form.docket_1_units }}
+	<br><br>
+	<label id="docket_2">Docket: </label>{{ form.docket_2 }}
+	<label id="docket_2_quantity">Quantity: </label>{{ form.docket_2_quantity }}
+	<label id="docket_2_units">Units: </label>{{ form.docket_2_units }}
+	<br><br>
     <input type="submit" value="Create New Crush Order"/><br><br>
 {% endif %}
 </form>
-
+<br><br>
 
 
 
@@ -142,17 +146,29 @@ table, th, td {
 
 <table>
     <tr>
-        <th>Docket</th>
         <th>Vintage</th>
+        <th>Docket</th>
         <th>Quantity</th>
-        <th>Units</th>
+        <th>Percentage</th>
+        <th>Docket</th>
+        <th>Quantity</th>
+        <th>Percentage</th>
+        <th>Total Weight</th>
     </tr>
     {% for order in data %}
     <tr>
-        <td><a href="{% url 'crush-order' id=order.id %}">{{ order.docket_number }}</a></td>
-        <td>{{ order.vintage }}</td>
-        <td>{{ order.quantity }}</td>
-        <td>{{ order.units }}</td>
+		<td>{{ order.vintage }}</td>
+		{% for mapping in order.crush_mappings.all %}
+        <td>{{ mapping.docket.docket_number }}</td>
+        <td>{% if mapping.quantity %}{{ mapping.quantity }} {{ mapping.units }}{% else %}-{% endif %}</td>
+        <td>{% if mapping.quantity %}{{ mapping.percentage }}%{% else %}-{% endif %}</td>
+		{% if order.crush_mappings.all|length == 1 %}
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+		{% endif %}
+		{% endfor %}
+		<td>{{ order.total_weight }} kg</td>
     </tr>
     {% endfor %}
 </table>

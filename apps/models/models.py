@@ -18,9 +18,23 @@ class Docket(models.Model):
 
 class CrushOrder(models.Model):
     vintage = models.IntegerField(null=True)
-    dockets = models.TextField(null=True)
-    quantity = models.IntegerField(null=True)
 
+    # crush_mappings = models.ManyToOneRel(CrushMapping)
+
+    @property
+    def total_weight(self):
+        return sum([mapping.quantity for mapping in self.crush_mappings.all()])
+
+
+class CrushMapping(models.Model):
+    crush_order = models.ForeignKey(CrushOrder, on_delete=models.CASCADE, null=True, related_name="crush_mappings")
+    docket = models.ForeignKey(Docket, on_delete=models.CASCADE, null=True)
+    quantity = models.IntegerField(null=True)
+    units = models.TextField(null=True)
+
+    @property
+    def percentage(self):
+        return int(100.0 * self.quantity / self.crush_order.total_weight)
 
 class FruitIntake(models.Model):
     date = models.DateTimeField(default=datetime.now(), blank=True)
@@ -30,10 +44,6 @@ class FruitIntake(models.Model):
     units = models.TextField(null=True)
     docket = models.ForeignKey(Docket, on_delete=models.CASCADE, null=True)
     crush_order = models.ForeignKey(CrushOrder, on_delete=models.CASCADE, null=True)
-
-    @property
-    def docket_number(self):
-        return f'{self.vintage}{self.vineyard}{self.varietal}{self.block}'.replace(" ", "")
 
     @property
     def fruit_weight(self):
@@ -48,6 +58,6 @@ class FruitIntake(models.Model):
             return None
         return self.date.date()
 
-    def __str__(self):
-        return u'{0}'.format(self.docket_number)
+    # def __str__(self):
+    #     return u'{0}'.format(self.docket_number)
 

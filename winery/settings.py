@@ -37,7 +37,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "jbwinery.pythonanywhere.com"]
 # Application definition
 
 INSTALLED_APPS = [
-    'dockets.apps.DocketsConfig',
+    'apps.apps.AppConfig',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',

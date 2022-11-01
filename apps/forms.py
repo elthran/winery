@@ -3,8 +3,8 @@ from datetime import datetime
 from annoying.functions import get_object_or_None
 from django import forms
 
-from dockets.models.models import Docket, FruitIntake
-from dockets.models.choices import VintageChoices, VarietalChoices, VineyardChoices, UnitChoices, BlockChoices, \
+from apps.models.models import Docket, FruitIntake
+from apps.models.choices import VintageChoices, VarietalChoices, VineyardChoices, UnitChoices, BlockChoices, \
     GrowerChoices
 import winery.constants
 
@@ -16,16 +16,16 @@ class FruitIntakeInitialForm(forms.Form):
     block = forms.ModelChoiceField(label='block', queryset=BlockChoices.objects.all(), required=False)
     grower = forms.ModelChoiceField(label='grower', queryset=GrowerChoices.objects.all(), required=False)
 
-    def clean(self):
-        """
-        Ensure that either they are entering a new valid integer or are updating a valid integer with a valid integer.
-        """
-        vintage = self.cleaned_data.get("vintage").choice
-        vineyard = self.cleaned_data.get("vineyard").choice
-        varietal = self.cleaned_data.get("varietal").choice
-        block = self.cleaned_data.get("block").choice
-        if get_object_or_None(FruitIntake, vintage=vintage, vineyard=vineyard, varietal=varietal, block=block):
-            raise forms.ValidationError("Docket already exists")
+    # def clean(self):
+    #     """
+    #     Ensure that either they are entering a new valid integer or are updating a valid integer with a valid integer.
+    #     """
+    #     vintage = self.cleaned_data.get("vintage").choice
+    #     vineyard = self.cleaned_data.get("vineyard").choice
+    #     varietal = self.cleaned_data.get("varietal").choice
+    #     block = self.cleaned_data.get("block").choice
+    #     if get_object_or_None(FruitIntake, vintage=vintage, vineyard=vineyard, varietal=varietal, block=block):
+    #         raise forms.ValidationError("Docket already exists")
 
 
 class FruitIntakeSubsequentForm(forms.Form):
@@ -50,11 +50,13 @@ class FruitIntakeSubsequentForm(forms.Form):
 
 
 class CrushOrderInitialForm(forms.Form):
-    vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all(), required=False)
-    docket_1 = forms.ModelChoiceField(label='docket_1', queryset=FruitIntake.objects.all(), required=False)
-    docket_2 = forms.ModelChoiceField(label='docket_2', queryset=FruitIntake.objects.all(), required=False)
-    quantity = forms.IntegerField(label='quantity')
-    units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all())
+    vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all())
+    docket_1 = forms.ModelChoiceField(label='docket_1', queryset=Docket.objects.all())
+    docket_1_quantity = forms.IntegerField(label='docket_1_quantity')
+    docket_1_units = forms.ModelChoiceField(label='docket_1_units', queryset=UnitChoices.objects.all())
+    docket_2 = forms.ModelChoiceField(label='docket_2', queryset=Docket.objects.all(), required=False)
+    docket_2_quantity = forms.IntegerField(label='docket_2_quantity', required=False)
+    docket_2_units = forms.ModelChoiceField(label='docket_2_units', queryset=UnitChoices.objects.all(), required=False)
 
     def clean(self):
         """
