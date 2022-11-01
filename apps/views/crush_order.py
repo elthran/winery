@@ -1,6 +1,6 @@
 from annoying.functions import get_object_or_None
 
-from apps.forms import CrushOrderInitialForm, CrushOrderSubsequentForm
+from apps.forms import CrushOrderForm
 from apps.serializers import CrushOrderSerializer, CrushMappingSerializer
 
 from django.shortcuts import render, redirect
@@ -29,86 +29,68 @@ class CrushOrderViewSet(BaseView):
         except CrushOrder.DoesNotExist:
             return None
 
+    def get_form(self, id_, request_):
+        if request_:
+            form = CrushOrderForm(request_.POST)
+        else:
+            form = CrushOrderForm()
+        if not id_:
+            form.fields['docket_1'].initial = Docket.objects.last()
+        return form
+
     def get_all_crush_orders(self):
         all_crush_orders = CrushOrder.objects.all()
         return all_crush_orders
 
     def get(self, request, id_=None, *args, **kwargs):
-        if not id_:
-            order = None
-            form = CrushOrderInitialForm()
-            form.fields['docket_1'].initial = Docket.objects.last()
-        else:
-            existing_crush_order = self.get_crush_order_object(id_=id_)
-            form = CrushOrderSubsequentForm()
+        form = self.get_form(id_=id_, request_=None)
+        existing_crush_order = self.get_crush_order_object(id_=id_)
+        if existing_crush_order:
             serializer = CrushOrderSerializer(existing_crush_order)
-            order = serializer.data
-
+            existing_crush_order = serializer.data
         return render(request, self.template_name, {"form": form,
                                                     "data": self.get_all_crush_orders(),
-                                                    "order": order})
+                                                    "order": existing_crush_order})
 
     def post(self, request, id_=None, *args, **kwargs):
-
-        if id_:
-            existing_crush_order = self.get_crush_order_object(id_)
-            form = CrushOrderSubsequentForm(request.POST)
-        else:
-            existing_crush_order = None
-            form = CrushOrderInitialForm(request.POST)
-
+        form = self.get_form(id_=id_, request_=request)
+        crush_order = self.get_crush_order_object(id_=id_)
         if form.is_valid():
-            docket_1 = None
-            docket_2 = None
-            mapping_1_data = {}
-            mapping_2_data = {}
-            if existing_crush_order:
-                data = {}
-                crush_order = CrushOrderSerializer(existing_crush_order, data=data)
+            if crush_order:
+                serializer = CrushOrderSerializer(crush_order)
+                serialized_crush_order = serializer.data
             else:
                 crush_order_data = {
                     "vintage": int(form.cleaned_data["vintage"].choice),
                     "crush_type": form.cleaned_data["crush_type"].choice,
+                    # "vessel_1": form.cleaned_data["vessel_1"].choice,
+                    # "vessel_1_amount": int(form.cleaned_data["vessel_1_amount"].choice),
+                    # "vessel_2": form.cleaned_data["vessel_2"].choice,
+                    # "vessel_2_amount": int(form.cleaned_data["vessel_2_amount"].choice),
                 }
-                if form.cleaned_data["docket_1"] and form.cleaned_data["docket_1_quantity"] and form.cleaned_data["docket_1_units"]:
-                    mapping_1_data = {
-                        "quantity": int(form.cleaned_data["docket_1_quantity"]),
-                        "units": form.cleaned_data["docket_1_units"].choice,
-                    }
-                    docket_1 = form.cleaned_data["docket_1"]
-                    docket_1 = get_object_or_None(Docket, docket_number=docket_1)
-                if form.cleaned_data["docket_2"] and form.cleaned_data["docket_2_quantity"] and form.cleaned_data["docket_2_units"]:
-                    mapping_2_data = {
-                        "quantity": int(form.cleaned_data["docket_2_quantity"]),
-                        "units": form.cleaned_data["docket_2_units"].choice,
-                    }
-                    docket_2 = form.cleaned_data["docket_2"]
-                    docket_2 = get_object_or_None(Docket, docket_number=docket_2)
-                crush_order = CrushOrderSerializer(data=crush_order_data)
-            if crush_order.is_valid():
-                crush_order = crush_order.save()
-                if docket_1:
-                    crush_mapping = CrushMappingSerializer(data=mapping_1_data)
-                    if crush_mapping.is_valid():
-                        crush_mapping = crush_mapping.save()
-                        crush_mapping.crush_order = crush_order
-                        crush_mapping.docket = docket_1
-                        crush_mapping.save()
-                if docket_2:
-                    crush_mapping = CrushMappingSerializer(data=mapping_2_data)
-                    if crush_mapping.is_valid():
-                        crush_mapping = crush_mapping.save()
-                        crush_mapping.crush_order = crush_order
-                        crush_mapping.docket = docket_2
-                        crush_mapping.save()
+                serialized_crush_order = CrushOrderSerializer(data=crush_order_data)
+            if serialized_crush_order.is_valid():
+                crush_order = serialized_crush_order.save()
+                for index in [1, 2]:
+                    docket = get_object_or_None(Docket, docket_number=form.cleaned_data[f"docket_{index}"])
+                    if docket:
+                        mapping_data = {
+                            "quantity": int(form.cleaned_data[f"docket_{index}_quantity"]),
+                            "units": form.cleaned_data[f"docket_{index}_units"].choice,
+                        }
+                        crush_mapping = CrushMappingSerializer(data=mapping_data)
+                        if crush_mapping.is_valid():
+                            crush_mapping = crush_mapping.save()
+                            crush_mapping.crush_order = crush_order
+                            crush_mapping.docket = docket
+                            crush_mapping.save()
+                return redirect("crush-order", id_=crush_order.id)
             else:
-                print("Serializer error", crush_order.errors)
+                print("Serializer error", serialized_crush_order.errors)
                 return Response(None, status=status.HTTP_400_BAD_REQUEST)
-            return redirect("crush-order", id_=crush_order.id)
-        else:
-            return render(request, self.template_name, {"form": form,
-                                                        "data": self.get_all_crush_orders(),
-                                                        "order": existing_crush_order})
+        return render(request, self.template_name, {"form": form,
+                                                    "data": self.get_all_crush_orders(),
+                                                    "order": crush_order})
 
     @staticmethod
     def put(request, id, *args, **kwargs):

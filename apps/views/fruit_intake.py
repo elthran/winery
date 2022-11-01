@@ -105,7 +105,7 @@ class FruitIntakeViewSet(BaseView):
         else:
             print("invalid form")
             return render(request, self.template_name, {"form": form,
-                                                        "data": self.get_all_fruit_intakes(),
+                                                        "data": self.get_fruit_intake_objects(),
                                                         "intake": existing_fruit_intake})
 
     @staticmethod

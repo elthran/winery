@@ -20,6 +20,7 @@ from apps.views.crush_order import CrushOrderViewSet
 from apps.views.data_entry import DataEntryViewSet
 from apps.views.fruit_intake import FruitIntakeViewSet
 from apps.views.lab_analysis import LabAnalysisViewSet
+from apps.views.racking import RackingViewSet
 from apps.views.reports_view import ReportsViewSet
 
 app = "winery"
@@ -32,5 +33,6 @@ urlpatterns = [
     path('crush-order/', CrushOrderViewSet.as_view(), name='crush-order'),
     path('crush-order/<int:id_>/', CrushOrderViewSet.as_view(), name='crush-order'),
     path('lab-analysis/', LabAnalysisViewSet.as_view(), name='lab-analysis'),
+    path('racking/', RackingViewSet.as_view(), name='racking'),
     path('reports/', ReportsViewSet.as_view(), name='reports'),
 ]

@@ -63,21 +63,21 @@ text-decoration: none;
 				</li>  
 				<li>  
 					<a href="{% url 'data-entry' %}"> Data Entry </a>
-				</li>  
-				<li>  
+				</li>
+				<li>
 					<a href="{% url 'fruit-intake' %}"> Fruit Intake </a>
-				</li>  
-				<li>  
-					<a href="{% url 'crush-order' %}"> Crush Order </a>
-				</li>  
-				<li>  
-					<a href="{% url 'lab-analysis' %}"> <strong> Lab Analysis </strong>  </a>
+				</li>
+				<li>
+					<a href="{% url 'crush-order' %}"> <strong> Crush Order </strong> </a>
+				</li>
+				<li>
+					<a href="{% url 'lab-analysis' %}"> Lab Analysis </a>
 				</li>  
 				<li> 
 					<a href="."> Additives </a>
 				</li>  
 				<li>  
-					<a href="{% url 'racking' %}"> Racking </a>
+					<a href="{% url 'racking' %}"> <strong>Racking</strong> </a>
 				</li>  
 				<li>  
 					<a href="."> Vessels </a>
@@ -92,93 +92,59 @@ text-decoration: none;
 		</nav>  
 	</header>
 
-	<h1> Step 3: Lab Analysis </h1>
+	<h1> Step 5: Racking </h1>
 <br>
 <br>
 <br>
-<p> Please Select a Vessel to input Lab Analysis Data </p>
-
-
-<div class="grid-container">
-   <div class="grid-item"><form action="/action_page_bottlesku.php">
-		  <label for="fname">Vessel Type</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		  <label for="fname">Vessel ID</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		</form> </div>
-</div>
-
-<p>Enter Daily data to keep track of Brix vs. Temperature</p>
 
 <div class="grid-container">
    <div class="grid-item"><form action="/action_page_bottlesku.php">
 		  <label for="fname">Date</label><br>
 		  <input type="text" id="fname" name="fname"><br><br>
 		</form> </div>
-  <div class="grid-item">		
-  	<form action="/action_page_varietals.php">
-		  <label for="fname">Brix (Sugar Content)</label><br>
-		  <input type="Number" id="fname" name="fname"><br><br>
-		</form> </div>
-  <div class="grid-item"><form action="/action_page_growers.php">
-		  <label for="fname">Temperature</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		  <label for="unit">Unit</label><br>
-		  <select name="unit" id="unit">
-		  <option value="°C">°C</option>
-		  <option value="F">F</option>
-		  </select>
-		</form> </div>
-  <div class="grid-item"></div>
-     <div class="grid-item"><form action="/action_page_bottlesku.php">
-		  <label for="fname">pH</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		</form> </div>
-  <div class="grid-item"><form action="/action_page_growers.php">
-		  <label for="fname">Tartaric Acid</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		  <label for="unit">Unit</label><br>
-		  <select name="unit" id="unit">
-		  <option value="L">L</option>
-		  <option value="ml">ml</option>
-		  </select>
-		</form> </div>
-  <div class="grid-item"><form action="/action_page_growers.php">
-		  <label for="fname">Yeast Assimissable Nitrogen</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		  <label for="unit">Unit</label><br>
-		  <select name="unit" id="unit">
-		  <option value="L">L</option>
-		  <option value="ml">ml</option>
-		  </select>
-		</form> </div>
-  <div class="grid-item"><form action="/action_page_growers.php">
-		  <label for="fname">Diammonium Phosphate</label><br>
-		  <input type="text" id="fname" name="fname"><br><br>
-		  <label for="unit">Unit</label><br>
-		  <select name="unit" id="unit">
-		  <option value="L">L</option>
-		  <option value="ml">ml</option>
-		  </select>
-		</form> </div>
-   <div class="grid-item"><form action="/html/tags/html_form_tag_action.cfm" method="post">
-<div>
-<textarea name="comments" id="comments" style="font-family:sans-serif;font-size:1.2em;">
-Please add comments
-</textarea>
-</div>
-</form></div>
-</div>
+	</div>
+
+<p> Please select which vessel you would like to rack FROM </p>
 
 
 <div class="grid-container">
-	   <div class="grid-item"><form action="2CrushOrder.html">
-    <input type="submit" value="Return to Crush Order" />
+   <div class="grid-item"><form action="/action_page_bottlesku.php">
+		  <label for="fname">FROM Vessel Type</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  <label for="fname">FROM Vessel ID</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		</form> </div>
+   <div class="grid-item"><form action="/action_page_bottlesku.php">
+		  <label for="fname">Volume</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  		  <label for="unit">Unit</label><br>
+		  <select name="unit" id="unit">
+		  <option value="L">L</option>
+		  <option value="ml">ml</option>
+		  </select>
+		</form> </div>
+</div>
+
+<p> Please select which vessel you would like to rack TO </p>
+
+<div class="grid-container">
+   <div class="grid-item"><form action="/action_page_bottlesku.php">
+		  <label for="fname">TO Vessel Type</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		  <label for="fname">TO Vessel ID</label><br>
+		  <input type="text" id="fname" name="fname"><br><br>
+		</form> </div>
+	</div>
+
+
+<div class="grid-container">
+	   <div class="grid-item"><form action=".">
+    <input type="submit" value="Return to Additives" />
 </form></div>
    <div class="grid-item"><input type="Submit" value="Submit"><br><br>
 		</form></div>
    <div class="grid-item"><form action=".">
-    <input type="submit" value="Go to Additives" />
+    <input type="submit" value="Go to Vessels" />
 </form></div>
 
 	<!-- If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php". -->

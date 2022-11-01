@@ -16,6 +16,7 @@ class Docket(models.Model):
     def fruit_weight(self):
         # is_null = [intake.fruit_weight or 0 for intake in self.fruit_intakes.all()]
         return sum([intake.fruit_weight or 0 for intake in self.fruit_intakes.all()])
+
     #
     # @property
     # def pre_crush_weight(self):
@@ -54,6 +55,7 @@ class CrushMapping(models.Model):
     def percentage(self):
         return int(100.0 * self.quantity / self.crush_order.total_weight)
 
+
 class FruitIntake(models.Model):
     date = models.DateTimeField(default=datetime.now(), blank=True)
     number_of_bins = models.IntegerField(null=True)
@@ -79,3 +81,8 @@ class FruitIntake(models.Model):
     # def __str__(self):
     #     return u'{0}'.format(self.docket_number)
 
+
+class Vessel(models.Model):
+    type = models.TextField(null=True)
+    name = models.TextField(null=True)
+    crush_orders = models.ManyToManyField(CrushOrder, related_name="vessels")

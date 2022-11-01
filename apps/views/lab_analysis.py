@@ -1,6 +1,6 @@
 from annoying.functions import get_object_or_None
 
-from apps.forms import CrushOrderInitialForm, CrushOrderSubsequentForm
+from apps.forms import CrushOrderForm
 from apps.serializers import CrushOrderSerializer, CrushMappingSerializer
 
 from django.shortcuts import render, redirect
@@ -36,11 +36,11 @@ class LabAnalysisViewSet(BaseView):
     def get(self, request, id_=None, *args, **kwargs):
         if not id_:
             order = None
-            form = CrushOrderInitialForm()
+            form = CrushOrderForm()
             form.fields['docket_1'].initial = Docket.objects.last()
         else:
             existing_crush_order = self.get_crush_order_object(id_=id_)
-            form = CrushOrderSubsequentForm()
+            form = CrushOrderForm()
             serializer = CrushOrderSerializer(existing_crush_order)
             order = serializer.data
 
@@ -52,10 +52,10 @@ class LabAnalysisViewSet(BaseView):
 
         if id_:
             existing_crush_order = self.get_crush_order_object(id_)
-            form = CrushOrderSubsequentForm(request.POST)
+            form = CrushOrderForm(request.POST)
         else:
             existing_crush_order = None
-            form = CrushOrderInitialForm(request.POST)
+            form = CrushOrderForm(request.POST)
 
         if form.is_valid():
             docket_1 = None
