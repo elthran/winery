@@ -39,7 +39,7 @@ dockets = [
 ]
 fruit_intakes = [
     {"docket": "2022 Blue Grouse Pinot Noir Charles & Jacob A1", "bins": 1, "total_weight": 182.00, "tare_weight": 42.00, "units": "kg"},
-    {"docket": "2022 Blue Grouse Chardonnayr Charles & Jacob B3", "bins": 1, "total_weight": 393.00, "tare_weight": 42.00, "units": "kg"},
+    {"docket": "2022 Blue Grouse Chardonnay Charles & Jacob B3", "bins": 1, "total_weight": 393.00, "tare_weight": 42.00, "units": "kg"},
     {"docket": "2022 Blue Grouse Pinot Noir Paula A5", "bins": 26, "total_weight": 257.50, "tare_weight": 24.50, "units": "kg"},
     {"docket": "2022 Green Gage Farm Schönburger Brunner B5", "bins": 12, "total_weight": 5443.50, "tare_weight": 660.00, "units": "kg"},
     {"docket": "2022 Blue Grouse Siegerrebe Paula C2", "bins": 8, "total_weight": 2935.50, "tare_weight": 440.00, "units": "kg"},
