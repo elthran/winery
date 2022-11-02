@@ -67,7 +67,7 @@ class CrushOrderViewSet(BaseView):
             if serialized_crush_order.is_valid():
                 crush_order = serialized_crush_order.save()
                 for index in [1, 2]:
-                    docket = get_object_or_None(Docket, docket_number=form.cleaned_data[f"docket_{index}"])
+                    docket = form.cleaned_data[f"docket_{index}"]
                     if docket:
                         try:
                             crush_mapping = CrushMapping(crush_order=crush_order,
@@ -78,11 +78,19 @@ class CrushOrderViewSet(BaseView):
                         except Exception as e:
                             raise ValueError("Failed to create crush mapping.", e)
                 vessel = form.cleaned_data["vessel_1"]
-                vessel_crush_order_mapping = CrushOrderVesselMappings(crush_order=crush_order,
-                                                                      vessel=vessel,
-                                                                      quantity=int(form.cleaned_data["vessel_1_amount"]),
-                                                                      units="kg")
-                vessel_crush_order_mapping.save()
+                if vessel:
+                    vessel_crush_order_mapping = CrushOrderVesselMappings(crush_order=crush_order,
+                                                                          vessel=vessel,
+                                                                          quantity=int(form.cleaned_data["vessel_1_amount"]),
+                                                                          units="kg")
+                    vessel_crush_order_mapping.save()
+                vessel = form.cleaned_data["vessel_2"]
+                if vessel:
+                    vessel_crush_order_mapping = CrushOrderVesselMappings(crush_order=crush_order,
+                                                                          vessel=vessel,
+                                                                          quantity=int(form.cleaned_data["vessel_2_amount"]),
+                                                                          units="kg")
+                    vessel_crush_order_mapping.save()
                 return redirect("crush-order", id_=crush_order.id)
             else:
                 print("Serializer error", serialized_crush_order.errors)

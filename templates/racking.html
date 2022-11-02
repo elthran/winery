@@ -163,11 +163,17 @@ table, th, td {
 	</tr>
 	{% for vessel in data %}
 	<tr>
-		{% if vessel.crush_order_vessel_mappings.all|length == 1 %}
+		{% if vessel.crush_order_vessel_mappings.all|length > 0 %}
 			<td>{{ vessel.name }}</td>
 			{% for crush_order_vessel_mapping in vessel.crush_order_vessel_mappings.all %}
 			<td>{{ crush_order_vessel_mapping.crush_order.vintage }}</td>
-			<td>{% for mapping in crush_order_vessel_mapping.crush_order.crush_mappings.all %}{{ mapping.docket.docket_number }}<br>{% endfor %}</td>
+			<td>Crush Order: {{ crush_order_vessel_mapping.crush_order.id }}
+				<ul>
+				{% for mapping in crush_order_vessel_mapping.crush_order.crush_mappings.all %}
+					<li>{{ mapping.docket.docket_number }}</li>
+				{% endfor %}
+				</ul>
+			</td>
 			<td>{{ crush_order_vessel_mapping.quantity }}</td>
 			<td>{% for mapping in crush_order_vessel_mapping.crush_order.crush_mappings.all %}{{ mapping.percentage }}%<br>{% endfor %}</td>
 			{% endfor %}
@@ -181,7 +187,15 @@ table, th, td {
 			<td>{{ vessel.volume }}</td>
 		{% endif %}
 	</tr>
-		{% endfor %}
+<!--		<tr>-->
+<!--			<td>{{ vessel.name }}</td>-->
+<!--			<td>{% for mapping in vessel.crush_order_vessel_mappings.all %}{% if loop.index == 1 %}{{ mapping.crush_order.vintage }}{% endif %}{% endfor %}</td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--	</tr>-->
+	{% endfor %}
 </table>
 
 </body>

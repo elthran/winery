@@ -146,6 +146,7 @@ table, th, td {
 <h1>All Crush Orders</h1>
 <table>
     <tr>
+		<th>Id</th>
         <th>Vintage</th>
         <th>Date</th>
         <th>Docket</th>
@@ -158,6 +159,7 @@ table, th, td {
     </tr>
     {% for order in data %}
     <tr>
+		<td>{{ order.id }}</td>
 		<td><a href="{% url 'crush-order' id_=order.id %}">{{ order.vintage }}</a></td>
 		<td>{{ order.date }}</td>
         <td>{% for mapping in order.crush_mappings.all %}{{ mapping.docket.docket_number }}<br>{% endfor %}</td>
