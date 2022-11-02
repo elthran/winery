@@ -43,7 +43,6 @@ class FruitIntakeViewSet(BaseView):
         return docket
 
     def get(self, request, id_=None, *args, **kwargs):
-
         if not id_:
             intake = None
             form = FruitIntakeInitialForm()
@@ -89,7 +88,7 @@ class FruitIntakeViewSet(BaseView):
                     "grower": form.cleaned_data["grower"].choice,
                     "varietal": form.cleaned_data["varietal"].choice,
                     "vineyard": form.cleaned_data["vineyard"].choice,
-                    "block": int(form.cleaned_data["block"].choice),
+                    "block": form.cleaned_data["block"].choice,
                 }
                 docket = self.get_or_create_docket(data)
                 serializer = FruitIntakeSerializer(data=data)

@@ -38,7 +38,11 @@ class UnitChoices(BaseChoiceModel):
     pass
 
 
-class VesselChoices(BaseChoiceModel):
+class VesselTypeChoices(BaseChoiceModel):
+    pass
+
+
+class VesselIdChoices(BaseChoiceModel):
     pass
 
 

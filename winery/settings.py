@@ -127,3 +127,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+DJANGO_EXTENSIONS_RESET_DB_SQLITE_ENGINES = [str(BASE_DIR / "db.sqlite3")]

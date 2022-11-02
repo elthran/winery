@@ -12,6 +12,11 @@ class Docket(models.Model):
     block = models.TextField(null=True)
     grower = models.TextField(null=True)
 
+    def save(self, *args, **kwargs):
+        """Overwrite the save function for this model"""
+        self.docket_number = f'{self.vintage} {self.grower} {self.varietal} {self.vineyard} {self.block}'
+        super(Docket, self).save(*args, **kwargs)
+
     @property
     def fruit_weight(self):
         # is_null = [intake.fruit_weight or 0 for intake in self.fruit_intakes.all()]
