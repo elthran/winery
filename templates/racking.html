@@ -162,15 +162,28 @@ table, th, td {
 		<th>Vintage</th>
 		<th>Dockets</th>
 		<th>Weight</th>
+		<th>Percentages</th>
+		<th>Tank Size</th>
 	</tr>
 	{% for vessel in data %}
 	<tr>
-		<th>{{ vessel.name }}</th>
-		{% for crush_order_vessel_mapping in vessel.crush_order_vessel_mappings.all %}
-		<th>{{ crush_order_vessel_mapping.crush_order.vintage }}</th>
-		<th>{% for mapping in crush_order_vessel_mapping.crush_order.crush_mappings.all %}{{ mapping.docket.docket_number }}<br>{% endfor %}</th>
-		<th>{{ crush_order_vessel_mapping.quantity }}</th>
-		{% endfor %}
+		{% if vessel.crush_order_vessel_mappings.all|length == 1 %}
+			<td>{{ vessel.name }}</td>
+			{% for crush_order_vessel_mapping in vessel.crush_order_vessel_mappings.all %}
+			<td>{{ crush_order_vessel_mapping.crush_order.vintage }}</td>
+			<td>{% for mapping in crush_order_vessel_mapping.crush_order.crush_mappings.all %}{{ mapping.docket.docket_number }}<br>{% endfor %}</td>
+			<td>{{ crush_order_vessel_mapping.quantity }}</td>
+			<td>{% for mapping in crush_order_vessel_mapping.crush_order.crush_mappings.all %}{{ mapping.percentage }}%<br>{% endfor %}</td>
+			{% endfor %}
+			<td>{{ vessel.volume }}</td>
+		{% else %}
+			<td>{{ vessel.name }}</td>
+			<td>-</td>
+			<td>-</td>
+			<td>-</td>
+			<td>-</td>
+			<td>{{ vessel.volume }}</td>
+		{% endif %}
 	</tr>
 		{% endfor %}
 </table>

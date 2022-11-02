@@ -15,12 +15,24 @@ vineyards = ["Charles & Jacob", "Paula", "Unknown"]
 blocks = [f"{letter}{number}" for number in range(1, 6) for letter in ["A", "B", "C"]]
 units = ["kg"]
 crush_types = ["Crush & Press", "Crush Only", "Whole Cluster Press"]
-vessel_types = ["tank"]
-vessel_ids = [number for number in range(1, 5)]
+vessels = [
+    {"type_name": "tank", "type_id": "1", "expansion_chamber_diameter": 0.0001, "expansion_chamber_height": 0.0001,
+     "expansion_chamber_radius": 0.00005, "tank_diameter": 183, "top_cone_height": 0.0001, "cylinder_height": 198,
+     "cylinder_radius": 91.5, "floor_height": 16},
+    {"type_name": "tank", "type_id": "2", "expansion_chamber_diameter": 0.0001, "expansion_chamber_height": 0.0001,
+     "expansion_chamber_radius": 0.00005, "tank_diameter": 118, "top_cone_height": 10, "cylinder_height": 170,
+     "cylinder_radius": 59, "floor_height": 10},
+    {"type_name": "tank", "type_id": "3", "expansion_chamber_diameter": 0.0001, "expansion_chamber_height": 0.0001,
+     "expansion_chamber_radius": 0.00005, "tank_diameter": 79, "top_cone_height": 10, "cylinder_height": 93,
+     "cylinder_radius": 39.5, "floor_height": 10},
+    {"type_name": "tank", "type_id": "4", "expansion_chamber_diameter": 0.0001, "expansion_chamber_height": 0.0001,
+     "expansion_chamber_radius": 0.00005, "tank_diameter": 97, "top_cone_height": 0.0001, "cylinder_height": 147,
+     "cylinder_radius": 48.5, "floor_height": 10},
+]
 
 dockets = [
     {"number": "2022 BG PN CJ A1", "grower": "Blue Grouse", "varietal": "Pinot Noir", "vineyard": "Charles & Jacob", "vintage": 2022, "block": "A1"},
-    {"number": "2022 BG CD CJ B3", "grower": "Blue Grouse", "varietal": "Chardonnayr", "vineyard": "Charles & Jacob", "vintage": 2022, "block": "B3"},
+    {"number": "2022 BG CD CJ B3", "grower": "Blue Grouse", "varietal": "Chardonnay", "vineyard": "Charles & Jacob", "vintage": 2022, "block": "B3"},
     {"number": "2022 BG PN PA A5", "grower": "Blue Grouse", "varietal": "Pinot Noir", "vineyard": "Paula", "vintage": 2022, "block": "A5"},
     {"number": "2022 GG SB BN B5", "grower": "Green Gage Farm", "varietal": "Schönburger", "vineyard": "Brunner", "vintage": 2022, "block": "B5"},
     {"number": "2022 BG SG PA C2", "grower": "Blue Grouse", "varietal": "Siegerrebe", "vineyard": "Paula", "vintage": 2022, "block": "C2"},
@@ -61,10 +73,13 @@ try:
     for unit in units:
         model = UnitChoices(choice=unit)
         model.save()
-    for vessel_id in vessel_ids:
-        for vessel_type in vessel_types:
-            model = Vessel(type_name=vessel_type, type_id=vessel_id)
-            model.save()
+    for vessel in vessels:
+        model = Vessel(type_name=vessel["type_name"], type_id=vessel["type_id"], expansion_chamber_diameter=vessel["expansion_chamber_diameter"],
+                       expansion_chamber_height=vessel["expansion_chamber_height"], expansion_chamber_radius=vessel["expansion_chamber_radius"],
+                       tank_diameter=vessel["tank_diameter"], top_cone_height=vessel["top_cone_height"],
+                       cylinder_height=vessel["cylinder_height"], cylinder_radius=vessel["cylinder_radius"],
+                       floor_height=vessel["floor_height"])
+        model.save()
     for crush_type in crush_types:
         model = CrushOrderTypeChoices(choice=crush_type)
         model.save()
@@ -94,5 +109,6 @@ except django.db.utils.IntegrityError:
     print("This has already run.")
     pass
 except Exception as e:
+    print("Failed to create the test data.")
     print(e)
     raise e

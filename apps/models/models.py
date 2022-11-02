@@ -1,3 +1,4 @@
+import math
 from datetime import datetime
 
 from django.db import models
@@ -48,8 +49,8 @@ class CrushOrder(models.Model):
         if not self.total_weight or self.total_weight == 0:
             return "Undefined"
         if self.crush_type == "Whole Cluster Press":
-            return 600 / self.total_weight * 1000
-        return 650 / self.total_weight * 1000
+            return 600 * self.total_weight / 1000
+        return 650 * self.total_weight / 1000
 
 
 class CrushMapping(models.Model):
@@ -92,10 +93,26 @@ class FruitIntake(models.Model):
 class Vessel(models.Model):
     type_name = models.TextField(null=True)
     type_id = models.TextField(null=True)
+    expansion_chamber_diameter = models.FloatField(null=True)
+    expansion_chamber_height = models.FloatField(null=True)
+    expansion_chamber_radius = models.FloatField(null=True)
+    tank_diameter = models.FloatField(null=True)
+    top_cone_height = models.FloatField(null=True)
+    cylinder_height = models.FloatField(null=True)
+    cylinder_radius = models.FloatField(null=True)
+    floor_height = models.FloatField(null=True)
 
     @property
     def name(self):
         return f"{self.type_name} {self.type_id}"
+
+    @property
+    def volume(self):
+        if not self.cylinder_radius or not self.cylinder_height:
+            return "Unknown"
+        area = math.pi * self.cylinder_radius ** 2
+        volume = area * self.cylinder_height
+        return int(volume)
 
 
 class CrushOrderVesselMappings(models.Model):
