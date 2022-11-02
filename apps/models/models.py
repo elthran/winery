@@ -23,6 +23,10 @@ class Docket(models.Model):
         # is_null = [intake.fruit_weight or 0 for intake in self.fruit_intakes.all()]
         return sum([intake.fruit_weight or 0 for intake in self.fruit_intakes.all()])
 
+    # @property
+    # def uncrushed_weight(self):
+        # return self.fruit_weight - self.crushed_weight (from all crush orders)
+
     #
     # @property
     # def pre_crush_weight(self):
