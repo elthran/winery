@@ -123,8 +123,8 @@ table, th, td {
 	<label id="docket_2_quantity">Weight: </label>{{ form.docket_2_quantity }}
 	<label id="docket_2_units">Units: </label>{{ form.docket_2_units }}<br><br>
 
-	<label id="vessel_1">Vessel: </label>{{ form.vessel_1 }} <label id="vessel_1_amount">{{ form.vessel_1_amount }}</label><br><br>
-	<label id="vessel_2">Vessel: </label>{{ form.vessel_2 }} <label id="vessel_2_amount">{{ form.vessel_2_amount }}</label><br><br>
+	<label id="vessel_1">Vessel: </label>{{ form.vessel_1 }} <label id="vessel_1_amount">Weight: {{ form.vessel_1_amount }}</label><br><br>
+	<label id="vessel_2">Vessel: </label>{{ form.vessel_2 }} <label id="vessel_2_amount">Weight: {{ form.vessel_2_amount }}</label><br><br>
 
     <input type="submit" value="Create New Crush Order"/><br><br>
 {% endif %}
@@ -154,7 +154,7 @@ table, th, td {
         <th>Vintage</th>
         <th>Date</th>
         <th>Docket</th>
-        <th>Quantity</th>
+        <th>Weight to Crush</th>
         <th>Percentage</th>
         <th>Total Weight</th>
         <th>Crush Type</th>
@@ -171,7 +171,7 @@ table, th, td {
 		<td>{{ order.total_weight }} kg</td>
 		<td>{{ order.crush_type }}</td>
 		<td>{{ order.predicted_volume }}</td>
-<!--		<td>{% for vessel in order.vessels.all %}{{ vessel.name }}{{ vessel.amount }}<br>{% endfor %}</td>-->
+		<td>{% for mapping in order.crush_order_vessel_mappings.all %}{{ mapping.vessel.name }}{{ mapping.amount }}<br>{% endfor %}</td>
     </tr>
     {% endfor %}
 </table>

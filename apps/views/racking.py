@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.response import Response
 
-from apps.models.models import CrushOrder, Docket
+from apps.models.models import CrushOrder, Docket, Vessel
 from apps.views.base import BaseView
 
 
@@ -21,8 +21,8 @@ class RackingViewSet(BaseView):
         self.template_name = "racking.html"
 
     def get(self, request, id_=None, *args, **kwargs):
-        all_vessels = Vessel.objects.order_by("date").reverse().all()
-        return render(request, self.template_name, {})
+        all_vessels = Vessel.objects.all()
+        return render(request, self.template_name, {"data": all_vessels})
 
     def post(self, request, id_=None, *args, **kwargs):
         return Response(None, status=status.HTTP_400_BAD_REQUEST)

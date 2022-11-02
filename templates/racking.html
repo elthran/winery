@@ -50,6 +50,10 @@ text-decoration: none;
   text-align: left;
   margin-bottom: 100px;
 }
+
+table, th, td {
+  border: 1px solid black;
+}
 </style>
 
 </head>
@@ -150,10 +154,26 @@ text-decoration: none;
 	<!-- If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php". -->
 
 	<!-- Notice that the value of the "First name" field will not be submitted, because the input element does not have a name attribute. -->
+<br>
+	<h1>All Vessels</h1>
+<table>
+	<tr>
+		<th>Vessel</th>
+		<th>Vintage</th>
+		<th>Dockets</th>
+		<th>Weight</th>
+	</tr>
+	{% for vessel in data %}
+	<tr>
+		<th>{{ vessel.name }}</th>
+		{% for crush_order_vessel_mapping in vessel.crush_order_vessel_mappings.all %}
+		<th>{{ crush_order_vessel_mapping.crush_order.vintage }}</th>
+		<th>{% for mapping in crush_order_vessel_mapping.crush_order.crush_mappings.all %}{{ mapping.docket.docket_number }}<br>{% endfor %}</th>
+		<th>{{ crush_order_vessel_mapping.quantity }}</th>
+		{% endfor %}
+	</tr>
+		{% endfor %}
+</table>
 
 </body>
-</html>
-
-</body>
-
 </html>

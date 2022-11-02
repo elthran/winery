@@ -45,9 +45,11 @@ class CrushOrder(models.Model):
 
     @property
     def predicted_volume(self):
+        if not self.total_weight or self.total_weight == 0:
+            return "Undefined"
         if self.crush_type == "Whole Cluster Press":
-            return 650 / self.total_weight
-        return 600 / self.total_weight
+            return 600 / self.total_weight * 1000
+        return 650 / self.total_weight * 1000
 
 
 class CrushMapping(models.Model):
@@ -88,6 +90,17 @@ class FruitIntake(models.Model):
 
 
 class Vessel(models.Model):
-    type = models.TextField(null=True)
-    name = models.TextField(null=True)
-    crush_orders = models.ManyToManyField(CrushOrder, related_name="vessels")
+    type_name = models.TextField(null=True)
+    type_id = models.TextField(null=True)
+
+    @property
+    def name(self):
+        return f"{self.type_name} {self.type_id}"
+
+
+class CrushOrderVesselMappings(models.Model):
+    crush_order = models.ForeignKey(CrushOrder, on_delete=models.CASCADE, null=True,
+                                    related_name="crush_order_vessel_mappings")
+    vessel = models.ForeignKey(Vessel, on_delete=models.CASCADE, null=True, related_name="crush_order_vessel_mappings")
+    quantity = models.IntegerField(null=True)
+    units = models.TextField(null=True)

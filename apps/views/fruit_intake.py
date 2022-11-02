@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from apps.forms import FruitIntakeSubsequentForm, FruitIntakeInitialForm
-from apps.models.models import FruitIntake, Docket
+from apps.models.models import FruitIntake, Docket, Vessel
 from apps.serializers import FruitIntakeSerializer, DocketSerializer
 from apps.views.base import BaseView
 
@@ -43,6 +43,7 @@ class FruitIntakeViewSet(BaseView):
         return docket
 
     def get(self, request, id_=None, *args, **kwargs):
+        print("All vessels:", Vessel.objects.all())
         if not id_:
             intake = None
             form = FruitIntakeInitialForm()

@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.response import Response
 
-from apps.models.models import CrushOrder, Docket
+from apps.models.models import CrushOrder, Docket, CrushMapping
 from apps.views.base import BaseView
 
 
@@ -57,16 +57,11 @@ class CrushOrderViewSet(BaseView):
         crush_order = self.get_crush_order_object(id_=id_)
         if form.is_valid():
             if crush_order:
-                serializer = CrushOrderSerializer(crush_order)
-                serialized_crush_order = serializer.data
+                serialized_crush_order = CrushOrderSerializer(crush_order)
             else:
                 crush_order_data = {
                     "vintage": int(form.cleaned_data["vintage"].choice),
                     "crush_type": form.cleaned_data["crush_type"].choice,
-                    # "vessel_1": form.cleaned_data["vessel_1"].choice,
-                    # "vessel_1_amount": int(form.cleaned_data["vessel_1_amount"].choice),
-                    # "vessel_2": form.cleaned_data["vessel_2"].choice,
-                    # "vessel_2_amount": int(form.cleaned_data["vessel_2_amount"].choice),
                 }
                 serialized_crush_order = CrushOrderSerializer(data=crush_order_data)
             if serialized_crush_order.is_valid():
@@ -74,16 +69,14 @@ class CrushOrderViewSet(BaseView):
                 for index in [1, 2]:
                     docket = get_object_or_None(Docket, docket_number=form.cleaned_data[f"docket_{index}"])
                     if docket:
-                        mapping_data = {
-                            "quantity": int(form.cleaned_data[f"docket_{index}_quantity"]),
-                            "units": form.cleaned_data[f"docket_{index}_units"].choice,
-                        }
-                        crush_mapping = CrushMappingSerializer(data=mapping_data)
-                        if crush_mapping.is_valid():
-                            crush_mapping = crush_mapping.save()
-                            crush_mapping.crush_order = crush_order
-                            crush_mapping.docket = docket
+                        try:
+                            crush_mapping = CrushMapping(crush_order=crush_order,
+                                                         docket=docket,
+                                                         quantity=int(form.cleaned_data[f"docket_{index}_quantity"]),
+                                                         units=form.cleaned_data[f"docket_{index}_units"].choice)
                             crush_mapping.save()
+                        except Exception as e:
+                            raise ValueError("Failed to create crush mapping.", e)
                 return redirect("crush-order", id_=crush_order.id)
             else:
                 print("Serializer error", serialized_crush_order.errors)

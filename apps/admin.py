@@ -6,7 +6,7 @@ import django
 
 from apps.models.choices import VintageChoices, VarietalChoices, VineyardChoices, GrowerChoices, BlockChoices, \
     UnitChoices, CrushOrderTypeChoices, VesselIdChoices, VesselTypeChoices
-from apps.models.models import FruitIntake, Docket, CrushOrder, CrushMapping
+from apps.models.models import FruitIntake, Docket, CrushOrder, CrushMapping, Vessel, CrushOrderVesselMappings
 
 growers = ["Blue Grouse", "Green Gage Farm"]
 vintages = [2022]
@@ -34,11 +34,11 @@ fruit_intakes = [
 ]
 crush_orders = [
     {"dockets": ["2022 Blue Grouse Pinot Noir Charles & Jacob A1", "2022 Blue Grouse Chardonnayr Charles & Jacob B3", "2022 Blue Grouse Pinot Noir Paula A5"], "quantities": [140, 351, 233], "units": ["kg", "kg", "kg"],
-     "vintage": 2022, "crush_type": "Whole Cluster Press", "date": "2022-09-30"},
+     "vintage": 2022, "crush_type": "Whole Cluster Press", "date": "2022-09-30", "vessel_id": 2, "vessel_type": "tank", "vessel_quantity": 724},
     {"dockets": ["2022 Green Gage Farm Schönburger Brunner B5"], "quantities": [4783.50], "units": ["kg"],
-     "vintage": 2022, "crush_type": "Crush & Press", "date": "2022-10-03"},
+     "vintage": 2022, "crush_type": "Crush & Press", "date": "2022-10-03", "vessel_id": 3, "vessel_type": "tank", "vessel_quantity": 4783.50},
     {"dockets": ["2022 Blue Grouse Siegerrebe Paula C2"], "quantities": [2495.50], "units": ["kg"],
-     "vintage": 2022, "crush_type": "Crush & Press", "date": "2022-10-07"},
+     "vintage": 2022, "crush_type": "Crush & Press", "date": "2022-10-07", "vessel_id": 4, "vessel_type": "tank", "vessel_quantity": 2495.50},
 ]
 
 
@@ -61,12 +61,10 @@ try:
     for unit in units:
         model = UnitChoices(choice=unit)
         model.save()
-    for vessel_type in vessel_types:
-        model = VesselTypeChoices(choice=vessel_type)
-        model.save()
     for vessel_id in vessel_ids:
-        model = VesselIdChoices(choice=vessel_id)
-        model.save()
+        for vessel_type in vessel_types:
+            model = Vessel(type_name=vessel_type, type_id=vessel_id)
+            model.save()
     for crush_type in crush_types:
         model = CrushOrderTypeChoices(choice=crush_type)
         model.save()
@@ -82,6 +80,9 @@ try:
     for order in crush_orders:
         crush_order = CrushOrder(vintage=order["vintage"], crush_type=order["crush_type"], date=order["date"])
         crush_order.save()
+        vessel = get_object_or_None(Vessel, type_name=order["vessel_type"], type_id=order["vessel_id"])
+        vessel_crush_order_mapping = CrushOrderVesselMappings(crush_order=crush_order, vessel=vessel, quantity=order["vessel_quantity"], units="kg")
+        vessel_crush_order_mapping.save()
         for index in range(len(order["dockets"])):
             docket = get_object_or_None(Docket, docket_number=order["dockets"][index])
             crush_mapping = CrushMapping(crush_order=crush_order, docket=docket, quantity=order["quantities"][index], units=order["units"][index])
@@ -92,3 +93,6 @@ except django.db.utils.OperationalError:
 except django.db.utils.IntegrityError:
     print("This has already run.")
     pass
+except Exception as e:
+    print(e)
+    raise e
