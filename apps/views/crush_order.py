@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.response import Response
 
-from apps.models.models import CrushOrder, Docket, CrushMapping
+from apps.models.models import CrushOrder, Docket, CrushMapping, Vessel, CrushOrderVesselMappings
 from apps.views.base import BaseView
 
 
@@ -77,6 +77,12 @@ class CrushOrderViewSet(BaseView):
                             crush_mapping.save()
                         except Exception as e:
                             raise ValueError("Failed to create crush mapping.", e)
+                vessel = form.cleaned_data["vessel_1"]
+                vessel_crush_order_mapping = CrushOrderVesselMappings(crush_order=crush_order,
+                                                                      vessel=vessel,
+                                                                      quantity=int(form.cleaned_data["vessel_1_amount"]),
+                                                                      units="kg")
+                vessel_crush_order_mapping.save()
                 return redirect("crush-order", id_=crush_order.id)
             else:
                 print("Serializer error", serialized_crush_order.errors)

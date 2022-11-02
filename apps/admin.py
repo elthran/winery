@@ -45,7 +45,7 @@ fruit_intakes = [
     {"docket": "2022 Blue Grouse Siegerrebe Paula C2", "bins": 8, "total_weight": 2935.50, "tare_weight": 440.00, "units": "kg"},
 ]
 crush_orders = [
-    {"dockets": ["2022 Blue Grouse Pinot Noir Charles & Jacob A1", "2022 Blue Grouse Chardonnayr Charles & Jacob B3", "2022 Blue Grouse Pinot Noir Paula A5"], "quantities": [140, 351, 233], "units": ["kg", "kg", "kg"],
+    {"dockets": ["2022 Blue Grouse Pinot Noir Charles & Jacob A1", "2022 Blue Grouse Chardonnay Charles & Jacob B3", "2022 Blue Grouse Pinot Noir Paula A5"], "quantities": [140, 351, 233], "units": ["kg", "kg", "kg"],
      "vintage": 2022, "crush_type": "Whole Cluster Press", "date": "2022-09-30", "vessel_id": 2, "vessel_type": "tank", "vessel_quantity": 724},
     {"dockets": ["2022 Green Gage Farm Schönburger Brunner B5"], "quantities": [4783.50], "units": ["kg"],
      "vintage": 2022, "crush_type": "Crush & Press", "date": "2022-10-03", "vessel_id": 3, "vessel_type": "tank", "vessel_quantity": 4783.50},

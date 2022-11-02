@@ -60,9 +60,9 @@ class CrushOrderForm(forms.Form):
                                             initial="kg")
     date = forms.DateTimeField(label='date', initial=datetime.now(), localize=True, required=False)
 
-    vessel_1 = forms.ModelChoiceField(label='vessel_1', queryset=Vessel.objects.values("type_name", "type_id").all(), required=False)
+    vessel_1 = forms.ModelChoiceField(label='vessel_1', queryset=Vessel.objects.all(), required=False)
     vessel_1_amount = forms.IntegerField(label='vessel_1_amount', required=False)
-    vessel_2 = forms.ModelChoiceField(label='vessel_2', queryset=Vessel.objects.values("type_name", "type_id").all(), required=False)
+    vessel_2 = forms.ModelChoiceField(label='vessel_2', queryset=Vessel.objects.all(), required=False)
     vessel_2_amount = forms.IntegerField(label='vessel_2_amount', required=False)
 
     def clean(self):

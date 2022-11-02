@@ -30,7 +30,7 @@ class Docket(models.Model):
     #     return sum([intake.fruit_weight or 0 for intake in self.fruit_intakes.all()])
 
     def __str__(self):
-        return u'{0}'.format(self.docket_number)
+        return u'{0} - {1}'.format(self.docket_number, self.fruit_weight)
 
 
 class CrushOrder(models.Model):
@@ -113,6 +113,9 @@ class Vessel(models.Model):
         area = math.pi * self.cylinder_radius ** 2
         volume = area * self.cylinder_height
         return int(volume)
+
+    def __str__(self):
+        return u'{0}'.format(self.name)
 
 
 class CrushOrderVesselMappings(models.Model):
