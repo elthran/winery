@@ -6,7 +6,7 @@ import django
 
 from apps.models.choices import VintageChoices, VarietalChoices, VineyardChoices, GrowerChoices, BlockChoices, \
     UnitChoices, CrushOrderTypeChoices, VesselIdChoices, VesselTypeChoices
-from apps.models.models import FruitIntake, Docket, CrushOrder, CrushMapping, Vessel, CrushOrderVesselMappings
+from apps.models.models import FruitIntake, Docket, CrushOrder, CrushOrderDocketMapping, Vessel, CrushOrderVesselMappings
 
 growers = ["Blue Grouse", "Green Gage Farm"]
 vintages = [2022]
@@ -100,7 +100,7 @@ try:
         vessel_crush_order_mapping.save()
         for index in range(len(order["dockets"])):
             docket = get_object_or_None(Docket, docket_number=order["dockets"][index])
-            crush_mapping = CrushMapping(crush_order=crush_order, docket=docket, quantity=order["quantities"][index], units=order["units"][index])
+            crush_mapping = CrushOrderDocketMapping(crush_order=crush_order, docket=docket, quantity=order["quantities"][index], units=order["units"][index])
             crush_mapping.save()
 except django.db.utils.OperationalError:
     print("Database not yet created.")

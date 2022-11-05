@@ -169,13 +169,13 @@ table, th, td {
 			<td>{{ crush_order_vessel_mapping.crush_order.vintage }}</td>
 			<td>Crush Order: {{ crush_order_vessel_mapping.crush_order.id }}
 				<ul>
-				{% for mapping in crush_order_vessel_mapping.crush_order.crush_mappings.all %}
+				{% for mapping in crush_order_vessel_mapping.crush_order.crush_order_docket_mappings.all %}
 					<li>{{ mapping.docket.docket_number }}</li>
 				{% endfor %}
 				</ul>
 			</td>
 			<td>{{ crush_order_vessel_mapping.quantity }}</td>
-			<td>{% for mapping in crush_order_vessel_mapping.crush_order.crush_mappings.all %}{{ mapping.percentage }}%<br>{% endfor %}</td>
+			<td>{% for mapping in crush_order_vessel_mapping.crush_order.crush_order_docket_mappings.all %}{{ mapping.percentage }}%<br>{% endfor %}</td>
 			{% endfor %}
 			<td>{{ vessel.volume }}</td>
 		{% else %}

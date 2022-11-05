@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.models.models import Docket, CrushOrder, FruitIntake, CrushMapping
+from apps.models.models import Docket, CrushOrder, FruitIntake, CrushOrderDocketMapping
 
 
 class DocketSerializer(serializers.ModelSerializer):
@@ -17,16 +17,17 @@ class FruitIntakeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CrushMappingSerializer(serializers.ModelSerializer):
+class CrushOrderDocketMappingSerializer(serializers.ModelSerializer):
     docket = DocketSerializer(read_only=True)
 
     class Meta:
-        model = CrushMapping
+        model = CrushOrderDocketMapping
         fields = '__all__'
 
 
 class CrushOrderSerializer(serializers.ModelSerializer):
-    crush_mappings = CrushMappingSerializer(many=True, read_only=True)
+    crush_order_docket_mappings = CrushOrderDocketMappingSerializer(many=True, read_only=True)
+    dockets = DocketSerializer(many=True, read_only=True)
 
     class Meta:
         model = CrushOrder

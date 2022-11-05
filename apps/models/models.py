@@ -41,12 +41,11 @@ class CrushOrder(models.Model):
     vintage = models.IntegerField(null=True)
     crush_type = models.TextField(null=True)
     date = models.DateTimeField(default=datetime.now(), blank=True)
-
-    # crush_mappings = models.ManyToOneRel(CrushMapping)
+    dockets = models.ManyToManyField(Docket, through='CrushOrderDocketMapping')
 
     @property
     def total_weight(self):
-        return sum([mapping.quantity for mapping in self.crush_mappings.all()])
+        return sum([mapping.quantity for mapping in self.crush_order_docket_mappings.all()])
 
     @property
     def predicted_volume(self):
@@ -57,9 +56,9 @@ class CrushOrder(models.Model):
         return 650 * self.total_weight / 1000
 
 
-class CrushMapping(models.Model):
-    crush_order = models.ForeignKey(CrushOrder, on_delete=models.CASCADE, null=True, related_name="crush_mappings")
-    docket = models.ForeignKey(Docket, on_delete=models.CASCADE, null=True, related_name="crush_mappings")
+class CrushOrderDocketMapping(models.Model):
+    crush_order = models.ForeignKey(CrushOrder, on_delete=models.CASCADE, related_name="crush_order_docket_mappings")
+    docket = models.ForeignKey(Docket, on_delete=models.CASCADE, related_name="crush_order_docket_mappings")
     quantity = models.IntegerField(null=True)
     units = models.TextField(null=True)
 

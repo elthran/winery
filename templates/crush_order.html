@@ -157,18 +157,18 @@ table, th, td {
         <th>Predicted Volume</th>
         <th>Vessel</th>
     </tr>
-    {% for order in data %}
+    {% for crush_order in data %}
     <tr>
-		<td>{{ order.id }}</td>
-		<td><a href="{% url 'crush-order' id_=order.id %}">{{ order.vintage }}</a></td>
-		<td>{{ order.date }}</td>
-        <td>{% for mapping in order.crush_mappings.all %}{{ mapping.docket.docket_number }}<br>{% endfor %}</td>
-        <td>{% for mapping in order.crush_mappings.all %}{{ mapping.quantity }} {{ mapping.units }}<br>{% endfor %}</td>
-        <td>{% for mapping in order.crush_mappings.all %}{{ mapping.percentage }}%<br>{% endfor %}</td>
-		<td>{{ order.total_weight }} kg</td>
-		<td>{{ order.crush_type }}</td>
-		<td>{{ order.predicted_volume }}</td>
-		<td>{% for mapping in order.crush_order_vessel_mappings.all %}{{ mapping.vessel.name }}{{ mapping.amount }}<br>{% endfor %}</td>
+		<td><a href="{% url 'crush-order' id_=crush_order.id %}">{{ crush_order.id }}</a></td>
+		<td>{{ crush_order.vintage }}</td>
+		<td>{{ crush_order.date }}</td>
+        <td>{% for docket in crush_order.dockets.all %}{{ docket.docket_number }}<br>{% endfor %}</td>
+        <td>{% for mapping in crush_order.crush_order_docket_mappings.all %}{{ mapping.quantity }} {{ mapping.units }}<br>{% endfor %}</td>
+        <td>{% for mapping in crush_order.crush_order_docket_mappings.all %}{{ mapping.percentage }}%<br>{% endfor %}</td>
+		<td>{{ crush_order.total_weight }} kg</td>
+		<td>{{ crush_order.crush_type }}</td>
+		<td>{{ crush_order.predicted_volume }}</td>
+		<td>{% for mapping in crush_order.crush_order_vessel_mappings.all %}{{ mapping.vessel.name }}{{ mapping.amount }}<br>{% endfor %}</td>
     </tr>
     {% endfor %}
 </table>

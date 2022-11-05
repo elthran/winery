@@ -1,13 +1,13 @@
 from annoying.functions import get_object_or_None
 
 from apps.forms import CrushOrderForm
-from apps.serializers import CrushOrderSerializer, CrushMappingSerializer
+from apps.serializers import CrushOrderSerializer, CrushOrderDocketMappingSerializer
 
 from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.response import Response
 
-from apps.models.models import CrushOrder, Docket, CrushMapping, Vessel, CrushOrderVesselMappings
+from apps.models.models import CrushOrder, Docket, CrushOrderDocketMapping, Vessel, CrushOrderVesselMappings
 from apps.views.base import BaseView
 
 
@@ -48,6 +48,8 @@ class CrushOrderViewSet(BaseView):
         if existing_crush_order:
             serializer = CrushOrderSerializer(existing_crush_order)
             existing_crush_order = serializer.data
+        for crush_order in self.get_all_crush_orders():
+            print("id: ", crush_order.id)
         return render(request, self.template_name, {"form": form,
                                                     "data": self.get_all_crush_orders(),
                                                     "order": existing_crush_order})
@@ -70,7 +72,7 @@ class CrushOrderViewSet(BaseView):
                     docket = form.cleaned_data[f"docket_{index}"]
                     if docket:
                         try:
-                            crush_mapping = CrushMapping(crush_order=crush_order,
+                            crush_mapping = CrushOrderDocketMapping(crush_order=crush_order,
                                                          docket=docket,
                                                          quantity=int(form.cleaned_data[f"docket_{index}_quantity"]),
                                                          units=form.cleaned_data[f"docket_{index}_units"].choice)

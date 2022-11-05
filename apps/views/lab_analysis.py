@@ -1,7 +1,7 @@
 from annoying.functions import get_object_or_None
 
 from apps.forms import CrushOrderForm
-from apps.serializers import CrushOrderSerializer, CrushMappingSerializer
+from apps.serializers import CrushOrderSerializer, CrushOrderDocketMappingSerializer
 
 from django.shortcuts import render, redirect
 from rest_framework import status
@@ -87,14 +87,14 @@ class LabAnalysisViewSet(BaseView):
             if crush_order.is_valid():
                 crush_order = crush_order.save()
                 if docket_1:
-                    crush_mapping = CrushMappingSerializer(data=mapping_1_data)
+                    crush_mapping = CrushOrderDocketMappingSerializer(data=mapping_1_data)
                     if crush_mapping.is_valid():
                         crush_mapping = crush_mapping.save()
                         crush_mapping.crush_order = crush_order
                         crush_mapping.docket = docket_1
                         crush_mapping.save()
                 if docket_2:
-                    crush_mapping = CrushMappingSerializer(data=mapping_2_data)
+                    crush_mapping = CrushOrderDocketMappingSerializer(data=mapping_2_data)
                     if crush_mapping.is_valid():
                         crush_mapping = crush_mapping.save()
                         crush_mapping.crush_order = crush_order
