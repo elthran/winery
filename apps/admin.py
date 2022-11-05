@@ -6,7 +6,10 @@ import django
 
 from apps.models.choices import VintageChoices, VarietalChoices, VineyardChoices, GrowerChoices, BlockChoices, \
     UnitChoices, CrushOrderTypeChoices, VesselIdChoices, VesselTypeChoices
-from apps.models.models import FruitIntake, Docket, CrushOrder, CrushOrderDocketMapping, Vessel, CrushOrderVesselMappings
+from apps.models.crush_orders import CrushOrder
+from apps.models.dockets import Docket
+from apps.models.models import FruitIntake, CrushOrderDocketMapping, CrushOrderVesselMappings
+from apps.models.vessels import Vessel
 
 growers = ["Blue Grouse", "Green Gage Farm"]
 vintages = [2022]

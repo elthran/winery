@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from apps.models.models import Docket, CrushOrder, FruitIntake, CrushOrderDocketMapping
+from apps.models.crush_orders import CrushOrder
+from apps.models.dockets import Docket
+from apps.models.models import FruitIntake, CrushOrderDocketMapping
 
 
 class DocketSerializer(serializers.ModelSerializer):

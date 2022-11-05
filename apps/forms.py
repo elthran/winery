@@ -2,9 +2,11 @@ from datetime import datetime
 
 from django import forms
 
-from apps.models.models import Docket, FruitIntake, Vessel
+from apps.models.dockets import Docket
+from apps.models.models import FruitIntake
 from apps.models.choices import VintageChoices, VarietalChoices, VineyardChoices, UnitChoices, BlockChoices, \
     GrowerChoices, CrushOrderTypeChoices
+from apps.models.vessels import Vessel
 
 
 class FruitIntakeInitialForm(forms.Form):
