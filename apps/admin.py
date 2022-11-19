@@ -8,7 +8,8 @@ from apps.models.choices import VintageChoices, VarietalChoices, VineyardChoices
     UnitChoices, CrushOrderTypeChoices, VesselIdChoices, VesselTypeChoices
 from apps.models.crush_orders import CrushOrder
 from apps.models.dockets import Docket
-from apps.models.models import FruitIntake, CrushOrderDocketMapping, CrushOrderVesselMappings
+from apps.models.fruit_intakes import FruitIntake
+from apps.models.models import CrushOrderDocketMapping, CrushOrderVesselMapping
 from apps.models.vessels import Vessel
 
 growers = ["Blue Grouse", "Green Gage Farm"]
@@ -99,7 +100,7 @@ try:
         crush_order = CrushOrder(vintage=order["vintage"], crush_type=order["crush_type"], date=order["date"])
         crush_order.save()
         vessel = get_object_or_None(Vessel, type_name=order["vessel_type"], type_id=order["vessel_id"])
-        vessel_crush_order_mapping = CrushOrderVesselMappings(crush_order=crush_order, vessel=vessel, quantity=order["vessel_quantity"], units="kg")
+        vessel_crush_order_mapping = CrushOrderVesselMapping(crush_order=crush_order, vessel=vessel, quantity=order["vessel_quantity"], units="kg")
         vessel_crush_order_mapping.save()
         for index in range(len(order["dockets"])):
             docket = get_object_or_None(Docket, docket_number=order["dockets"][index])

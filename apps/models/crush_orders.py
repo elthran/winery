@@ -9,7 +9,7 @@ class CrushOrder(models.Model):
     crush_type = models.TextField(null=True)
     date = models.DateTimeField(default=datetime.now(), blank=True)
     dockets = models.ManyToManyField('apps.Docket', through='CrushOrderDocketMapping')
-    vessels = models.ManyToManyField('apps.Vessel', through='CrushOrderVesselMappings')
+    vessels = models.ManyToManyField('apps.Vessel', through='CrushOrderVesselMapping')
 
     @property
     def total_weight(self):

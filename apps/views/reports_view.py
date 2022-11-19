@@ -1,4 +1,4 @@
-from apps.models.models import FruitIntake
+from apps.models.fruit_intakes import FruitIntake
 from apps.views.base import BaseView
 
 

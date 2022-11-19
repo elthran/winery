@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.response import Response
 
-from apps.models.models import CrushOrderDocketMapping, CrushOrderVesselMappings
+from apps.models.models import CrushOrderDocketMapping, CrushOrderVesselMapping
 from apps.views.base import BaseView
 
 
@@ -83,17 +83,17 @@ class CrushOrderViewSet(BaseView):
                             raise ValueError("Failed to create crush mapping.", e)
                 vessel = form.cleaned_data["vessel_1"]
                 if vessel:
-                    vessel_crush_order_mapping = CrushOrderVesselMappings(crush_order=crush_order,
-                                                                          vessel=vessel,
-                                                                          quantity=int(form.cleaned_data["vessel_1_amount"]),
-                                                                          units="kg")
+                    vessel_crush_order_mapping = CrushOrderVesselMapping(crush_order=crush_order,
+                                                                         vessel=vessel,
+                                                                         quantity=int(form.cleaned_data["vessel_1_amount"]),
+                                                                         units="kg")
                     vessel_crush_order_mapping.save()
                 vessel = form.cleaned_data["vessel_2"]
                 if vessel:
-                    vessel_crush_order_mapping = CrushOrderVesselMappings(crush_order=crush_order,
-                                                                          vessel=vessel,
-                                                                          quantity=int(form.cleaned_data["vessel_2_amount"]),
-                                                                          units="kg")
+                    vessel_crush_order_mapping = CrushOrderVesselMapping(crush_order=crush_order,
+                                                                         vessel=vessel,
+                                                                         quantity=int(form.cleaned_data["vessel_2_amount"]),
+                                                                         units="kg")
                     vessel_crush_order_mapping.save()
                 return redirect("crush-order", id_=crush_order.id)
             else:
