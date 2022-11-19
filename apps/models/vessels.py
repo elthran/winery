@@ -1,5 +1,4 @@
 import math
-from datetime import datetime
 
 from django.db import models
 
@@ -23,16 +22,30 @@ class Vessel(models.Model):
 
     @property
     def vintages(self):
-        return [crush_order.vintage for crush_order in self.crush_orders.all()]
+        return set(sorted([crush_order.vintage for crush_order in self.crush_orders.all()]))
+
+    @property
+    def docket_mappings(self):
+        docket_mappings = []
+        for crush_order in self.crush_orders.all():
+            for docket_mapping in crush_order.crush_order_docket_mappings.all():
+                docket_mappings.append(docket_mapping)
+        return docket_mappings
+
+    @property
+    def crush_order_mappings(self):
+        crush_order_mappings = []
+        for mapping in self.crush_order_vessel_mappings.all():
+            crush_order_mappings.append(mapping)
+        return crush_order_mappings
 
     @property
     def percentages(self):
-        percentages = []
-        for crush_order in self.crush_orders.all():
-            docket_mappings = crush_order.crush_order_docket_mappings.all()
-            for mapping in docket_mappings:
-                percentages.append(mapping.percentage)
-        return percentages
+        return [round(100 * mapping.quantity / self.current_weight, 2) for mapping in self.docket_mappings]
+
+    @property
+    def weights(self):
+        return [mapping.quantity for mapping in self.docket_mappings]
 
     @property
     def current_weight(self):

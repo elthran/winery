@@ -157,7 +157,8 @@ table, th, td {
 		<th>Vessel</th>
 		<th>Vintage</th>
 		<th>Dockets</th>
-		<th>Weight</th>
+		<th>Weights</th>
+		<th>Total Weight</th>
 		<th>Percentages</th>
 		<th>Tank Size</th>
 	</tr>
@@ -166,22 +167,23 @@ table, th, td {
 		{% if vessel.crush_orders %}
 			<td>{{ vessel.name }}</td>
 			<td>{% for vintage in vessel.vintages %}{{ vintage }}{% endfor %}</td>
-			<td>{% for crush_order in vessel.crush_orders.all %}
-				<ul>
+			<td><ul>{% for crush_order in vessel.crush_orders.all %}
 					<li>Crush Order: {{ crush_order.id }}</li>
-				<ul>
-					<ol>
+				<ol>
 					{% for docket in crush_order.dockets.all %}
 						<li>{{ docket.docket_number }}</li>
 					{% endfor %}
-					</ol>
+				</ol>
 				{% endfor %}
+			</ul>
 			</td>
+			<td><ul>{% for weight in vessel.weights %}<li>{{ weight }} kg</li>{% endfor %}</ul></td>
 			<td>{{ vessel.current_weight }}</td>
 			<td><ul>{% for percent in vessel.percentages %}<li>{{ percent }}%</li>{% endfor %}</ul></td>
 			<td>{{ vessel.max_volume }}</td>
 		{% else %}
 			<td>{{ vessel.name }}</td>
+			<td>-</td>
 			<td>-</td>
 			<td>-</td>
 			<td>-</td>
