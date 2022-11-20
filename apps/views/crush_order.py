@@ -36,8 +36,6 @@ class CrushOrderViewSet(BaseView):
             form = CrushOrderForm(request_.POST)
         else:
             form = CrushOrderForm()
-        if not id_:
-            form.fields['docket_1'].initial = Docket.objects.last()
         return form
 
     def get_all_crush_orders(self):
@@ -70,17 +68,18 @@ class CrushOrderViewSet(BaseView):
                 serialized_crush_order = CrushOrderSerializer(data=crush_order_data)
             if serialized_crush_order.is_valid():
                 crush_order = serialized_crush_order.save()
-                for index in [1, 2]:
+                for index in range(form.maximum_fields):
                     docket = form.cleaned_data[f"docket_{index}"]
-                    if docket:
-                        try:
-                            crush_mapping = CrushOrderDocketMapping(crush_order=crush_order,
-                                                         docket=docket,
-                                                         quantity=int(form.cleaned_data[f"docket_{index}_quantity"]),
-                                                         units=form.cleaned_data[f"docket_{index}_units"].choice)
-                            crush_mapping.save()
-                        except Exception as e:
-                            raise ValueError("Failed to create crush mapping.", e)
+                    if not docket:
+                        break
+                    try:
+                        crush_mapping = CrushOrderDocketMapping(crush_order=crush_order,
+                                                     docket=docket,
+                                                     quantity=int(form.cleaned_data[f"docket_{index}_quantity"]),
+                                                     units=form.cleaned_data[f"docket_{index}_units"].choice)
+                        crush_mapping.save()
+                    except Exception as e:
+                        raise ValueError("Failed to create crush mapping.", e)
                 vessel = form.cleaned_data["vessel_1"]
                 if vessel:
                     vessel_crush_order_mapping = CrushOrderVesselMapping(crush_order=crush_order,

@@ -9,11 +9,11 @@ from apps.models.vessels import Vessel
 
 
 class FruitIntakeInitialForm(forms.Form):
-    vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all(), required=False)
-    varietal = forms.ModelChoiceField(label='varietal', queryset=VarietalChoices.objects.all(), required=False)
-    vineyard = forms.ModelChoiceField(label='vineyard', queryset=VineyardChoices.objects.all(), required=False)
-    block = forms.ModelChoiceField(label='block', queryset=BlockChoices.objects.all(), required=False)
-    grower = forms.ModelChoiceField(label='grower', queryset=GrowerChoices.objects.all(), required=False)
+    vintage = forms.ModelChoiceField(label="vintage", queryset=VintageChoices.objects.all(), required=False)
+    varietal = forms.ModelChoiceField(label="varietal", queryset=VarietalChoices.objects.all(), required=False)
+    vineyard = forms.ModelChoiceField(label="vineyard", queryset=VineyardChoices.objects.all(), required=False)
+    block = forms.ModelChoiceField(label="block", queryset=BlockChoices.objects.all(), required=False)
+    grower = forms.ModelChoiceField(label="grower", queryset=GrowerChoices.objects.all(), required=False)
 
     def clean(self):
         """
@@ -29,11 +29,11 @@ class FruitIntakeInitialForm(forms.Form):
 
 
 class FruitIntakeSubsequentForm(forms.Form):
-    date = forms.DateTimeField(label='date', initial=datetime.now(), localize=True)
-    number_of_bins = forms.IntegerField(label='number_of_bins')
-    total_weight = forms.IntegerField(label='total_weight')
-    tare_weight = forms.IntegerField(label='tare_weight')
-    units = forms.ModelChoiceField(label='units', queryset=UnitChoices.objects.all(), initial="kg")
+    date = forms.DateTimeField(label="date", initial=datetime.now(), localize=True)
+    number_of_bins = forms.IntegerField(label="number_of_bins")
+    total_weight = forms.IntegerField(label="total_weight")
+    tare_weight = forms.IntegerField(label="tare_weight")
+    units = forms.ModelChoiceField(label="units", queryset=UnitChoices.objects.all(), initial="kg")
 
     def clean(self):
         """
@@ -50,47 +50,74 @@ class FruitIntakeSubsequentForm(forms.Form):
 
 
 class CrushOrderForm(forms.Form):
-    vintage = forms.ModelChoiceField(label='vintage', queryset=VintageChoices.objects.all())
-    crush_type = forms.ModelChoiceField(label='docket_1', queryset=CrushOrderTypeChoices.objects.all())
-    docket_1 = forms.ModelChoiceField(label='docket_1', queryset=Docket.objects.all())
-    docket_1_quantity = forms.IntegerField(label='docket_1_quantity')
-    docket_1_units = forms.ModelChoiceField(label='docket_1_units', queryset=UnitChoices.objects.all(), initial="kg")
-    docket_2 = forms.ModelChoiceField(label='docket_2', queryset=Docket.objects.all(), required=False)
-    docket_2_quantity = forms.IntegerField(label='docket_2_quantity', required=False)
-    docket_2_units = forms.ModelChoiceField(label='docket_2_units', queryset=UnitChoices.objects.all(), required=False,
-                                            initial="kg")
-    date = forms.DateTimeField(label='date', initial=datetime.now(), localize=True, required=False)
+    vintage = forms.ModelChoiceField(label="vintage", queryset=VintageChoices.objects.all())
+    crush_type = forms.ModelChoiceField(label="docket_1", queryset=CrushOrderTypeChoices.objects.all())
+    date = forms.DateTimeField(label="date", localize=True, required=False, initial=datetime.now())
 
-    vessel_1 = forms.ModelChoiceField(label='vessel_1', queryset=Vessel.objects.all(), required=False)
-    vessel_1_amount = forms.IntegerField(label='vessel_1_amount', required=False)
-    vessel_2 = forms.ModelChoiceField(label='vessel_2', queryset=Vessel.objects.all(), required=False)
-    vessel_2_amount = forms.IntegerField(label='vessel_2_amount', required=False)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # TODO: I can't move this up to the db call because the table doesn't exist on db creation.
+        self.initial["vintage"] = VintageChoices.objects.last()
+        all_dockets = Docket.objects.all().order_by('-id')
+        self.maximum_fields = min(5, len(all_dockets))
+        for i in range(self.maximum_fields):
+            docket_field_name = f"docket_{i}"
+            quantity_field_name = f"docket_{i}_quantity"
+            units_field_name = f"docket_{i}_units"
+            vessel_field_name = f"vessel_{i}"
+            vessel_amount_field_name = f"vessel_{i}_amount"
+
+            self.fields[docket_field_name] = forms.ModelChoiceField(label=docket_field_name,
+                                                                    queryset=all_dockets,
+                                                                    required=False)
+            self.fields[quantity_field_name] = forms.IntegerField(label=quantity_field_name,
+                                                                  required=False, initial=0)
+            self.fields[units_field_name] = forms.ModelChoiceField(label=units_field_name,
+                                                                   queryset=UnitChoices.objects.all(),
+                                                                   required=False, initial=UnitChoices.objects.last())
+            self.fields[vessel_field_name] = forms.ModelChoiceField(label=f"vessel_{i}",
+                                                                    queryset=Vessel.objects.all(),
+                                                                    required=False)
+            self.fields[vessel_amount_field_name] = forms.ModelChoiceField(label=f"vessel_{i}_amount",
+                                                                           queryset=Vessel.objects.all(),
+                                                                           required=False)
+
+            if i == 0:
+                self.initial[docket_field_name] = all_dockets[0]
 
     def clean(self):
         """
         Ensure that either they are entering a new valid integer or are updating a valid integer with a valid integer.
         """
-        docket_1 = self.cleaned_data.get("docket_1")
-        docket_1_quantity = self.cleaned_data.get("docket_1_quantity")
-        docket_1_units = self.cleaned_data.get("docket_1_units")
-
-        docket_2 = self.cleaned_data.get("docket_2")
-        docket_2_quantity = self.cleaned_data.get("docket_2_quantity")
-        docket_2_units = self.cleaned_data.get("docket_2_units")
-
-        if docket_1 == docket_2:
-            raise forms.ValidationError("The dockets must be different.")
-        if not docket_1 or not docket_1_quantity or not docket_1_units:
-            raise forms.ValidationError("Requires at least one docket.")
-        if docket_2 and not (docket_2_quantity and docket_2_units):
-            raise forms.ValidationError("If Docket 2 is selected, it must be fully completed.")
+        i = 0
+        human_readable_count_mapper = {0: "first", 1: "second", 2: "third", 3: "fourth", 4: "fifth", 5: "sixth"}
+        used_dockets = []
+        while i < self.maximum_fields:
+            docket = self.cleaned_data.get(f"docket_{i}")
+            quantity = self.cleaned_data.get(f"docket_{i}_quantity")
+            units = self.cleaned_data.get(f"docket_{i}_units")
+            vessel = self.cleaned_data.get(f"vessel_{i}")
+            vessel_amount = self.cleaned_data.get(f"vessel_{i}_amount")
+            if docket and (not quantity or not units):
+                raise forms.ValidationError(f"The {human_readable_count_mapper[i]} docket is not complete.")
+            if i == 0 and not docket:
+                raise forms.ValidationError("Requires at least one docket.")
+            if not docket:
+                break
+            if docket in used_dockets:
+                raise forms.ValidationError("The dockets must be different.")
+            else:
+                used_dockets.append(docket)
+            if quantity <= 0:
+                raise forms.ValidationError(f"The quantity must be greater than 0.")
+            i += 1
 
 
 class VarietalEntryForm(forms.Form):
-    existing_field = forms.ModelChoiceField(label='existing_field', queryset=VarietalChoices.objects.all(),
+    existing_field = forms.ModelChoiceField(label="existing_field", queryset=VarietalChoices.objects.all(),
                                             required=False)
-    edit_value = forms.CharField(label='edit_value', max_length=100, initial="", required=False)
-    new_value = forms.CharField(label='new_value', max_length=100, initial="", required=False)
+    edit_value = forms.CharField(label="edit_value", max_length=100, initial="", required=False)
+    new_value = forms.CharField(label="new_value", max_length=100, initial="", required=False)
 
     def clean(self):
         """
@@ -104,10 +131,10 @@ class VarietalEntryForm(forms.Form):
 
 
 class VintageEntryForm(forms.Form):
-    existing_field = forms.ModelChoiceField(label='existing_field', queryset=VintageChoices.objects.all(),
+    existing_field = forms.ModelChoiceField(label="existing_field", queryset=VintageChoices.objects.all(),
                                             required=False)
-    edit_value = forms.IntegerField(label='edit_value', required=False)
-    new_value = forms.IntegerField(label='new_value', required=False)
+    edit_value = forms.IntegerField(label="edit_value", required=False)
+    new_value = forms.IntegerField(label="new_value", required=False)
 
     def clean(self):
         """
@@ -121,11 +148,11 @@ class VintageEntryForm(forms.Form):
 
 
 class VineyardEntryForm(forms.Form):
-    existing_field = forms.ModelChoiceField(label='existing_field', queryset=VineyardChoices.objects.all(),
+    existing_field = forms.ModelChoiceField(label="existing_field", queryset=VineyardChoices.objects.all(),
                                             required=False)
-    edit_value = forms.CharField(label='edit_value', max_length=100, initial="", required=False)
-    new_value = forms.CharField(label='new_value', max_length=100, initial="", required=False)
-    merging_field = forms.ModelChoiceField(label='merging_field', queryset=VineyardChoices.objects.all(),
+    edit_value = forms.CharField(label="edit_value", max_length=100, initial="", required=False)
+    new_value = forms.CharField(label="new_value", max_length=100, initial="", required=False)
+    merging_field = forms.ModelChoiceField(label="merging_field", queryset=VineyardChoices.objects.all(),
                                            required=False)
 
     def clean(self):

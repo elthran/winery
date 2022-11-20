@@ -92,7 +92,7 @@ try:
         docket.save()
     for intake in fruit_intakes:
         docket = get_object_or_None(Docket, docket_number=intake["docket"])
-        fruit_intake = FruitIntake(number_of_bins=intake["bins"], total_weight=intake["total_weight"], tare_weight=intake["tare_weight"], units=intake["units"])
+        fruit_intake = FruitIntake(number_of_bins=intake["bins"], total_weight=intake["total_weight"], tare_weight=intake["tare_weight"], units=intake["units"], date="2021-10-10")
         fruit_intake.save()
         fruit_intake.docket = docket
         fruit_intake.save()

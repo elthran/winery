@@ -54,6 +54,10 @@ text-decoration: none;
 table, th, td {
   border: 1px solid black;
 }
+
+:invalid ~ .hidden_fields {
+    display: none;
+}
 </style>
 
 </head>
@@ -108,15 +112,24 @@ table, th, td {
 <br><br>
 
 	<label id="vintage">Vintage: </label>{{ form.vintage }}<br><br><br>
-	<label id="docket_1">Crush Type: </label>{{ form.crush_type }}<br><br>
+	<label id="crush_type">Crush Type: </label>{{ form.crush_type }}<br><br>
 
+	<label id="docket_0">Docket: </label>{{ form.docket_0 }}
+	<label id="docket_0_quantity">Weight: </label>{{ form.docket_0_quantity }}
+	<label id="docket_0_units">Units: </label>{{ form.docket_0_units }}
+	<br><br>
 	<label id="docket_1">Docket: </label>{{ form.docket_1 }}
 	<label id="docket_1_quantity">Weight: </label>{{ form.docket_1_quantity }}
 	<label id="docket_1_units">Units: </label>{{ form.docket_1_units }}
 	<br><br>
 	<label id="docket_2">Docket: </label>{{ form.docket_2 }}
 	<label id="docket_2_quantity">Weight: </label>{{ form.docket_2_quantity }}
-	<label id="docket_2_units">Units: </label>{{ form.docket_2_units }}<br><br>
+	<label id="docket_2_units">Units: </label>{{ form.docket_2_units }}
+	<br><br>
+	<label id="docket_3">Docket: </label>{{ form.docket_3 }}
+	<label id="docket_3_quantity">Weight: </label>{{ form.docket_3_quantity }}
+	<label id="docket_3_units">Units: </label>{{ form.docket_3_units }}
+	<br><br>
 
 	<label id="vessel_1">Vessel: </label>{{ form.vessel_1 }} <label id="vessel_1_amount">Weight: {{ form.vessel_1_amount }}</label><br><br>
 	<label id="vessel_2">Vessel: </label>{{ form.vessel_2 }} <label id="vessel_2_amount">Weight: {{ form.vessel_2_amount }}</label><br><br>
