@@ -3,7 +3,6 @@ from datetime import datetime
 from django import forms
 
 from apps.models.dockets import Docket
-from apps.models.fruit_intakes import FruitIntake
 from apps.models.choices import VintageChoices, VarietalChoices, VineyardChoices, UnitChoices, BlockChoices, \
     GrowerChoices, CrushOrderTypeChoices
 from apps.models.vessels import Vessel

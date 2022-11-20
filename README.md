@@ -1,3 +1,20 @@
+# To Install
+
+Run `pip install -r requirements.txt`
+
+# To run locally
+
+Run `python manage.py runserver`
+
+# To reset database
+
+Delete `db.sqlite3` and all migration files (except `__init__.py`)
+
+Run `python manage.py makekigrations` and `python manage.py migrate`
+
+
+# Database Notes:
+
 Docket:
 - Can have multiple fruit intakes
 - Can have multiple crush orders

@@ -41,7 +41,7 @@ class Vessel(models.Model):
 
     @property
     def percentages(self):
-        return [round(100 * mapping.quantity / self.current_weight, 2) for mapping in self.docket_mappings]
+        return [round(100 * mapping.quantity / self.current_weight, 1) for mapping in self.docket_mappings]
 
     @property
     def weights(self):
