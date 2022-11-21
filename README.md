@@ -8,10 +8,10 @@ Run `python manage.py runserver`
 
 # To reset database
 
-Delete `db.sqlite3` and all migration files (except `__init__.py`)
-
-Run `python manage.py makemigrations` and `python manage.py migrate`
-
+1. Delete `db.sqlite3` and all migration files (except `__init__.py`)
+2. Run `python manage.py makemigrations`
+3. Run `python manage.py migrate`.
+4. Run `python manage.py seed`
 
 # Database Notes:
 
