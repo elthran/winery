@@ -10,7 +10,7 @@ Run `python manage.py runserver`
 
 Delete `db.sqlite3` and all migration files (except `__init__.py`)
 
-Run `python manage.py makekigrations` and `python manage.py migrate`
+Run `python manage.py makemigrations` and `python manage.py migrate`
 
 
 # Database Notes:
