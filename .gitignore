@@ -130,4 +130,5 @@ dmypy.json
 .idea/
 
 db.sqlite3
-*/migrations/*.py
+app/migrations/*.py
+!app/migrations/__init__.py
