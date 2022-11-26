@@ -8,3 +8,6 @@ pytz==2022.2.1
 six==1.16.0
 sqlparse==0.4.2
 tzdata==2022.2
+
+# testing
+watchgod=0.8.2
