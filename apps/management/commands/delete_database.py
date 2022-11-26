@@ -1,5 +1,6 @@
 import os
 
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 
@@ -8,8 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            SITE_ROOT = os.path.abspath(os.path.dirname(__file__) + "../" * 4)
-            filename = f"{SITE_ROOT}/db.sqlite3"
+            filename = f"{settings.BASE_DIR}/db.sqlite3"
 
             if os.path.exists(filename):
                 self.stdout.write(f"Removing: {filename}")
