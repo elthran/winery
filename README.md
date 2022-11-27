@@ -1,12 +1,18 @@
-# To Install
+# Development
+## To Install
 
-Run `pip install -r requirements.txt`
+1. Run `pip install -r requirements.txt`
 
-# To run locally
+## To set up
+1. Run `python manage.py makemigrations`
+2. Run `python manage.py migrate`.
+3. Run `python manage.py seed`
 
-Run `python manage.py runserver`
+## To run locally
 
-# To reset database
+1. Run `python manage.py runserver`
+
+## To reset database
 
 1. Run `python manage.py reset`
 
@@ -16,21 +22,8 @@ This does:
 3. Run `python manage.py migrate`.
 4. Run `python manage.py seed`
 
-# Database Notes:
+See [Database Notes](docs/Database%20Notes.md)
 
-Docket:
-- Can have multiple fruit intakes
-- Can have multiple crush orders
-
-Fruit Intake:
-- Each fruit intake has 1 docket (one to many relationship)
-
-Crush Order:
-- Can have multiple dockets (many to many relationship)
-- Can be spread across multiple vessels (many to many relationship)
-
-Vessels:
-- Can gave multiple crush orders (many to many relationship)
 
 # Testing
 
