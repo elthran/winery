@@ -31,10 +31,5 @@ See [Database Notes](docs/Database%20Notes.md)
 - `python manage.py test` - runs tests once.
 
 Docs at https://docs.djangoproject.com/en/4.1/topics/testing/overview/
+See [Test Folder Layout](docs/Test%20Folder%20Layout.md)
 
-## Test Folder Layout
-Matches app layout.
-
-e.g.
-`/apps/models/crush_order.py` tests go in
-`/tests/apps/models/test_crush_order.py`
