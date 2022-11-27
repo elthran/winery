@@ -31,3 +31,17 @@ Crush Order:
 
 Vessels:
 - Can gave multiple crush orders (many to many relationship)
+
+# Testing
+
+- `python manage.py guard` - runs test watcher
+- `python manage.py test` - runs tests once.
+
+Docs at https://docs.djangoproject.com/en/4.1/topics/testing/overview/
+
+## Test Folder Layout
+Matches app layout.
+
+e.g.
+`/apps/models/crush_order.py` tests go in
+`/tests/apps/models/test_crush_order.py`
