@@ -1,4 +1,6 @@
 # Development
+See [Folder Structure](docs/Folder%20Structure.md)
+
 ## To Install
 
 1. Run `pip install -r requirements.txt`
@@ -30,6 +32,7 @@ See [Database Notes](docs/Database%20Notes.md)
 - `python manage.py guard` - runs test watcher
 - `python manage.py test` - runs tests once.
 
-Docs at https://docs.djangoproject.com/en/4.1/topics/testing/overview/
+Docs at https://docs.djangoproject.com/en/4.1/topics/testing/overview/.
+
 See [Test Folder Layout](docs/Test%20Folder%20Layout.md)
 
