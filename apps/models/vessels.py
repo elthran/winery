@@ -52,13 +52,20 @@ class Vessel(models.Model):
         return sum([crush_order.total_weight for crush_order in self.crush_orders.all()])
 
     @property
+    def expansion_chamber_volume(self):
+        if self.type_name == "Tank":
+            area = math.pi * self.cylinder_radius ** 2
+            volume = area * self.cylinder_height / 10000
+            return int(volume)
+        else:
+            return 0
+
+    @property
     def max_volume(self):
         if self.type_name == "Tank":
-            if not self.cylinder_radius or not self.cylinder_height:
-                return None
             area = math.pi * self.cylinder_radius ** 2
             volume = area * self.cylinder_height / 1000
-            return "{:,}".format(int(volume))
+            return "{:,}".format(int(volume - self.expansion_chamber_volume))
         else:
             return f"Unknown vessel {self.type_name}"
         # 4,725.07 - 3 and 17

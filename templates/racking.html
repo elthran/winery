@@ -133,8 +133,9 @@ table, th, td {
 		  <input type="text" id="fname" name="fname"><br><br>
 		  <label for="fname">TO Vessel ID</label><br>
 		  <input type="text" id="fname" name="fname"><br><br>
-		</form> </div>
-	</div>
+		</form>
+   </div>
+</div>
 
 
 <div class="grid-container">
@@ -145,7 +146,9 @@ table, th, td {
 		</form></div>
    <div class="grid-item"><form action=".">
     <input type="submit" value="Go to Vessels" />
-</form></div>
+</form>
+   </div>
+</div>
 
 	<!-- If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php". -->
 
@@ -161,6 +164,7 @@ table, th, td {
 		<th>Total Weight</th>
 		<th>Percentages</th>
 		<th>Tank Size</th>
+		<th>Expansion Chamber Size</th>
 	</tr>
 	{% for vessel in data %}
 	<tr>
@@ -181,6 +185,7 @@ table, th, td {
 			<td>{{ vessel.current_weight }}</td>
 			<td><ul>{% for percent in vessel.percentages %}<li>{{ percent }}%</li>{% endfor %}</ul></td>
 			<td>{{ vessel.max_volume }} L</td>
+			<td>{{ vessel.expansion_chamber_volume }} L</td>
 		{% else %}
 			<td>{{ vessel.name }}</td>
 			<td>-</td>
@@ -190,6 +195,7 @@ table, th, td {
 			<td>-</td>
 			<td>{{ vessel.volume }}</td>
 			<td>{{ vessel.max_volume }} L</td>
+			<td>{{ vessel.expansion_chamber_volume }} L</td>
 		{% endif %}
 	</tr>
 <!--		<tr>-->
