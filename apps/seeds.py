@@ -10,8 +10,6 @@ from apps.models.choices import (
     BlockChoices,
     UnitChoices,
     CrushOrderTypeChoices,
-    VesselIdChoices,
-    VesselTypeChoices,
 )
 from apps.models.crush_orders import CrushOrder
 from apps.models.dockets import Docket
@@ -28,7 +26,7 @@ units = ["kg"]
 crush_types = ["Crush & Press", "Crush Only", "Whole Cluster Press"]
 vessels = [
     {
-        "type_name": "tank",
+        "type_name": "Tank",
         "type_id": [1, 2],
         "expansion_chamber_diameter": 0.0001,
         "expansion_chamber_height": 0.0001,
@@ -40,7 +38,7 @@ vessels = [
         "floor_height": 16,
     },
     {
-        "type_name": "tank",
+        "type_name": "Tank",
         "type_id": [3, 17],
         "expansion_chamber_diameter": 0.0001,
         "expansion_chamber_height": 0.0001,
@@ -52,7 +50,7 @@ vessels = [
         "floor_height": 146,
     },
     {
-        "type_name": "tank",
+        "type_name": "Tank",
         "type_id": [i for i in range(6, 12)],
         "expansion_chamber_diameter": 0.0001,
         "expansion_chamber_height": 0.0001,

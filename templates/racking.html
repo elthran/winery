@@ -180,7 +180,7 @@ table, th, td {
 			<td><ul>{% for weight in vessel.weights %}<li>{{ weight }} kg</li>{% endfor %}</ul></td>
 			<td>{{ vessel.current_weight }}</td>
 			<td><ul>{% for percent in vessel.percentages %}<li>{{ percent }}%</li>{% endfor %}</ul></td>
-			<td>{{ vessel.max_volume }}</td>
+			<td>{{ vessel.max_volume }} L</td>
 		{% else %}
 			<td>{{ vessel.name }}</td>
 			<td>-</td>
@@ -189,7 +189,7 @@ table, th, td {
 			<td>-</td>
 			<td>-</td>
 			<td>{{ vessel.volume }}</td>
-			<td>{{ vessel.max_volume }}</td>
+			<td>{{ vessel.max_volume }} L</td>
 		{% endif %}
 	</tr>
 <!--		<tr>-->

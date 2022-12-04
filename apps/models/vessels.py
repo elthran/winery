@@ -53,20 +53,13 @@ class Vessel(models.Model):
 
     @property
     def max_volume(self):
-        pass
-        # raise ValueError("Must be set by child class.")
+        if self.type_name == "Tank":
+            if not self.cylinder_radius or not self.cylinder_height:
+                return None
+            area = math.pi * self.cylinder_radius ** 2
+            volume = area * self.cylinder_height / 1000
+            return "{:,}".format(int(volume))
+        # 4,725.07 - 3 and 17
 
     def __str__(self):
         return u'{0}'.format(self.name)
-
-class Tank(Vessel):
-    def __init__(self):
-        super(Tank, self).__init__()
-
-    @property
-    def max_volume(self):
-        if not self.cylinder_radius or not self.cylinder_height:
-            return "Unknown"
-        area = math.pi * self.cylinder_radius ** 2
-        volume = area * self.cylinder_height
-        return int(volume)
