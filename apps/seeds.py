@@ -155,7 +155,7 @@ crush_orders = [
         "crush_type": "Whole Cluster Press",
         "date": "2022-09-30",
         "vessel_id": 2,
-        "vessel_type": "tank",
+        "vessel_type": "Tank",
         "vessel_quantity": 724,
     },
     {
@@ -166,7 +166,7 @@ crush_orders = [
         "crush_type": "Crush & Press",
         "date": "2022-10-03",
         "vessel_id": 3,
-        "vessel_type": "tank",
+        "vessel_type": "Tank",
         "vessel_quantity": 4783.50,
     },
     {
@@ -177,7 +177,7 @@ crush_orders = [
         "crush_type": "Crush & Press",
         "date": "2022-10-07",
         "vessel_id": 4,
-        "vessel_type": "tank",
+        "vessel_type": "Tank",
         "vessel_quantity": 2495.50,
     },
 ]

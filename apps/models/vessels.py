@@ -59,6 +59,8 @@ class Vessel(models.Model):
             area = math.pi * self.cylinder_radius ** 2
             volume = area * self.cylinder_height / 1000
             return "{:,}".format(int(volume))
+        else:
+            return f"Unknown vessel {self.type_name}"
         # 4,725.07 - 3 and 17
 
     def __str__(self):
