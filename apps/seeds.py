@@ -29,7 +29,7 @@ crush_types = ["Crush & Press", "Crush Only", "Whole Cluster Press"]
 vessels = [
     {
         "type_name": "tank",
-        "type_id": "1",
+        "type_id": [1, 2],
         "expansion_chamber_diameter": 0.0001,
         "expansion_chamber_height": 0.0001,
         "expansion_chamber_radius": 0.00005,
@@ -41,38 +41,26 @@ vessels = [
     },
     {
         "type_name": "tank",
-        "type_id": "2",
+        "type_id": [3, 17],
+        "expansion_chamber_diameter": 0.0001,
+        "expansion_chamber_height": 0.0001,
+        "expansion_chamber_radius": 0.00005,
+        "tank_diameter": 158,
+        "top_cone_height": 10,
+        "cylinder_height": 246,
+        "cylinder_radius": 79,
+        "floor_height": 146,
+    },
+    {
+        "type_name": "tank",
+        "type_id": [i for i in range(6, 12)],
         "expansion_chamber_diameter": 0.0001,
         "expansion_chamber_height": 0.0001,
         "expansion_chamber_radius": 0.00005,
         "tank_diameter": 118,
-        "top_cone_height": 10,
+        "top_cone_height": 0.0001,
         "cylinder_height": 170,
         "cylinder_radius": 59,
-        "floor_height": 10,
-    },
-    {
-        "type_name": "tank",
-        "type_id": "3",
-        "expansion_chamber_diameter": 0.0001,
-        "expansion_chamber_height": 0.0001,
-        "expansion_chamber_radius": 0.00005,
-        "tank_diameter": 79,
-        "top_cone_height": 10,
-        "cylinder_height": 93,
-        "cylinder_radius": 39.5,
-        "floor_height": 10,
-    },
-    {
-        "type_name": "tank",
-        "type_id": "4",
-        "expansion_chamber_diameter": 0.0001,
-        "expansion_chamber_height": 0.0001,
-        "expansion_chamber_radius": 0.00005,
-        "tank_diameter": 97,
-        "top_cone_height": 0.0001,
-        "cylinder_height": 147,
-        "cylinder_radius": 48.5,
         "floor_height": 10,
     },
 ]
@@ -218,19 +206,20 @@ def main():
             model = UnitChoices(choice=unit)
             model.save()
         for vessel in vessels:
-            model = Vessel(
-                type_name=vessel["type_name"],
-                type_id=vessel["type_id"],
-                expansion_chamber_diameter=vessel["expansion_chamber_diameter"],
-                expansion_chamber_height=vessel["expansion_chamber_height"],
-                expansion_chamber_radius=vessel["expansion_chamber_radius"],
-                tank_diameter=vessel["tank_diameter"],
-                top_cone_height=vessel["top_cone_height"],
-                cylinder_height=vessel["cylinder_height"],
-                cylinder_radius=vessel["cylinder_radius"],
-                floor_height=vessel["floor_height"],
-            )
-            model.save()
+            for id_ in vessel["type_id"]:
+                model = Vessel(
+                    type_name=vessel["type_name"],
+                    type_id=id_,
+                    expansion_chamber_diameter=vessel["expansion_chamber_diameter"],
+                    expansion_chamber_height=vessel["expansion_chamber_height"],
+                    expansion_chamber_radius=vessel["expansion_chamber_radius"],
+                    tank_diameter=vessel["tank_diameter"],
+                    top_cone_height=vessel["top_cone_height"],
+                    cylinder_height=vessel["cylinder_height"],
+                    cylinder_radius=vessel["cylinder_radius"],
+                    floor_height=vessel["floor_height"],
+                )
+                model.save()
         for crush_type in crush_types:
             model = CrushOrderTypeChoices(choice=crush_type)
             model.save()

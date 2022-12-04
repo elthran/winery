@@ -5,7 +5,7 @@ from django.db import models
 
 class Vessel(models.Model):
     type_name = models.TextField(null=True)
-    type_id = models.TextField(null=True)
+    type_id = models.IntegerField(null=True)
     expansion_chamber_diameter = models.FloatField(null=True)
     expansion_chamber_height = models.FloatField(null=True)
     expansion_chamber_radius = models.FloatField(null=True)
@@ -53,11 +53,20 @@ class Vessel(models.Model):
 
     @property
     def max_volume(self):
+        pass
+        # raise ValueError("Must be set by child class.")
+
+    def __str__(self):
+        return u'{0}'.format(self.name)
+
+class Tank(Vessel):
+    def __init__(self):
+        super(Tank, self).__init__()
+
+    @property
+    def max_volume(self):
         if not self.cylinder_radius or not self.cylinder_height:
             return "Unknown"
         area = math.pi * self.cylinder_radius ** 2
         volume = area * self.cylinder_height
         return int(volume)
-
-    def __str__(self):
-        return u'{0}'.format(self.name)

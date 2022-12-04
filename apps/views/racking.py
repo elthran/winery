@@ -21,7 +21,7 @@ class RackingViewSet(BaseView):
         self.template_name = "racking.html"
 
     def get(self, request, id_=None, *args, **kwargs):
-        all_vessels = Vessel.objects.all()
+        all_vessels = Vessel.objects.order_by('type_id').all()
         return render(request, self.template_name, {"data": all_vessels})
 
     def post(self, request, id_=None, *args, **kwargs):
