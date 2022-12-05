@@ -166,8 +166,9 @@ table, th, td {
 		<th>Tank Size</th>
 		<th>Expansion Chamber Size</th>
 		<th>Last Dip</th>
+		<th>Tank Height</th>
 		<th>Dry Volume</th>
-		<th>Actual Volume</th>
+		<th>Filled Volume</th>
 	</tr>
 	{% for vessel in data %}
 	<tr>
@@ -190,6 +191,7 @@ table, th, td {
 			<td>{{ vessel.max_volume }} L</td>
 			<td>{{ vessel.expansion_chamber_volume }} L</td>
 			<td>{% for dip in vessel.dips.all %}{{ dip.dip_type }} at {{ dip.dip_depth }} cm{% endfor %}</td>
+			<td>{{ vessel.cylinder_height }} L</td>
 			<td>{{ vessel.unused_volume }} L</td>
 			<td>{{ vessel.actual_volume }} L</td>
 		{% else %}
@@ -203,6 +205,7 @@ table, th, td {
 			<td>{{ vessel.max_volume }} L</td>
 			<td>{{ vessel.expansion_chamber_volume }} L</td>
 			<td>{% for dip in vessel.dips.all %}{{ dip.dip_type }} at {{ dip.dip_depth }} cm{% endfor %}</td>
+			<td>{{ vessel.cylinder_height }} L</td>
 			<td>{{ vessel.unused_volume }} L</td>
 			<td>{{ vessel.actual_volume }} L</td>
 		{% endif %}

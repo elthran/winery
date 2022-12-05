@@ -74,6 +74,18 @@ vessels = [
         "cylinder_radius": 60,
         "floor_height": 6,
     },
+    {
+        "type_name": "Tank",
+        "type_id": [12, 13],
+        "expansion_chamber_diameter": 0,
+        "expansion_chamber_height": 0,
+        "expansion_chamber_radius": 0,
+        "tank_diameter": 80,
+        "top_cone_height": 10,
+        "cylinder_height": 187,
+        "cylinder_radius": 40,
+        "floor_height": 10,
+    },
 ]
 
 dockets = [
@@ -167,7 +179,7 @@ crush_orders = [
         "vintage": 2022,
         "crush_type": "Whole Cluster Press",
         "date": "2022-09-30",
-        "vessel_id": 2,
+        "vessel_id": 12,
         "vessel_type": "Tank",
         "vessel_quantity": 724,
     },
@@ -189,7 +201,7 @@ crush_orders = [
         "vintage": 2022,
         "crush_type": "Crush & Press",
         "date": "2022-10-07",
-        "vessel_id": 4,
+        "vessel_id": 11,
         "vessel_type": "Tank",
         "vessel_quantity": 2495.50,
     },
@@ -197,10 +209,10 @@ crush_orders = [
 dips = [
     {"dip_depth": 105,
      "dip_type": "dry",
-     "vessel_type_id": 1},
+     "vessel_type_id": 12},
     {"dip_depth": 35,
      "dip_type": "dry",
-     "vessel_type_id": 3},
+     "vessel_type_id": 11},
 
 ]
 
