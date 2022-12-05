@@ -150,11 +150,11 @@ table, th, td {
         <th>vineyard</th>
         <th>block</th>
         <th>number_of_bins</th>
-        <th>total_weight</th>
-        <th>tare_weight</th>
-        <th>fruit_weight</th>
-        <th>units</th>
-        <th>Total Docket Weight</th>
+        <th>Intake Total Weight</th>
+        <th>Intake Tare Weight</th>
+        <th>Intake Fruit Weight</th>
+        <th>Docket Fruit Weight</th>
+        <th>Units</th>
     </tr>
     {% for intake in data %}
     <tr>
@@ -169,8 +169,8 @@ table, th, td {
         <td>{{ intake.total_weight }}</td>
         <td>{{ intake.tare_weight }}</td>
         <td>{{ intake.fruit_weight }}</td>
-        <td>{{ intake.units }}</td>
         <td>{{ intake.docket.fruit_weight }}</td>
+        <td>{{ intake.units }}</td>
     </tr>
     {% endfor %}
 </table>

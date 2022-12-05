@@ -26,5 +26,6 @@ class FruitIntake(models.Model):
             return None
         return self.date.date()
 
+
     # def __str__(self):
     #     return u'{0}'.format(self.docket_number)

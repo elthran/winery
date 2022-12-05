@@ -48,8 +48,6 @@ class CrushOrderViewSet(BaseView):
         if existing_crush_order:
             serializer = CrushOrderSerializer(existing_crush_order)
             existing_crush_order = serializer.data
-        for crush_order in self.get_all_crush_orders():
-            print("id: ", crush_order.id)
         return render(request, self.template_name, {"form": form,
                                                     "data": self.get_all_crush_orders(),
                                                     "order": existing_crush_order})
@@ -96,7 +94,6 @@ class CrushOrderViewSet(BaseView):
                     vessel_crush_order_mapping.save()
                 return redirect("crush-order", id_=crush_order.id)
             else:
-                print("Serializer error", serialized_crush_order.errors)
                 return Response(None, status=status.HTTP_400_BAD_REQUEST)
         return render(request, self.template_name, {"form": form,
                                                     "data": self.get_all_crush_orders(),

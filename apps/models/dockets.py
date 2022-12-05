@@ -1,11 +1,8 @@
-import math
-from datetime import datetime
-
 from django.db import models
 
 
 class Docket(models.Model):
-    docket_number = models.TextField(unique=True, null=False)
+    docket_number = models.TextField(null=False)
     vintage = models.IntegerField(null=True)
     varietal = models.TextField(null=True)
     vineyard = models.TextField(null=True)

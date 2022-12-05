@@ -27,12 +27,8 @@ class ReportsViewSet(BaseView):
         """
         template_name = "reports.html"
         dockets = Docket.objects.all()
-        print("Dockets:", dockets)
         fruit_intakes = FruitIntake.objects.first()
-        print(fruit_intakes.docket)
-        print("FruitIntake:", fruit_intakes)
         crush_orders = CrushOrder.objects.all()
-        print("CrushOrder:", crush_orders)
         return
 
     @staticmethod

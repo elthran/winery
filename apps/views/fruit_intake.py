@@ -33,7 +33,7 @@ class FruitIntakeViewSet(BaseView):
         """
         Return a specific Fruit Intake or all if none are specified.
         """
-        docket_number = f'{data["vintage"]}{data["vineyard"]}{data["varietal"]}{data["block"]}'.replace(" ", "")
+        docket_number = f'{data["vintage"]} {data["grower"]} {data["varietal"]} {data["vineyard"]} {data["block"]}'
         docket = get_object_or_None(Docket, docket_number=docket_number)
         if not docket:
             data["docket_number"] = docket_number
@@ -45,7 +45,6 @@ class FruitIntakeViewSet(BaseView):
         return docket
 
     def get(self, request, id_=None, *args, **kwargs):
-        print("All vessels:", Vessel.objects.all())
         if not id_:
             intake = None
             form = FruitIntakeInitialForm()
@@ -53,7 +52,6 @@ class FruitIntakeViewSet(BaseView):
             existing_fruit_intake = self.get_fruit_intake_objects(id_=id_)
             form = FruitIntakeSubsequentForm()
             serializer = FruitIntakeSerializer(existing_fruit_intake)
-            print(serializer)
             intake = serializer.data
             form.fields['date'].initial = intake["date"]
             form.fields['number_of_bins'].initial = intake["number_of_bins"]
@@ -101,11 +99,9 @@ class FruitIntakeViewSet(BaseView):
                     fruit_intake.docket = docket
                     fruit_intake.save()
             else:
-                print("Serializer error", serializer.errors)
                 return Response(None, status=status.HTTP_400_BAD_REQUEST)
             return redirect("fruit-intake", id_=fruit_intake.id)
         else:
-            print("invalid form")
             return render(request, self.template_name, {"form": form,
                                                         "data": self.get_fruit_intake_objects(),
                                                         "intake": existing_fruit_intake})

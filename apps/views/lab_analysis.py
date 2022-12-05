@@ -102,7 +102,6 @@ class LabAnalysisViewSet(BaseView):
                         crush_mapping.docket = docket_2
                         crush_mapping.save()
             else:
-                print("Serializer error", crush_order.errors)
                 return Response(None, status=status.HTTP_400_BAD_REQUEST)
             return redirect("crush-order", id_=crush_order.id)
         else:

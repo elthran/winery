@@ -46,7 +46,6 @@ class DataEntryViewSet(BaseView):
             form = VintageEntryForm(request.POST)
         else:
             return Response(None, status=status.HTTP_501_NOT_IMPLEMENTED)
-        print("checking validation of", form.data)
         if form.is_valid():
             new_data = {
                 "existing_field": form.cleaned_data["existing_field"],
@@ -73,7 +72,6 @@ class DataEntryViewSet(BaseView):
                 existing_choice.save()  # this will update only
             return redirect("data-entry-type", data_type=data_type)
         else:
-            print("form invalid")
             return render(request, self.template_name, {"form": form, "docket_number": ""})
 
     @staticmethod
