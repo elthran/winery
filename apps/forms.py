@@ -78,9 +78,8 @@ class CrushOrderForm(forms.Form):
             self.fields[vessel_field_name] = forms.ModelChoiceField(label=f"vessel_{i}",
                                                                     queryset=Vessel.objects.all(),
                                                                     required=False)
-            self.fields[vessel_amount_field_name] = forms.ModelChoiceField(label=f"vessel_{i}_amount",
-                                                                           queryset=Vessel.objects.all(),
-                                                                           required=False)
+            self.fields[vessel_amount_field_name] = forms.IntegerField(label=f"vessel_{i}_amount",
+                                                                       required=False, initial=0)
 
             if i == 0:
                 self.initial[docket_field_name] = all_dockets[0]
