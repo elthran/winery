@@ -39,7 +39,7 @@ class CrushOrderViewSet(BaseView):
         return form
 
     def get_all_crush_orders(self):
-        all_crush_orders = CrushOrder.objects.all()
+        all_crush_orders = CrushOrder.objects.order_by("date").reverse().all()
         return all_crush_orders
 
     def get(self, request, id_=None, *args, **kwargs):
