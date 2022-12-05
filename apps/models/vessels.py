@@ -85,14 +85,19 @@ class Vessel(models.Model):
 
     @property
     def predicted_volume(self):
-        return sum([crush_order.predicted_volume for crush_order in self.crush_orders.all()])
+        return int(sum([crush_order.predicted_volume for crush_order in self.crush_orders.all()]))
 
 
     @property
     def actual_volume(self):
-        volume = self.max_volume - self.unused_volume
-        return "{:,}".format(int(volume - self.expansion_chamber_volume))
+        if self.crush_order_mappings:
+            volume = self.max_volume - self.unused_volume
+            return int(volume - self.expansion_chamber_volume)
+        return 0
         # 4,725.07 - 3 and 17
+
+    def commify_integer(self, integer):
+        return "{:,}".format(integer)
 
     def __str__(self):
         return u'{0}'.format(self.name)
