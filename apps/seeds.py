@@ -179,9 +179,9 @@ crush_orders = [
         "vintage": 2022,
         "crush_type": "Whole Cluster Press",
         "date": "2022-09-30",
-        "vessel_id": 12,
+        "vessel_id": [12],
         "vessel_type": "Tank",
-        "vessel_quantity": 724,
+        "vessel_quantity": [724],
     },
     {
         "dockets": ["2022 Green Gage Farm Schönburger Brunner B5"],
@@ -190,9 +190,9 @@ crush_orders = [
         "vintage": 2022,
         "crush_type": "Crush & Press",
         "date": "2022-10-03",
-        "vessel_id": 3,
+        "vessel_id": [3],
         "vessel_type": "Tank",
-        "vessel_quantity": 4783.50,
+        "vessel_quantity": [4783.50],
     },
     {
         "dockets": ["2022 Blue Grouse Siegerrebe Paula C2"],
@@ -201,9 +201,21 @@ crush_orders = [
         "vintage": 2022,
         "crush_type": "Crush & Press",
         "date": "2022-10-07",
-        "vessel_id": 11,
+        "vessel_id": [11],
         "vessel_type": "Tank",
-        "vessel_quantity": 2495.50,
+        "vessel_quantity": [2495.50],
+    },
+    {
+        "dockets": ["2022 Blue Grouse Siegerrebe Paula C2",
+                    "2022 Green Gage Farm Schönburger Brunner B5"],
+        "quantities": [300, 400],
+        "units": ["kg", "kg"],
+        "vintage": 2022,
+        "crush_type": "Crush & Press",
+        "date": "2022-10-07",
+        "vessel_id": [1, 2],
+        "vessel_type": "Tank",
+        "vessel_quantity": [200, 500],
     },
 ]
 dips = [
@@ -284,16 +296,17 @@ def main():
                 date=order["date"],
             )
             crush_order.save()
-            vessel = get_object_or_None(
-                Vessel, type_name=order["vessel_type"], type_id=order["vessel_id"]
-            )
-            vessel_crush_order_mapping = CrushOrderVesselMapping(
-                crush_order=crush_order,
-                vessel=vessel,
-                quantity=order["vessel_quantity"],
-                units="kg",
-            )
-            vessel_crush_order_mapping.save()
+            for index, vessel_id in enumerate(order["vessel_id"]):
+                vessel = get_object_or_None(
+                    Vessel, type_name=order["vessel_type"], type_id=order["vessel_id"][index]
+                )
+                vessel_crush_order_mapping = CrushOrderVesselMapping(
+                    crush_order=crush_order,
+                    vessel=vessel,
+                    quantity=order["vessel_quantity"][index],
+                    units="kg",
+                )
+                vessel_crush_order_mapping.save()
             for index in range(len(order["dockets"])):
                 docket = get_object_or_None(
                     Docket, docket_number=order["dockets"][index]

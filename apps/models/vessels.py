@@ -44,12 +44,18 @@ class Vessel(models.Model):
         return [round(100 * mapping.quantity / self.current_weight, 1) for mapping in self.docket_mappings]
 
     @property
+    def weight_percentages(self):
+        total_weight = sum([mapping.quantity for mapping in self.docket_mappings])
+        this_weight = sum([mapping.quantity for mapping in self.crush_order_mappings])
+        return this_weight / total_weight
+
+    @property
     def weights(self):
-        return [mapping.quantity for mapping in self.docket_mappings]
+        return [int(mapping.quantity * self.weight_percentages) for mapping in self.docket_mappings]
 
     @property
     def current_weight(self):
-        return sum([crush_order.total_weight for crush_order in self.crush_orders.all()])
+        return sum([crush_order.total_weight for crush_order in self.crush_orders.all()]) * self.weight_percentages
 
     @property
     def expansion_chamber_volume(self):
