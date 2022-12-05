@@ -84,6 +84,11 @@ class Vessel(models.Model):
         # 4,725.07 - 3 and 17
 
     @property
+    def predicted_volume(self):
+        return sum([crush_order.predicted_volume for crush_order in self.crush_orders.all()])
+
+
+    @property
     def actual_volume(self):
         volume = self.max_volume - self.unused_volume
         return "{:,}".format(int(volume - self.expansion_chamber_volume))
