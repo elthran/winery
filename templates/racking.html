@@ -165,6 +165,9 @@ table, th, td {
 		<th>Percentages</th>
 		<th>Tank Size</th>
 		<th>Expansion Chamber Size</th>
+		<th>Last Dip</th>
+		<th>Dry Volume</th>
+		<th>Actual Volume</th>
 	</tr>
 	{% for vessel in data %}
 	<tr>
@@ -182,10 +185,13 @@ table, th, td {
 			</ul>
 			</td>
 			<td><ul>{% for weight in vessel.weights %}<li>{{ weight }} kg</li>{% endfor %}</ul></td>
-			<td>{{ vessel.current_weight }}</td>
+			<td>{{ vessel.current_weight }} kg</td>
 			<td><ul>{% for percent in vessel.percentages %}<li>{{ percent }}%</li>{% endfor %}</ul></td>
 			<td>{{ vessel.max_volume }} L</td>
 			<td>{{ vessel.expansion_chamber_volume }} L</td>
+			<td>{% for dip in vessel.dips.all %}{{ dip.dip_type }} at {{ dip.dip_depth }} cm{% endfor %}</td>
+			<td>{{ vessel.unused_volume }} L</td>
+			<td>{{ vessel.actual_volume }} L</td>
 		{% else %}
 			<td>{{ vessel.name }}</td>
 			<td>-</td>
@@ -193,9 +199,12 @@ table, th, td {
 			<td>-</td>
 			<td>-</td>
 			<td>-</td>
-			<td>{{ vessel.volume }}</td>
+			<td>-</td>
 			<td>{{ vessel.max_volume }} L</td>
 			<td>{{ vessel.expansion_chamber_volume }} L</td>
+			<td>{% for dip in vessel.dips.all %}{{ dip.dip_type }} at {{ dip.dip_depth }} cm{% endfor %}</td>
+			<td>{{ vessel.unused_volume }} L</td>
+			<td>{{ vessel.actual_volume }} L</td>
 		{% endif %}
 	</tr>
 <!--		<tr>-->

@@ -61,13 +61,32 @@ class Vessel(models.Model):
             return 0
 
     @property
+    def unused_volume(self):
+        if self.type_name == "Tank":
+            if self.dips.all():
+                height = self.cylinder_height - self.dips.all()[0].dip_depth
+                area = math.pi * self.cylinder_radius ** 2
+                volume = area * height / 10000
+                return int(volume)
+            else:
+                return 0
+        else:
+            return 0
+
+    @property
     def max_volume(self):
         if self.type_name == "Tank":
             area = math.pi * self.cylinder_radius ** 2
             volume = area * self.cylinder_height / 1000
-            return "{:,}".format(int(volume - self.expansion_chamber_volume))
+            return int(volume - self.expansion_chamber_volume)
         else:
-            return f"Unknown vessel {self.type_name}"
+            return 0
+        # 4,725.07 - 3 and 17
+
+    @property
+    def actual_volume(self):
+        volume = self.max_volume - self.unused_volume
+        return "{:,}".format(int(volume - self.expansion_chamber_volume))
         # 4,725.07 - 3 and 17
 
     def __str__(self):

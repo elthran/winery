@@ -12,6 +12,7 @@ from apps.models.choices import (
     CrushOrderTypeChoices,
 )
 from apps.models.crush_orders import CrushOrder
+from apps.models.dips import Dip
 from apps.models.dockets import Docket
 from apps.models.fruit_intakes import FruitIntake
 from apps.models.models import CrushOrderDocketMapping, CrushOrderVesselMapping
@@ -193,6 +194,15 @@ crush_orders = [
         "vessel_quantity": 2495.50,
     },
 ]
+dips = [
+    {"dip_depth": 105,
+     "dip_type": "dry",
+     "vessel_type_id": 1},
+    {"dip_depth": 35,
+     "dip_type": "dry",
+     "vessel_type_id": 3},
+
+]
 
 
 def main():
@@ -230,6 +240,7 @@ def main():
                     floor_height=vessel["floor_height"],
                 )
                 model.save()
+
         for crush_type in crush_types:
             model = CrushOrderTypeChoices(choice=crush_type)
             model.save()
@@ -282,6 +293,11 @@ def main():
                     units=order["units"][index],
                 )
                 crush_mapping.save()
+        for dip in dips:
+            model = Dip(dip_depth=dip["dip_depth"],
+                        dip_type=dip["dip_type"],
+                        vessel=get_object_or_None(Vessel, type_id=dip["vessel_type_id"]))
+            model.save()
     except django.db.utils.OperationalError:
         print("Database not yet created.")
         pass
