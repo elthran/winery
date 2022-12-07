@@ -67,6 +67,34 @@ class Vessel(models.Model):
             return 0
 
     @property
+    def top_cone_rh(self):
+        try:
+            rh = self.cylinder_radius + (self.top_cone_height * (self.expansion_chamber_radius - self.cylinder_radius) / self.top_cone_height)
+            return rh
+        except ZeroDivisionError:
+            print(self.type_name, self.type_id, "has 0 top_cone_height")
+            return 0
+
+    @property
+    def volume_top_cone(self):
+        volume = (math.pi * self.top_cone_height / 3) * ((self.cylinder_radius ** 2) + (self.top_cone_rh ** 2) + (self.cylinder_radius * self.top_cone_rh)) / 1000
+        return int(volume)
+
+    @property
+    def volume_cylinder(self):
+        volume = math.pi * (self.cylinder_radius ** 2) * self.cylinder_height / 1000
+        return int(volume)
+
+    @property
+    def volume_floor(self):
+        volume = (4 / 3) * (self.floor_height ** 2) * (self.cylinder_radius ** 2) / self.floor_height / 1000
+        return int(volume)
+
+    @property
+    def volume_total(self):
+        return self.volume_top_cone + self.volume_cylinder + self.volume_floor
+
+    @property
     def unused_volume(self):
         if self.type_name == "Tank":
             if self.dips.all():
