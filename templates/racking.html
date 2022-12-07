@@ -164,9 +164,6 @@ table, th, td {
 		<th>Total Weight</th>
 		<th>Percentages</th>
 		<th>Last Dip</th>
-		<th>Tank Height</th>
-		<th>Dry Volume</th>
-		<th>Predicted Volume</th>
 		<th>Filled Volume</th>
 		<th>volume_top_cone</th>
 		<th>volume_cylinder</th>
@@ -192,9 +189,6 @@ table, th, td {
 			<td>{{ vessel.current_weight }} kg</td>
 			<td><ul>{% for percent in vessel.percentages %}<li>{{ percent }}%</li>{% endfor %}</ul></td>
 			<td>{% for dip in vessel.dips.all %}{{ dip.dip_depth }} cm ({{ dip.dip_type }}){% endfor %}</td>
-			<td>{{ vessel.cylinder_height }} cm</td>
-			<td>{{ vessel.unused_volume }} L</td>
-			<td>{{ vessel.predicted_volume }} L</td>
 			<td>{{ vessel.actual_volume }} L</td>
 			<td>{{ vessel.volume_top_cone }} L</td>
 			<td>{{ vessel.volume_cylinder }} L</td>
@@ -209,9 +203,6 @@ table, th, td {
 			<td>-</td>
 			<td>-</td>
 			<td>{% for dip in vessel.dips.all %}{{ dip.dip_depth }} cm ({{ dip.dip_type }}){% endfor %}</td>
-			<td>{{ vessel.cylinder_height }} cm</td>
-			<td>{{ vessel.unused_volume }} L</td>
-			<td>{{ vessel.actual_volume }} L</td>
 			<td>{{ vessel.volume_top_cone }} L</td>
 			<td>{{ vessel.volume_cylinder }} L</td>
 			<td>{{ vessel.volume_floor }} L</td>
