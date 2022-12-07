@@ -189,7 +189,7 @@ table, th, td {
 			<td>{{ vessel.current_weight }} kg</td>
 			<td><ul>{% for percent in vessel.percentages %}<li>{{ percent }}%</li>{% endfor %}</ul></td>
 			<td>{% for dip in vessel.dips.all %}{{ dip.dip_depth }} cm ({{ dip.dip_type }}){% endfor %}</td>
-			<td>{{ vessel.actual_volume }} L</td>
+			<td>{{ vessel.filled_volume }} L</td>
 			<td>{{ vessel.volume_top_cone }} L</td>
 			<td>{{ vessel.volume_cylinder }} L</td>
 			<td>{{ vessel.volume_floor }} L</td>
@@ -203,6 +203,7 @@ table, th, td {
 			<td>-</td>
 			<td>-</td>
 			<td>{% for dip in vessel.dips.all %}{{ dip.dip_depth }} cm ({{ dip.dip_type }}){% endfor %}</td>
+			<td>{{ vessel.filled_volume }} L</td>
 			<td>{{ vessel.volume_top_cone }} L</td>
 			<td>{{ vessel.volume_cylinder }} L</td>
 			<td>{{ vessel.volume_floor }} L</td>

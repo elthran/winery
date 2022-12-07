@@ -58,15 +58,6 @@ class Vessel(models.Model):
         return sum([crush_order.total_weight for crush_order in self.crush_orders.all()]) * self.weight_percentages
 
     @property
-    def expansion_chamber_volume(self):
-        if self.type_name == "Tank":
-            area = math.pi * self.cylinder_radius ** 2
-            volume = area * self.cylinder_height / 10000
-            return int(volume)
-        else:
-            return 0
-
-    @property
     def top_cone_rh(self):
         try:
             rh = self.cylinder_radius + (self.top_cone_height * (self.expansion_chamber_radius - self.cylinder_radius) / self.top_cone_height)
@@ -95,40 +86,12 @@ class Vessel(models.Model):
         return self.volume_top_cone + self.volume_cylinder + self.volume_floor
 
     @property
-    def unused_volume(self):
-        if self.type_name == "Tank":
-            if self.dips.all():
-                height = self.cylinder_height - self.dips.all()[0].dip_depth
-                area = math.pi * self.cylinder_radius ** 2
-                volume = area * height / 10000
-                return int(volume)
-            else:
-                return 0
-        else:
-            return 0
-
-    @property
-    def max_volume(self):
-        if self.type_name == "Tank":
-            area = math.pi * self.cylinder_radius ** 2
-            volume = area * self.cylinder_height / 1000
-            return int(volume - self.expansion_chamber_volume)
-        else:
-            return 0
-        # 4,725.07 - 3 and 17
-
-    @property
     def predicted_volume(self):
         return int(sum([crush_order.predicted_volume for crush_order in self.crush_orders.all()]))
 
-
     @property
-    def actual_volume(self):
-        if self.crush_order_mappings:
-            volume = self.max_volume - self.unused_volume
-            return int(volume - self.expansion_chamber_volume)
-        return 0
-        # 4,725.07 - 3 and 17
+    def filled_volume(self):
+        return int(sum([crush_order.total_weight for crush_order in self.crush_orders.all()]))
 
     def commify_integer(self, integer):
         return "{:,}".format(integer)
