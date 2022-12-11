@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from apps.models.crush_orders import CrushOrder
-from apps.models.models import CrushOrderDocketMapping
+from apps.models import CrushOrderDocketMapping
 from apps.models.dockets import Docket
 
 

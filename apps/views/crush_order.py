@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.response import Response
 
-from apps.models.models import CrushOrderDocketMapping, CrushOrderVesselMapping
+from apps.models import CrushOrderDocketMapping, CrushOrderVesselMapping
 from apps.views.base import BaseView
 
 
