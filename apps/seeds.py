@@ -15,7 +15,7 @@ from apps.models.crush_orders import CrushOrder
 from apps.models.dips import Dip
 from apps.models.dockets import Docket
 from apps.models.fruit_intakes import FruitIntake
-from apps.models.models import CrushOrderDocketMapping, CrushOrderVesselMapping
+from apps.models import CrushOrderDocketMapping, CrushOrderVesselMapping
 from apps.models.vessels import Vessel
 
 growers = ["Blue Grouse", "Green Gage Farm"]
